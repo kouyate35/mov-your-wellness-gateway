@@ -57,6 +57,19 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Category colors for MOV
+        move: {
+          DEFAULT: "hsl(var(--move))",
+          foreground: "hsl(var(--move-foreground))",
+        },
+        breath: {
+          DEFAULT: "hsl(var(--breath))",
+          foreground: "hsl(var(--breath-foreground))",
+        },
+        focus: {
+          DEFAULT: "hsl(var(--focus))",
+          foreground: "hsl(var(--focus-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
