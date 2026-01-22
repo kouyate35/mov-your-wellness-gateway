@@ -3,78 +3,89 @@ export interface AppData {
   name: string;
   icon: string;
   description: string;
-  color: string;
+  bgColor: string;
+  iconColor: string;
 }
 
 export const apps: AppData[] = [
   {
     id: "tiktok",
     name: "TikTok",
-    icon: "🎵",
+    icon: "♪",
     description: "Vidéos courtes et divertissement",
-    color: "hsl(0 0% 0%)",
+    bgColor: "bg-gradient-to-br from-pink-500 via-red-500 to-cyan-400",
+    iconColor: "text-white",
   },
   {
     id: "instagram",
     name: "Instagram",
-    icon: "📸",
+    icon: "📷",
     description: "Photos, stories et reels",
-    color: "hsl(340 80% 55%)",
+    bgColor: "bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400",
+    iconColor: "text-white",
   },
   {
     id: "youtube",
     name: "YouTube",
-    icon: "▶️",
+    icon: "▶",
     description: "Vidéos et streaming",
-    color: "hsl(0 80% 50%)",
+    bgColor: "bg-red-600",
+    iconColor: "text-white",
   },
   {
     id: "twitter",
-    name: "X (Twitter)",
+    name: "X",
     icon: "𝕏",
     description: "Actualités et conversations",
-    color: "hsl(0 0% 0%)",
+    bgColor: "bg-black",
+    iconColor: "text-white",
   },
   {
     id: "snapchat",
     name: "Snapchat",
     icon: "👻",
     description: "Messages éphémères",
-    color: "hsl(55 100% 50%)",
+    bgColor: "bg-yellow-400",
+    iconColor: "text-black",
   },
   {
     id: "facebook",
     name: "Facebook",
-    icon: "📘",
+    icon: "f",
     description: "Réseau social",
-    color: "hsl(220 70% 50%)",
+    bgColor: "bg-blue-600",
+    iconColor: "text-white font-bold",
   },
   {
     id: "whatsapp",
     name: "WhatsApp",
-    icon: "💬",
+    icon: "📱",
     description: "Messagerie instantanée",
-    color: "hsl(142 70% 45%)",
+    bgColor: "bg-green-500",
+    iconColor: "text-white",
   },
   {
     id: "netflix",
     name: "Netflix",
-    icon: "🎬",
+    icon: "N",
     description: "Streaming de films et séries",
-    color: "hsl(0 80% 45%)",
+    bgColor: "bg-black",
+    iconColor: "text-red-600 font-bold",
   },
   {
     id: "reddit",
     name: "Reddit",
     icon: "🤖",
     description: "Communautés et discussions",
-    color: "hsl(16 100% 50%)",
+    bgColor: "bg-orange-600",
+    iconColor: "text-white",
   },
   {
     id: "twitch",
     name: "Twitch",
-    icon: "🎮",
+    icon: "📺",
     description: "Streaming en direct",
-    color: "hsl(264 100% 64%)",
+    bgColor: "bg-purple-600",
+    iconColor: "text-white",
   },
 ];

@@ -28,15 +28,15 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background pb-8">
       {/* Header */}
-      <header className="pt-12 pb-6 px-4">
-        <h1 className="text-3xl font-bold text-foreground">MOV</h1>
-        <p className="text-muted-foreground mt-1">
+      <header className="pt-10 pb-5 px-4">
+        <h1 className="text-4xl font-bold text-foreground tracking-tight">MOV</h1>
+        <p className="text-muted-foreground text-sm mt-0.5">
           Bouge avant de scroller
         </p>
       </header>
 
       {/* Category Carousel */}
-      <section className="mb-8">
+      <section className="mb-6">
         <CategoryCarousel
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -44,7 +44,7 @@ const Index = () => {
       </section>
 
       {/* Search Bar */}
-      <section className="mb-6">
+      <section className="mb-4">
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
       </section>
 

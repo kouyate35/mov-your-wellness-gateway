@@ -13,7 +13,7 @@ const AppList = ({ apps, activeApps }: AppListProps) => {
   return (
     <div className="px-4">
       <h2 className="text-lg font-semibold text-foreground mb-4">Applications</h2>
-      <div className="space-y-2">
+      <div className="space-y-1">
         {apps.map((app) => (
           <AppListItem
             key={app.id}
@@ -37,18 +37,31 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-4 p-4 bg-card hover:bg-accent rounded-xl transition-colors"
+      className={`
+        w-full flex items-center gap-4 p-3 rounded-2xl transition-all duration-200
+        hover:bg-white/5 active:bg-white/10
+        ${isActive ? "bg-white/5" : ""}
+      `}
     >
-      <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-2xl">
+      {/* App icon - styled like real app icons */}
+      <div className={`
+        w-12 h-12 rounded-xl flex items-center justify-center text-xl
+        ${app.bgColor} ${app.iconColor}
+        shadow-lg
+      `}>
         {app.icon}
       </div>
-      <div className="flex-1 text-left">
-        <h3 className="font-medium text-foreground">{app.name}</h3>
-        <p className="text-sm text-muted-foreground">{app.description}</p>
+
+      {/* App info */}
+      <div className="flex-1 text-left min-w-0">
+        <h3 className="font-medium text-foreground truncate">{app.name}</h3>
+        <p className="text-sm text-muted-foreground truncate">{app.description}</p>
       </div>
-      <div className="flex items-center gap-3">
+
+      {/* Right side */}
+      <div className="flex items-center gap-2 flex-shrink-0">
         {isActive && (
-          <div className="w-2 h-2 bg-move rounded-full" />
+          <div className="w-2 h-2 bg-move rounded-full animate-pulse" />
         )}
         <ChevronRight className="w-5 h-5 text-muted-foreground" />
       </div>
