@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
+import { Dumbbell, Wind, Target } from "lucide-react";
 
 interface CategoryCarouselProps {
   selectedCategory: "move" | "breath" | "focus";
@@ -15,6 +16,18 @@ const categoryImages: Record<string, string> = {
   focus: categoryFocusImg,
 };
 
+const categoryIcons: Record<string, React.ReactNode> = {
+  move: <Dumbbell className="w-5 h-5" />,
+  breath: <Wind className="w-5 h-5" />,
+  focus: <Target className="w-5 h-5" />,
+};
+
+const categoryFeatures: Record<string, string[]> = {
+  move: ["Exercices rapides", "Condition physique", "Mobilité"],
+  breath: ["Respiration guidée", "Méditation", "Relaxation"],
+  focus: ["Intention claire", "Discipline", "Habitudes"],
+};
+
 const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(
@@ -23,7 +36,7 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
 
   const scrollToCard = (index: number) => {
     if (scrollRef.current) {
-      const cardWidth = scrollRef.current.offsetWidth * 0.85;
+      const cardWidth = scrollRef.current.offsetWidth * 0.82;
       const gap = 16;
       scrollRef.current.scrollTo({
         left: index * (cardWidth + gap),
@@ -36,7 +49,7 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
 
   const handleScroll = () => {
     if (scrollRef.current) {
-      const cardWidth = scrollRef.current.offsetWidth * 0.85;
+      const cardWidth = scrollRef.current.offsetWidth * 0.82;
       const gap = 16;
       const scrollLeft = scrollRef.current.scrollLeft;
       const newIndex = Math.round(scrollLeft / (cardWidth + gap));
@@ -61,9 +74,9 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
             key={category.id}
             onClick={() => scrollToCard(index)}
             className={`
-              relative flex-shrink-0 w-[85%] aspect-[16/10] rounded-3xl overflow-hidden
+              relative flex-shrink-0 w-[82%] aspect-[4/5] rounded-3xl overflow-hidden
               snap-center transition-all duration-300
-              ${currentIndex === index ? "ring-2 ring-white/30" : "opacity-70"}
+              ${currentIndex === index ? "scale-100" : "scale-95 opacity-60"}
             `}
           >
             {/* Background image */}
@@ -74,36 +87,63 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
             />
             
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
             
-            {/* Content */}
-            <div className="absolute inset-0 p-6 flex flex-col justify-end text-left">
-              <h3 className="text-2xl font-bold text-white mb-1">{category.name}</h3>
-              <p className="text-white/90 text-sm font-medium">{category.tagline}</p>
-              <p className="text-white/70 text-xs mt-2 line-clamp-2">{category.description}</p>
+            {/* Content - Top */}
+            <div className="absolute top-0 left-0 right-0 p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`
+                  w-8 h-8 rounded-full flex items-center justify-center
+                  ${category.id === 'move' ? 'bg-move/20 text-move' : ''}
+                  ${category.id === 'breath' ? 'bg-breath/20 text-breath' : ''}
+                  ${category.id === 'focus' ? 'bg-focus/20 text-focus' : ''}
+                `}>
+                  {categoryIcons[category.id]}
+                </div>
+              </div>
+              <h3 className="text-3xl font-bold text-white tracking-tight">{category.name}</h3>
+              <p className="text-white/80 text-sm font-medium uppercase tracking-wider mt-1">
+                {category.tagline}
+              </p>
             </div>
 
-            {/* Selection indicator */}
-            {currentIndex === index && (
-              <div className="absolute top-4 right-4 w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-white rounded-full" />
+            {/* Content - Bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              <ul className="space-y-2 mb-4">
+                {categoryFeatures[category.id].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-white/90 text-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Action hint */}
+              <div className={`
+                inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                ${category.id === 'move' ? 'bg-move/20 text-move' : ''}
+                ${category.id === 'breath' ? 'bg-breath/20 text-breath' : ''}
+                ${category.id === 'focus' ? 'bg-focus/20 text-focus' : ''}
+              `}>
+                {categoryIcons[category.id]}
+                <span>Commencer</span>
               </div>
-            )}
+            </div>
           </button>
         ))}
       </div>
 
       {/* Dots indicator */}
-      <div className="flex justify-center gap-2 mt-2">
+      <div className="flex justify-center gap-2 mt-3">
         {categories.map((category, index) => (
           <button
             key={category.id}
             onClick={() => scrollToCard(index)}
             className={`
-              h-1.5 rounded-full transition-all duration-300
+              h-2 rounded-full transition-all duration-300
               ${currentIndex === index 
-                ? "w-6 bg-white" 
-                : "w-1.5 bg-white/30 hover:bg-white/50"
+                ? `w-8 ${category.id === 'move' ? 'bg-move' : ''} ${category.id === 'breath' ? 'bg-breath' : ''} ${category.id === 'focus' ? 'bg-focus' : ''}` 
+                : "w-2 bg-white/20 hover:bg-white/40"
               }
             `}
           />

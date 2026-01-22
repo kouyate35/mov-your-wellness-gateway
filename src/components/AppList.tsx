@@ -12,7 +12,6 @@ const AppList = ({ apps, activeApps }: AppListProps) => {
 
   return (
     <div className="px-4">
-      <h2 className="text-lg font-semibold text-foreground mb-4">Applications</h2>
       <div className="space-y-1">
         {apps.map((app) => (
           <AppListItem
@@ -39,13 +38,13 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
       onClick={onClick}
       className={`
         w-full flex items-center gap-4 p-3 rounded-2xl transition-all duration-200
-        hover:bg-white/5 active:bg-white/10
-        ${isActive ? "bg-white/5" : ""}
+        hover:bg-secondary/50 active:bg-secondary/70
+        ${isActive ? "bg-secondary/30" : ""}
       `}
     >
       {/* App icon - styled like real app icons */}
       <div className={`
-        w-12 h-12 rounded-xl flex items-center justify-center text-xl
+        w-14 h-14 rounded-2xl flex items-center justify-center text-xl
         ${app.bgColor} ${app.iconColor}
         shadow-lg
       `}>
@@ -59,9 +58,9 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
       </div>
 
       {/* Right side */}
-      <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex items-center gap-3 flex-shrink-0">
         {isActive && (
-          <div className="w-2 h-2 bg-move rounded-full animate-pulse" />
+          <div className="w-2.5 h-2.5 bg-move rounded-full" />
         )}
         <ChevronRight className="w-5 h-5 text-muted-foreground" />
       </div>
