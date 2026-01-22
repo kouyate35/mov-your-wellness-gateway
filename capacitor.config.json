@@ -1,0 +1,9 @@
+{
+  "appId": "app.lovable.d42918d155a94ab2b3cbdec3d6c5299d",
+  "appName": "MOV",
+  "webDir": "dist",
+  "server": {
+    "url": "https://d42918d1-55a9-4ab2-b3cb-dec3d6c5299d.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}
