@@ -46,18 +46,15 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background pb-8">
       {/* Header */}
-      <header className="pt-12 pb-4 px-4">
-        <div className="flex items-center gap-3 mb-1">
+      <header className="pt-12 pb-6 px-4">
+        <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
             M<span className="font-normal">ov</span>
           </h1>
-          <span className="px-2.5 py-1 text-[10px] font-medium bg-secondary rounded-full text-muted-foreground uppercase tracking-wider">
-            Bêta
+          <span className="px-3 py-1.5 text-[11px] font-medium bg-secondary/80 rounded-full text-muted-foreground border border-border/50">
+            Bouger avant de scroller
           </span>
         </div>
-        <p className="text-muted-foreground text-sm">
-          Bouger avant de scroller
-        </p>
       </header>
 
       {/* Search Bar - right after header */}
