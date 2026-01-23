@@ -8,8 +8,8 @@
 
 @layer base {
   :root {
-    /* Force dark mode for MOV */
-    --background: 0 0% 8%;
+    /* Force dark mode for MOV - ChatGPT inspired */
+    --background: 0 0% 13%;
     --foreground: 0 0% 95%;
 
     --card: 0 0% 12%;
@@ -59,7 +59,7 @@
   }
 
   .dark {
-    --background: 0 0% 8%;
+    --background: 0 0% 13%;
     --foreground: 0 0% 95%;
 
     --card: 0 0% 12%;
