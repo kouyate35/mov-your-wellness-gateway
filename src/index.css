@@ -47,6 +47,10 @@
     --focus: 270 70% 60%;
     --focus-foreground: 0 0% 100%;
 
+    /* Info/highlight color for links and emphasis */
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+
     /* Sidebar (not used but required) */
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 95%;

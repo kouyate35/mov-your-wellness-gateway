@@ -70,6 +70,10 @@ export default {
           DEFAULT: "hsl(var(--focus))",
           foreground: "hsl(var(--focus-foreground))",
         },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
