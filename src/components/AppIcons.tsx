@@ -1,4 +1,5 @@
 import React from "react";
+import movIconImage from "@/assets/mov-icon.png";
 
 interface IconProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -17,6 +18,15 @@ const svgSizeClasses = {
   md: "w-6 h-6",
   lg: "w-8 h-8",
   xl: "w-10 h-10",
+};
+
+// MOV icon with black squircle background
+export const MovIcon = ({ size = "md" }: { size?: "sm" | "md" | "lg" | "xl" }) => {
+  return (
+    <div className={`${sizeClasses[size]} bg-black rounded-2xl flex items-center justify-center shrink-0 overflow-hidden`}>
+      <img src={movIconImage} alt="MOV" className="w-[70%] h-[70%] object-contain" />
+    </div>
+  );
 };
 
 // TikTok icon with authentic black background
