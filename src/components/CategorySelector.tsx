@@ -1,13 +1,16 @@
-import { categories } from "@/data/categories";
+import { categories, getCategoryById } from "@/data/categories";
 import { useRef, useState, useEffect } from "react";
 import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
 import { ChevronRight, Check } from "lucide-react";
+import ProgramCarousel from "./ProgramCarousel";
 
 interface CategorySelectorProps {
   selectedCategory: "move" | "breath" | "focus";
   onSelectCategory: (id: "move" | "breath" | "focus") => void;
+  selectedProgramId: string | null;
+  onSelectProgram: (programId: string) => void;
 }
 
 const categoryImages: Record<string, string> = {
@@ -29,7 +32,7 @@ const categoryDescriptions: Record<string, string> = {
   focus: "Crée une intention claire avant d'ouvrir l'app. Prends le contrôle de tes habitudes.",
 };
 
-const CategorySelector = ({ selectedCategory, onSelectCategory }: CategorySelectorProps) => {
+const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramId, onSelectProgram }: CategorySelectorProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(
     categories.findIndex(c => c.id === selectedCategory)
@@ -184,6 +187,15 @@ const CategorySelector = ({ selectedCategory, onSelectCategory }: CategorySelect
       <p className="text-white text-base leading-relaxed mt-6 px-1">
         {categoryDescriptions[currentCategory.id]}
       </p>
+
+      {/* Program Carousel - below description */}
+      <div className="mt-8">
+        <ProgramCarousel 
+          category={currentCategory}
+          selectedProgramId={selectedProgramId}
+          onSelectProgram={onSelectProgram}
+        />
+      </div>
     </div>
   );
 };

@@ -13,6 +13,7 @@ const AppDetail = () => {
   const { getAppSetting, toggleApp, setProgram } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<"move" | "breath" | "focus">("move");
+  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
 
   const app = apps.find((a) => a.id === appId);
   const appSetting = appId ? getAppSetting(appId) : null;
@@ -34,7 +35,12 @@ const AppDetail = () => {
 
   const handleCategorySelect = (id: "move" | "breath" | "focus") => {
     setSelectedCategory(id);
+    setSelectedProgramId(null); // Reset program when category changes
     setProgram(app.id, id);
+  };
+
+  const handleProgramSelect = (programId: string) => {
+    setSelectedProgramId(programId);
   };
 
   return (
@@ -113,6 +119,8 @@ const AppDetail = () => {
           <CategorySelector
             selectedCategory={selectedCategory}
             onSelectCategory={handleCategorySelect}
+            selectedProgramId={selectedProgramId}
+            onSelectProgram={handleProgramSelect}
           />
         </section>
       )}
