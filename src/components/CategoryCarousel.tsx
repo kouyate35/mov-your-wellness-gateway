@@ -1,5 +1,5 @@
 import { categories } from "@/data/categories";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
@@ -7,7 +7,7 @@ import { ChevronRight } from "lucide-react";
 
 interface CategoryCarouselProps {
   selectedCategory: "move" | "breath" | "focus";
-  onSelectCategory: (id: "move" | "breath" | "focus") => void;
+  onSelectCategory: React.Dispatch<React.SetStateAction<"move" | "breath" | "focus">>;
 }
 
 const categoryImages: Record<string, string> = {
@@ -16,59 +16,48 @@ const categoryImages: Record<string, string> = {
   focus: categoryFocusImg,
 };
 
-const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds - balanced speed
+const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
 const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarouselProps) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(
     categories.findIndex(c => c.id === selectedCategory)
   );
-  const [isTouching, setIsTouching] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const scrollToCard = useCallback((index: number, smooth = true) => {
-    if (scrollRef.current) {
-      const cardWidth = scrollRef.current.offsetWidth;
-      scrollRef.current.scrollTo({
-        left: index * cardWidth,
-        behavior: smooth ? "smooth" : "auto"
-      });
-    }
-    setCurrentIndex(index);
-    onSelectCategory(categories[index].id);
-  }, [onSelectCategory]);
+  const goToNext = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    const nextIndex = (currentIndex + 1) % categories.length;
+    
+    // Short delay for fade-out, then switch
+    setTimeout(() => {
+      setCurrentIndex(nextIndex);
+      onSelectCategory(categories[nextIndex].id as "move" | "breath" | "focus");
+      // Allow fade-in to complete
+      setTimeout(() => setIsTransitioning(false), 300);
+    }, 150);
+  }, [currentIndex, onSelectCategory, isTransitioning]);
 
-  // Auto-scroll effect - infinite loop A → B → C → A → B → C...
+  // Auto-scroll effect - infinite loop A → B → C → A with crossfade
   useEffect(() => {
-    if (!isAutoScrolling || isTouching) return;
+    if (!isAutoScrolling || isInteracting) return;
 
     const interval = setInterval(() => {
-      const nextIndex = (currentIndex + 1) % categories.length;
-      scrollToCard(nextIndex);
+      goToNext();
     }, AUTO_SCROLL_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [currentIndex, isAutoScrolling, isTouching, scrollToCard]);
+  }, [isAutoScrolling, isInteracting, goToNext]);
 
-  const handleScroll = () => {
-    if (scrollRef.current) {
-      const cardWidth = scrollRef.current.offsetWidth;
-      const scrollLeft = scrollRef.current.scrollLeft;
-      const newIndex = Math.round(scrollLeft / cardWidth);
-      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < categories.length) {
-        setCurrentIndex(newIndex);
-        onSelectCategory(categories[newIndex].id);
-      }
-    }
+  const handleInteractionStart = () => {
+    setIsInteracting(true);
+    setIsAutoScrolling(false);
   };
 
-  const handleTouchStart = () => {
-    setIsTouching(true);
-    setIsAutoScrolling(false); // Stop auto-scroll when user touches
-  };
-
-  const handleTouchEnd = () => {
-    setIsTouching(false);
+  const handleInteractionEnd = () => {
+    setIsInteracting(false);
     // Resume auto-scroll after 3 seconds of no interaction
     setTimeout(() => {
       setIsAutoScrolling(true);
@@ -76,63 +65,58 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
   };
 
   const handleNextCard = () => {
-    const nextIndex = (currentIndex + 1) % categories.length;
-    scrollToCard(nextIndex);
+    goToNext();
   };
 
+  const currentCategory = categories[currentIndex];
+
   return (
-    <div className="w-full px-4">
-      {/* Container - reduced height for minimal look */}
+    <div className="px-4 mb-4">
+      {/* Container with crossfade effect */}
       <div 
         className="relative rounded-2xl overflow-hidden"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onMouseEnter={handleTouchStart}
-        onMouseLeave={handleTouchEnd}
+        style={{ aspectRatio: '4/3' }}
+        onTouchStart={handleInteractionStart}
+        onTouchEnd={handleInteractionEnd}
+        onMouseEnter={handleInteractionStart}
+        onMouseLeave={handleInteractionEnd}
       >
-        {/* Scrollable cards container - compact aspect ratio */}
-        <div 
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {categories.map((category, index) => (
-            <button
-              key={category.id}
-              onClick={() => scrollToCard(index)}
-              className="relative flex-shrink-0 w-full aspect-[4/3] snap-start overflow-hidden"
-            >
-              {/* Background image */}
-              <img 
-                src={categoryImages[category.id]} 
-                alt={category.name}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              
-              {/* Gradient overlay - minimal */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              
-              {/* Content - Top only (name + tagline) */}
-              <div className="absolute top-0 left-0 right-0 p-5">
-                <h3 className="text-2xl font-bold text-white tracking-tight">{category.name}</h3>
-                <p className="text-white/70 text-xs font-medium uppercase tracking-wider mt-1">
-                  {category.tagline}
-                </p>
-              </div>
-            </button>
-          ))}
-        </div>
+        {/* All cards stacked - only current one visible with crossfade */}
+        {categories.map((category, index) => (
+          <div
+            key={category.id}
+            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+              index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
+          >
+            {/* Background image */}
+            <img 
+              src={categoryImages[category.id]} 
+              alt={category.name}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            
+            {/* Content - only title */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <h3 className="text-white text-xl font-semibold">{category.name}</h3>
+            </div>
+          </div>
+        ))}
 
-        {/* Navigation arrow - glassmorphism, appears only on touch/hover */}
+        {/* Navigation arrow - only visible during interaction */}
         <button
           onClick={handleNextCard}
           className={`
-            absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full 
-            bg-white/20 backdrop-blur-md border border-white/30
+            absolute right-3 top-1/2 -translate-y-1/2 z-20
+            w-10 h-10 rounded-full
+            bg-white/20 backdrop-blur-md
             flex items-center justify-center
-            transition-opacity duration-200
-            ${isTouching ? 'opacity-100' : 'opacity-0'}
+            transition-all duration-300
+            hover:bg-white/30
+            ${isInteracting ? 'opacity-100' : 'opacity-0 pointer-events-none'}
           `}
         >
           <ChevronRight className="w-5 h-5 text-white" />
