@@ -47,9 +47,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background pb-8">
       {/* Header */}
-      <header className="pt-8 pb-6 px-4">
+      <header className="pt-3 pb-4 px-4">
         {/* Menu hamburger */}
-        <button className="mb-6 p-1 -ml-1">
+        <button className="mb-4 p-1 -ml-1">
           <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
         </button>
         
