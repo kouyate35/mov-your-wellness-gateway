@@ -6,6 +6,7 @@ import SectionTabs from "@/components/SectionTabs";
 import EmptySection from "@/components/EmptySection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
+import { Menu } from "lucide-react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,7 +47,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background pb-8">
       {/* Header */}
-      <header className="pt-12 pb-6 px-4">
+      <header className="pt-8 pb-6 px-4">
+        {/* Menu hamburger */}
+        <button className="mb-6 p-1 -ml-1">
+          <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
+        </button>
+        
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
             M<span className="font-normal">ov</span>
