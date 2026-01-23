@@ -1,5 +1,5 @@
 import { categories } from "@/data/categories";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
@@ -16,11 +16,7 @@ const categoryImages: Record<string, string> = {
   focus: categoryFocusImg,
 };
 
-const categoryFeatures: Record<string, string[]> = {
-  move: ["Exercices rapides", "Condition physique", "Mobilité"],
-  breath: ["Respiration guidée", "Méditation", "Relaxation"],
-  focus: ["Intention claire", "Discipline", "Habitudes"],
-};
+const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds - balanced speed
 
 const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -28,18 +24,31 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
     categories.findIndex(c => c.id === selectedCategory)
   );
   const [isTouching, setIsTouching] = useState(false);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
-  const scrollToCard = (index: number) => {
+  const scrollToCard = useCallback((index: number, smooth = true) => {
     if (scrollRef.current) {
       const cardWidth = scrollRef.current.offsetWidth;
       scrollRef.current.scrollTo({
         left: index * cardWidth,
-        behavior: "smooth"
+        behavior: smooth ? "smooth" : "auto"
       });
     }
     setCurrentIndex(index);
     onSelectCategory(categories[index].id);
-  };
+  }, [onSelectCategory]);
+
+  // Auto-scroll effect - infinite loop A → B → C → A → B → C...
+  useEffect(() => {
+    if (!isAutoScrolling || isTouching) return;
+
+    const interval = setInterval(() => {
+      const nextIndex = (currentIndex + 1) % categories.length;
+      scrollToCard(nextIndex);
+    }, AUTO_SCROLL_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, isAutoScrolling, isTouching, scrollToCard]);
 
   const handleScroll = () => {
     if (scrollRef.current) {
@@ -53,6 +62,19 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
     }
   };
 
+  const handleTouchStart = () => {
+    setIsTouching(true);
+    setIsAutoScrolling(false); // Stop auto-scroll when user touches
+  };
+
+  const handleTouchEnd = () => {
+    setIsTouching(false);
+    // Resume auto-scroll after 3 seconds of no interaction
+    setTimeout(() => {
+      setIsAutoScrolling(true);
+    }, 3000);
+  };
+
   const handleNextCard = () => {
     const nextIndex = (currentIndex + 1) % categories.length;
     scrollToCard(nextIndex);
@@ -63,10 +85,10 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
       {/* Container - reduced height for minimal look */}
       <div 
         className="relative rounded-2xl overflow-hidden"
-        onTouchStart={() => setIsTouching(true)}
-        onTouchEnd={() => setIsTouching(false)}
-        onMouseEnter={() => setIsTouching(true)}
-        onMouseLeave={() => setIsTouching(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onMouseEnter={handleTouchStart}
+        onMouseLeave={handleTouchEnd}
       >
         {/* Scrollable cards container - compact aspect ratio */}
         <div 
@@ -115,23 +137,6 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
         >
           <ChevronRight className="w-5 h-5 text-white" />
         </button>
-
-        {/* Dots indicator - inside at bottom left */}
-        <div className="absolute bottom-3 left-3 flex gap-1.5">
-          {categories.map((category, index) => (
-            <button
-              key={category.id}
-              onClick={() => scrollToCard(index)}
-              className={`
-                h-1.5 rounded-full transition-all duration-300
-                ${currentIndex === index 
-                  ? `w-5 ${category.id === 'move' ? 'bg-move' : ''} ${category.id === 'breath' ? 'bg-breath' : ''} ${category.id === 'focus' ? 'bg-focus' : ''}` 
-                  : "w-1.5 bg-white/40 hover:bg-white/60"
-                }
-              `}
-            />
-          ))}
-        </div>
       </div>
     </div>
   );
