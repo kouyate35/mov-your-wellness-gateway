@@ -110,15 +110,6 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
                   ))}
                 </ul>
                 
-                {/* Action hint */}
-                <div className={`
-                  inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
-                  ${category.id === 'move' ? 'bg-move/30 text-move' : ''}
-                  ${category.id === 'breath' ? 'bg-breath/30 text-breath' : ''}
-                  ${category.id === 'focus' ? 'bg-focus/30 text-focus' : ''}
-                `}>
-                  <span>Commencer</span>
-                </div>
               </div>
             </button>
           ))}
