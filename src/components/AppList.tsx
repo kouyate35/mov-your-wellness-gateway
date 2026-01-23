@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { AppData } from "@/data/apps";
 import { useNavigate } from "react-router-dom";
+import { appIconComponents } from "./AppIcons";
 
 interface AppListProps {
   apps: AppData[];
@@ -11,8 +12,8 @@ const AppList = ({ apps, activeApps }: AppListProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="px-4">
-      <div className="space-y-1">
+    <div className="px-5">
+      <div className="space-y-0.5">
         {apps.map((app) => (
           <AppListItem
             key={app.id}
@@ -33,36 +34,37 @@ interface AppListItemProps {
 }
 
 const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
+  const iconComponent = appIconComponents[app.id];
+
   return (
     <button
       onClick={onClick}
       className={`
-        w-full flex items-center gap-4 p-3 rounded-2xl transition-all duration-200
+        w-full flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200
         hover:bg-secondary/50 active:bg-secondary/70
         ${isActive ? "bg-secondary/30" : ""}
       `}
     >
-      {/* App icon - styled like real app icons */}
+      {/* App icon - circular squircle style */}
       <div className={`
-        w-14 h-14 rounded-2xl flex items-center justify-center text-xl
+        w-11 h-11 rounded-xl flex items-center justify-center
         ${app.bgColor} ${app.iconColor}
-        shadow-lg
       `}>
-        {app.icon}
+        {iconComponent || <span className="text-lg">{app.icon}</span>}
       </div>
 
       {/* App info */}
       <div className="flex-1 text-left min-w-0">
-        <h3 className="font-medium text-foreground truncate">{app.name}</h3>
-        <p className="text-sm text-muted-foreground truncate">{app.description}</p>
+        <h3 className="font-medium text-sm text-foreground truncate">{app.name}</h3>
+        <p className="text-xs text-muted-foreground truncate">{app.description}</p>
       </div>
 
       {/* Right side */}
-      <div className="flex items-center gap-3 flex-shrink-0">
+      <div className="flex items-center gap-2 flex-shrink-0">
         {isActive && (
-          <div className="w-2.5 h-2.5 bg-move rounded-full" />
+          <div className="w-2 h-2 bg-move rounded-full" />
         )}
-        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
       </div>
     </button>
   );

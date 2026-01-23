@@ -13,7 +13,7 @@ export const apps: AppData[] = [
     name: "TikTok",
     icon: "♪",
     description: "Vidéos courtes et divertissement",
-    bgColor: "bg-gradient-to-br from-pink-500 via-red-500 to-cyan-400",
+    bgColor: "bg-black",
     iconColor: "text-white",
   },
   {
@@ -54,7 +54,7 @@ export const apps: AppData[] = [
     icon: "f",
     description: "Réseau social",
     bgColor: "bg-blue-600",
-    iconColor: "text-white font-bold",
+    iconColor: "text-white",
   },
   {
     id: "whatsapp",
@@ -70,7 +70,7 @@ export const apps: AppData[] = [
     icon: "N",
     description: "Streaming de films et séries",
     bgColor: "bg-black",
-    iconColor: "text-red-600 font-bold",
+    iconColor: "text-red-600",
   },
   {
     id: "reddit",
@@ -86,6 +86,14 @@ export const apps: AppData[] = [
     icon: "📺",
     description: "Streaming en direct",
     bgColor: "bg-purple-600",
+    iconColor: "text-white",
+  },
+  {
+    id: "discord",
+    name: "Discord",
+    icon: "🎮",
+    description: "Chat vocal et communautés",
+    bgColor: "bg-indigo-600",
     iconColor: "text-white",
   },
 ];
