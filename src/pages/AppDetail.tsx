@@ -1,25 +1,21 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Menu } from "lucide-react";
+import { ChevronRight, Menu, Settings } from "lucide-react";
 import { apps } from "@/data/apps";
-import { getCategoryById } from "@/data/categories";
 import { useAppSettings } from "@/hooks/useAppSettings";
-import { Switch } from "@/components/ui/switch";
-import ProgramCarousel from "@/components/ProgramCarousel";
 import ConnectAppModal from "@/components/ConnectAppModal";
 import { getAppIcon } from "@/components/AppIcons";
 
 const AppDetail = () => {
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
-  const { selectedCategory, getAppSetting, toggleApp, setProgram } = useAppSettings();
+  const { getAppSetting, toggleApp, setProgram } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
 
   const app = apps.find((a) => a.id === appId);
-  const category = getCategoryById(selectedCategory);
   const appSetting = appId ? getAppSetting(appId) : null;
 
-  if (!app || !category || !appSetting) {
+  if (!app || !appSetting) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-muted-foreground">Application non trouvée</p>
@@ -59,72 +55,44 @@ const AppDetail = () => {
         </div>
       </header>
 
-      {/* App Connection Card - Horizontal layout like ChatGPT */}
+      {/* App Card - Same layout for connected and not connected */}
       <section className="px-4 pt-4">
         <div className="flex items-start gap-4">
           {/* Squircle icon with real app background */}
           {getAppIcon(app.id, "xl", true)}
           
-          {/* App name + Connect button */}
+          {/* App name + button */}
           <div className="flex flex-col gap-2 pt-1">
             <h1 className="text-2xl font-bold text-foreground">{app.name}</h1>
             
-            {/* Connect button - only show if not connected */}
-            {!isConnected && (
-              <button
-                onClick={() => setShowConnectModal(true)}
-                className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-colors w-fit"
-              >
-                Connecter
-              </button>
-            )}
+            {/* Button row with settings icon when connected */}
+            <div className="flex items-center gap-2">
+              {isConnected ? (
+                <>
+                  {/* Connected state: "Appli connectée" button + settings icon */}
+                  <button
+                    className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full cursor-default w-fit"
+                  >
+                    Appli connectée
+                  </button>
+                  <button
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-muted-foreground/30 hover:bg-muted/50 transition-colors"
+                  >
+                    <Settings className="w-5 h-5 text-muted-foreground" />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setShowConnectModal(true)}
+                  className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-colors w-fit"
+                >
+                  Connecter
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </section>
-
-      {/* Connected state content */}
-      {isConnected && (
-        <>
-          {/* Activation Toggle */}
-          <section className="px-4 mt-6 mb-8">
-            <div className="flex items-center justify-between p-4 bg-card rounded-xl">
-              <div>
-                <h3 className="font-semibold text-foreground">Activer MOV</h3>
-                <p className="text-sm text-muted-foreground">
-                  Conditionner l'accès à {app.name}
-                </p>
-              </div>
-              <Switch
-                checked={appSetting.isActive}
-                onCheckedChange={() => toggleApp(app.id)}
-                className="data-[state=checked]:bg-move"
-              />
-            </div>
-          </section>
-
-          {/* Category Indicator */}
-          <section className="px-4 mb-6">
-            <div className={`p-4 rounded-xl bg-gradient-to-r ${category.gradient}`}>
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{category.icon}</span>
-                <div>
-                  <h3 className="font-semibold text-white">{category.name}</h3>
-                  <p className="text-sm text-white/80">{category.tagline}</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Program Selection */}
-          <section>
-            <ProgramCarousel
-              category={category}
-              selectedProgramId={appSetting.selectedProgramId}
-              onSelectProgram={(programId) => setProgram(app.id, programId)}
-            />
-          </section>
-        </>
-      )}
 
       {/* Connection Modal */}
       <ConnectAppModal
