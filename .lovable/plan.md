@@ -1,129 +1,141 @@
 
-# Plan de correction de l'interface MOV
+# Plan de correction - Icones et Modal de connexion
 
-## Resume des problemes identifies
+## Problemes identifies
 
-D'apres tes captures d'ecran de reference (ChatGPT), voici ce qui doit etre corrige :
+### 1. Icones sans couleurs de fond
+**Probleme actuel :**
+- Les icones sur la page detail (images 1-3) s'affichent en blanc/monochrome
+- Le composant `AppIcons.tsx` utilise `fill="currentColor"` sans fond
+- La page `AppDetail.tsx` affiche les icones sans leur `bgColor`
 
----
+**Correction :**
+- Modifier `AppIcons.tsx` pour que chaque icone inclue son fond authentique (TikTok = fond noir, Instagram = degrade, etc.)
+- Creer des variantes "full" avec fond integre pour l'affichage en grand
 
-## 1. Carousel des categories - Refonte complete
-
-**Problemes actuels :**
-- Les cartes sont trop carrees (aspect ratio 4:5), elles doivent etre plus rectangulaires/allongees
-- Les indicateurs dots sont en dehors du conteneur, ils doivent etre A L'INTERIEUR
-- Il manque une fleche de navigation qui apparait quand on met le doigt
-- Le carousel n'est pas contenu dans une zone encadree comme sur ChatGPT (images 2 et 3)
-- Les coins ne sont pas assez arrondis
-
-**Corrections :**
-- Changer l'aspect ratio des cartes de `4:5` vers `3:4` ou `2:3` pour un format plus rectangulaire/portrait
-- Envelopper le carousel dans un conteneur avec coins arrondis (`rounded-3xl`) et fond subtil
-- Deplacer les indicateurs dots A L'INTERIEUR du conteneur du carousel (en bas a gauche comme sur image 3)
-- Ajouter un bouton fleche a droite qui apparait sur le conteneur pour indiquer qu'on peut scroller
-- Augmenter le rayon des coins arrondis des cartes
-
----
-
-## 2. Barre de recherche - Ajustements
-
-**Problemes actuels :**
-- Trop large par rapport a ChatGPT (image 5 vs image 4)
-- Le style n'est pas exactement le meme
-
-**Corrections :**
-- Reduire le padding horizontal (`px-6` au lieu de `px-4`) pour rendre la barre moins large visuellement
-- Ajuster le padding interne pour un look plus compact
-- S'assurer que la bordure est bien visible avec `border-border`
+### 2. Modal de connexion style ChatGPT x Booking
+**Nouveau composant a creer :**
+- Un modal qui s'ouvre au clic sur "Connecter"
+- En-tete avec degrade (style ChatGPT)
+- Deux icones : [App] | [MOV]
+- Titre : "Connecter [AppName] a MOV"
+- Sous-titre explicatif
+- Boutons "Connecter" et "Annuler"
+- Sections d'explication (donnees, vie privee, etc.)
 
 ---
 
-## 3. Liste des applications - Style minimaliste
+## Fichiers a modifier/creer
 
-**Problemes actuels :**
-- Les icones sont des rectangles arrondis (`rounded-2xl`), doivent etre plus circulaires
-- Les lignes sont trop larges/espacees
-- Les icones sont fausses (emojis au lieu de vraies icones)
+### 1. `src/components/AppIcons.tsx`
+- Modifier chaque composant d'icone pour inclure le fond authentique
+- Exemple TikTok : fond noir avec logo blanc
+- Exemple Instagram : fond degrade rose/violet/orange avec logo blanc
+- Exemple WhatsApp : fond vert avec logo blanc
+- etc.
 
-**Corrections :**
-- Changer les icones de `rounded-2xl` vers une forme "squircle" plus arrondie (`rounded-xl` ou meme circulaire)
-- Reduire la taille des icones de `w-14 h-14` a `w-12 h-12`
-- Reduire le padding et l'espacement pour un look plus compact
-- Utiliser de vraies images SVG pour les icones des apps les plus connues
+### 2. `src/components/ConnectAppModal.tsx` (nouveau fichier)
+- Modal style ChatGPT x Booking
+- Structure :
+  - Header avec degrade bleu/violet
+  - Zone icones : [Icone App] | [Icone MOV]
+  - Titre : "Connecter {app.name} a MOV"
+  - Sous-titre : "MOV utilise {app.name} pour comprendre vos habitudes et personnaliser votre programme."
+  - Boutons : "Connecter" (blanc) | "Annuler" (transparent)
+  - Sections scrollables :
+    - "Utilisation des donnees par MOV"
+    - "Vous avez la main"
+    - "Donnees partagees avec cette appli"
 
----
+### 3. `src/pages/AppDetail.tsx`
+- Importer et utiliser le nouveau modal
+- Gerer l'etat d'ouverture du modal (`showConnectModal`)
+- Au clic sur "Connecter" : ouvrir le modal au lieu de connecter directement
+- Correction de l'affichage des icones pour utiliser les versions avec fond
 
-## 4. Icones d'applications - Vraies icones
-
-**Problemes identifies :**
-Les icones actuelles utilisent des emojis qui ne ressemblent pas aux vraies apps :
-- WhatsApp : mauvaise icone
-- Instagram : mauvaise icone (emoji camera)
-- Snapchat : mauvaise icone
-- Discord : manquant
-- Facebook : icone "f" trop basique
-
-**Solution :**
-Utiliser des icones SVG inline qui reproduisent fidelement les logos officiels :
-- **Instagram** : Icone camera stylisee avec degrade rose/orange/violet
-- **WhatsApp** : Telephone dans une bulle blanche sur fond vert
-- **Snapchat** : Fantome blanc sur fond jaune
-- **Facebook** : "f" stylise en blanc sur fond bleu
-- **TikTok** : Note de musique stylisee
-- **YouTube** : Triangle play sur rectangle rouge
-- **X (Twitter)** : Logo X en blanc sur fond noir
-
----
-
-## Fichiers a modifier
-
-| Fichier | Modifications |
-|---------|---------------|
-| `src/components/CategoryCarousel.tsx` | - Conteneur englobant avec fond et coins arrondis<br>- Aspect ratio plus rectangulaire (3:4)<br>- Dots a l'interieur en bas a gauche<br>- Fleche de navigation a droite |
-| `src/components/SearchBar.tsx` | - Padding horizontal plus important<br>- Style plus compact |
-| `src/components/AppList.tsx` | - Icones plus rondes (squircle)<br>- Taille reduite<br>- Espacement plus compact |
-| `src/data/apps.ts` | - Remplacer les emojis par du JSX pour les vraies icones SVG |
+### 4. `src/assets/mov-icon.png` (copie du fichier upload)
+- Copier l'icone MOV fournie par l'utilisateur (image 7)
+- Utiliser dans le modal de connexion
 
 ---
 
 ## Details techniques
 
-### CategoryCarousel.tsx
+### Structure du modal ConnectAppModal
 
 ```text
-Structure proposee :
-+------------------------------------------+
-|  [CONTENEUR ARRONDI avec fond subtil]    |
-|                                          |
-|  +--------+    +--------+          [>]   |
-|  | CARTE  |    | CARTE  |     (fleche)   |
-|  | MOVE   |    | BREATH |                |
-|  |        |    |        |                |
-|  +--------+    +--------+                |
-|                                          |
-|  o o •    (dots a l'interieur)           |
-+------------------------------------------+
++----------------------------------------+
+|  [X]                                   |  (bouton fermer)
+|                                        |
+|   [degrade bleu/violet en haut]        |
+|                                        |
+|     [ICON APP]  |  [ICON MOV]          |
+|                                        |
+|     Connecter Instagram                |
+|           a MOV                        |
+|                                        |
+|   MOV utilise Instagram pour...        |
+|                                        |
+|   [Connecter]    [Annuler]             |
+|                                        |
++----------------------------------------+
+|                                        |
+|  Utilisation des donnees par MOV       |
+|  MOV peut analyser certains signaux... |
+|                                        |
+|  Vous avez la main                     |
+|  MOV respecte toujours vos...          |
+|                                        |
+|  Donnees partagees avec cette appli    |
+|  En connectant Instagram a MOV...      |
+|                                        |
++----------------------------------------+
 ```
 
-- Conteneur parent : `bg-secondary/10 rounded-3xl p-4`
-- Cartes : `aspect-[3/4] rounded-2xl`
-- Dots : positionnement absolu en bas a gauche du conteneur
-- Fleche : bouton circulaire positionne a droite au milieu
+### Icones avec fond integre
 
-### Apps icons (SVG inline)
+Pour chaque app, creer un composant qui inclut :
+- Le conteneur avec `bgColor` (rounded-xl ou rounded-2xl selon taille)
+- L'icone SVG en `fill="white"` ou la couleur appropriee
 
-Pour chaque app majeure, creer un composant SVG fidele :
-- Instagram : path SVG du logo camera avec gradient
-- WhatsApp : path SVG du telephone + bulle
-- Snapchat : path SVG du fantome
-- Etc.
+Exemple pour TikTok :
+```tsx
+export const TikTokIconWithBg = ({ size = "md" }) => (
+  <div className={`${sizeClasses[size]} bg-black rounded-xl flex items-center justify-center`}>
+    <svg ... fill="white" />
+  </div>
+);
+```
+
+### Textes adaptes pour MOV
+
+**Titre :**
+"Connecter {AppName} a MOV"
+
+**Sous-titre :**
+"MOV utilise {AppName} pour mieux comprendre vos habitudes numeriques et vous proposer un programme de bien-etre adapte."
+
+**Section "Utilisation des donnees" :**
+- Identifier votre niveau d'exposition aux contenus
+- Comprendre vos rythmes d'utilisation
+- Adapter votre programme MOV (Move, Breath, Focus)
+- Aucun contenu prive n'est publie ou modifie
+
+**Section "Vous avez la main" :**
+- Vous pouvez deconnecter {AppName} a tout moment
+- Vos preferences sont respectees
+- MOV n'utilise les donnees que pour ameliorer votre experience
+
+**Section "Donnees partagees" :**
+- Informations generales d'utilisation (frequence, types d'interactions)
+- Donnees necessaires a la personnalisation de votre programme
+- Utilisees conformement a la Politique de confidentialite de MOV
 
 ---
 
-## Resultat attendu
+## Ordre d'implementation
 
-Une interface qui ressemble exactement aux captures d'ecran ChatGPT avec :
-1. Un carousel contenu dans une zone bien definie avec indicateurs integres
-2. Une barre de recherche plus compacte et elegante
-3. Une liste d'applications avec de vraies icones circulaires style iOS/Android
-4. Un aspect general plus professionnel et minimaliste
+1. Copier l'icone MOV dans src/assets/
+2. Modifier `AppIcons.tsx` pour ajouter les variantes avec fond
+3. Creer `ConnectAppModal.tsx` avec le design ChatGPT
+4. Modifier `AppDetail.tsx` pour utiliser le modal et les icones corrigees
