@@ -1,43 +1,19 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronRight, Menu } from "lucide-react";
 import { apps } from "@/data/apps";
-import { categories, getCategoryById } from "@/data/categories";
+import { getCategoryById } from "@/data/categories";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { Switch } from "@/components/ui/switch";
 import ProgramCarousel from "@/components/ProgramCarousel";
-import {
-  TikTokIcon,
-  InstagramIcon,
-  YouTubeIcon,
-  XIcon,
-  SnapchatIcon,
-  FacebookIcon,
-  WhatsAppIcon,
-  NetflixIcon,
-  RedditIcon,
-  TwitchIcon,
-  DiscordIcon,
-} from "@/components/AppIcons";
-
-// Map app IDs to their icon components for detail page (larger size)
-const appIconComponentsLarge: Record<string, React.ReactNode> = {
-  tiktok: <TikTokIcon />,
-  instagram: <InstagramIcon />,
-  youtube: <YouTubeIcon />,
-  twitter: <XIcon />,
-  snapchat: <SnapchatIcon />,
-  facebook: <FacebookIcon />,
-  whatsapp: <WhatsAppIcon />,
-  netflix: <NetflixIcon />,
-  reddit: <RedditIcon />,
-  twitch: <TwitchIcon />,
-  discord: <DiscordIcon />,
-};
+import ConnectAppModal from "@/components/ConnectAppModal";
+import { getAppIcon } from "@/components/AppIcons";
 
 const AppDetail = () => {
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const { selectedCategory, getAppSetting, toggleApp, setProgram } = useAppSettings();
+  const [showConnectModal, setShowConnectModal] = useState(false);
 
   const app = apps.find((a) => a.id === appId);
   const category = getCategoryById(selectedCategory);
@@ -52,6 +28,11 @@ const AppDetail = () => {
   }
 
   const isConnected = appSetting.isActive;
+
+  const handleConnect = () => {
+    toggleApp(app.id);
+    setShowConnectModal(false);
+  };
 
   return (
     <div className="min-h-screen bg-background pb-8">
@@ -82,13 +63,7 @@ const AppDetail = () => {
       <section className="px-4 pt-4">
         <div className="flex items-start gap-4">
           {/* Squircle icon with real app background */}
-          <div className="w-20 h-20 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden [&>svg]:w-20 [&>svg]:h-20">
-            {appIconComponentsLarge[app.id] || (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
-                <span className="text-4xl">{app.icon}</span>
-              </div>
-            )}
-          </div>
+          {getAppIcon(app.id, "xl", true)}
           
           {/* App name + Connect button */}
           <div className="flex flex-col gap-2 pt-1">
@@ -97,7 +72,7 @@ const AppDetail = () => {
             {/* Connect button - only show if not connected */}
             {!isConnected && (
               <button
-                onClick={() => toggleApp(app.id)}
+                onClick={() => setShowConnectModal(true)}
                 className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-colors w-fit"
               >
                 Connecter
@@ -150,6 +125,14 @@ const AppDetail = () => {
           </section>
         </>
       )}
+
+      {/* Connection Modal */}
+      <ConnectAppModal
+        app={app}
+        isOpen={showConnectModal}
+        onClose={() => setShowConnectModal(false)}
+        onConnect={handleConnect}
+      />
     </div>
   );
 };
