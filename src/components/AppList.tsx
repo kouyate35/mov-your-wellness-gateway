@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Check } from "lucide-react";
 import { AppData } from "@/data/apps";
 import { useNavigate } from "react-router-dom";
 import { appIconComponents } from "./AppIcons";
@@ -45,12 +45,23 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
         ${isActive ? "bg-secondary/30" : ""}
       `}
     >
-      {/* App icon - circular squircle style */}
-      <div className={`
-        w-11 h-11 rounded-xl flex items-center justify-center
-        ${app.bgColor} ${app.iconColor}
-      `}>
-        {iconComponent || <span className="text-lg">{app.icon}</span>}
+      {/* App icon container with connection badge */}
+      <div className="relative">
+        <div className={`
+          w-11 h-11 rounded-xl flex items-center justify-center
+          ${app.bgColor} ${app.iconColor}
+        `}>
+          {iconComponent || <span className="text-lg">{app.icon}</span>}
+        </div>
+        
+        {/* Connection badge - ChatGPT style (small check circle at bottom-left) */}
+        {isActive && (
+          <div className="absolute -bottom-0.5 -left-0.5 w-5 h-5 bg-background rounded-full flex items-center justify-center border-2 border-background">
+            <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+              <Check className="w-2.5 h-2.5 text-gray-800" strokeWidth={3} />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* App info */}
@@ -59,13 +70,8 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
         <p className="text-xs text-muted-foreground truncate">{app.description}</p>
       </div>
 
-      {/* Right side */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        {isActive && (
-          <div className="w-2 h-2 bg-move rounded-full" />
-        )}
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      </div>
+      {/* Right side - just chevron */}
+      <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
     </button>
   );
 };

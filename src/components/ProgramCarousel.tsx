@@ -1,5 +1,6 @@
 import { Category } from "@/data/categories";
 import { useRef } from "react";
+import { Check } from "lucide-react";
 
 interface ProgramCarouselProps {
   category: Category;
@@ -7,11 +8,11 @@ interface ProgramCarouselProps {
   onSelectProgram: (programId: string) => void;
 }
 
-// ChatGPT-style vibrant gradients for each program card
+// ChatGPT-style vibrant multi-color gradients
 const programGradients = [
-  "bg-gradient-to-b from-sky-200 via-blue-400 via-purple-400 to-rose-500",
-  "bg-gradient-to-b from-amber-200 via-orange-400 via-rose-400 to-purple-500",
-  "bg-gradient-to-b from-teal-200 via-cyan-400 via-blue-400 to-indigo-500",
+  "from-sky-300 via-blue-400 via-indigo-400 to-rose-400",
+  "from-amber-300 via-orange-400 via-rose-400 to-purple-500",
+  "from-emerald-300 via-teal-400 via-cyan-400 to-blue-500",
 ];
 
 const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: ProgramCarouselProps) => {
@@ -23,8 +24,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   return (
     <div className="w-full">
       {/* Title with separator line */}
-      <div className="mb-5">
-        <h3 className="text-lg font-normal text-foreground mb-3">
+      <div className="mb-4">
+        <h3 className="text-base font-normal text-foreground mb-3">
           Choisissez votre programme
         </h3>
         <div className="h-px bg-border" />
@@ -41,40 +42,44 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
             key={program.id}
             onClick={() => onSelectProgram(program.id)}
             className={`
-              relative flex-shrink-0 w-[55%] snap-start rounded-2xl overflow-hidden
-              transition-all duration-200
-              ${selectedProgramId === program.id 
-                ? 'ring-2 ring-white/50 scale-[1.02]' 
-                : 'hover:scale-[1.01]'
-              }
+              relative flex-shrink-0 w-[60%] snap-start rounded-3xl overflow-hidden
+              transition-all duration-300
             `}
             style={{ aspectRatio: '3/4' }}
           >
-            {/* Gradient background - ChatGPT style */}
-            <div className={`absolute inset-0 ${programGradients[index % programGradients.length]}`} />
+            {/* Gradient background - ChatGPT style smooth */}
+            <div className={`absolute inset-0 bg-gradient-to-b ${programGradients[index % programGradients.length]}`} />
             
             {/* Content overlay */}
-            <div className="relative h-full flex flex-col justify-end p-4">
-              {/* Duration badge - top left */}
-              <div className="absolute top-3 left-3">
-                <span className="inline-block px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-white text-xs font-medium">
+            <div className="relative h-full flex flex-col p-5">
+              {/* Duration badge - top left - more subtle */}
+              <div>
+                <span className="inline-block px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm text-white/90 text-xs font-medium">
                   {program.duration}
                 </span>
               </div>
               
-              {/* Selection indicator - top right */}
-              {selectedProgramId === program.id && (
-                <div className="absolute top-3 right-3 w-5 h-5 bg-white/30 rounded-full flex items-center justify-center">
-                  <div className="w-2.5 h-2.5 bg-white rounded-full" />
+              {/* Selection indicator - top right - clean white circle with check */}
+              <div className="absolute top-4 right-4">
+                <div className={`
+                  w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all
+                  ${selectedProgramId === program.id 
+                    ? 'bg-white border-white' 
+                    : 'bg-transparent border-white/40'
+                  }
+                `}>
+                  {selectedProgramId === program.id && (
+                    <Check className="w-3.5 h-3.5 text-gray-800" strokeWidth={3} />
+                  )}
                 </div>
-              )}
+              </div>
               
               {/* Program name & description - bottom */}
               <div className="mt-auto">
-                <h4 className="text-white font-bold text-xl mb-2 leading-tight">
+                <h4 className="text-white font-bold text-2xl mb-2 leading-tight">
                   {program.name}
                 </h4>
-                <p className="text-white/85 text-sm leading-relaxed">
+                <p className="text-white/80 text-sm leading-relaxed">
                   {program.description}
                 </p>
               </div>
