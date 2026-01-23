@@ -78,28 +78,32 @@ const AppDetail = () => {
         </div>
       </header>
 
-      {/* App Connection Card - ChatGPT style */}
-      <section className="px-4 py-8">
-        <div className="flex flex-col items-center text-center">
-          {/* Large circular icon on white background */}
-          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center mb-6 shadow-sm">
-            <div className="w-12 h-12 text-black flex items-center justify-center [&>svg]:w-12 [&>svg]:h-12">
-              {appIconComponentsLarge[app.id] || <span className="text-4xl">{app.icon}</span>}
-            </div>
+      {/* App Connection Card - Horizontal layout like ChatGPT */}
+      <section className="px-4 pt-4">
+        <div className="flex items-start gap-4">
+          {/* Squircle icon with real app background */}
+          <div className="w-20 h-20 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden [&>svg]:w-20 [&>svg]:h-20">
+            {appIconComponentsLarge[app.id] || (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <span className="text-4xl">{app.icon}</span>
+              </div>
+            )}
           </div>
           
-          {/* App name */}
-          <h1 className="text-3xl font-bold text-foreground mb-4">{app.name}</h1>
-          
-          {/* Connect button - only show if not connected */}
-          {!isConnected && (
-            <button
-              onClick={() => toggleApp(app.id)}
-              className="px-8 py-3 bg-white text-black font-medium rounded-full hover:bg-white/90 transition-colors"
-            >
-              Connecter
-            </button>
-          )}
+          {/* App name + Connect button */}
+          <div className="flex flex-col gap-2 pt-1">
+            <h1 className="text-2xl font-bold text-foreground">{app.name}</h1>
+            
+            {/* Connect button - only show if not connected */}
+            {!isConnected && (
+              <button
+                onClick={() => toggleApp(app.id)}
+                className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-colors w-fit"
+              >
+                Connecter
+              </button>
+            )}
+          </div>
         </div>
       </section>
 
@@ -107,7 +111,7 @@ const AppDetail = () => {
       {isConnected && (
         <>
           {/* Activation Toggle */}
-          <section className="px-4 mb-8">
+          <section className="px-4 mt-6 mb-8">
             <div className="flex items-center justify-between p-4 bg-card rounded-xl">
               <div>
                 <h3 className="font-semibold text-foreground">Activer MOV</h3>
@@ -145,15 +149,6 @@ const AppDetail = () => {
             />
           </section>
         </>
-      )}
-
-      {/* Not connected state - simple message */}
-      {!isConnected && (
-        <section className="px-4 mt-4">
-          <p className="text-center text-muted-foreground text-sm">
-            Connecte {app.name} à Mov
-          </p>
-        </section>
       )}
     </div>
   );
