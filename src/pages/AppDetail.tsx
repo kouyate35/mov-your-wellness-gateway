@@ -4,6 +4,7 @@ import { ChevronRight, Menu, Settings } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
+import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
 
 const AppDetail = () => {
@@ -11,6 +12,7 @@ const AppDetail = () => {
   const navigate = useNavigate();
   const { getAppSetting, toggleApp, setProgram } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<"move" | "breath" | "focus">("move");
 
   const app = apps.find((a) => a.id === appId);
   const appSetting = appId ? getAppSetting(appId) : null;
@@ -28,6 +30,11 @@ const AppDetail = () => {
   const handleConnect = () => {
     toggleApp(app.id);
     setShowConnectModal(false);
+  };
+
+  const handleCategorySelect = (id: "move" | "breath" | "focus") => {
+    setSelectedCategory(id);
+    setProgram(app.id, id);
   };
 
   return (
@@ -93,6 +100,22 @@ const AppDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Category Selection - Only shown when connected (ChatGPT style) */}
+      {isConnected && (
+        <section className="px-4 pt-8">
+          {/* Title - ChatGPT style */}
+          <h2 className="text-white text-lg font-normal mb-6">
+            Choisissez le plan qui vous convient
+          </h2>
+          
+          {/* Category Carousel with selection */}
+          <CategorySelector
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleCategorySelect}
+          />
+        </section>
+      )}
 
       {/* Connection Modal */}
       <ConnectAppModal
