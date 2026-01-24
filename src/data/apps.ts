@@ -1,3 +1,5 @@
+export type AppCategory = "social" | "video" | "messaging" | "games";
+
 export interface AppData {
   id: string;
   name: string;
@@ -5,6 +7,7 @@ export interface AppData {
   description: string;
   bgColor: string;
   iconColor: string;
+  category?: AppCategory;
 }
 
 export const apps: AppData[] = [
