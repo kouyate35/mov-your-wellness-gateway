@@ -1,109 +1,197 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Camera, Check, Loader2 } from "lucide-react";
-import MovementSilhouette from "@/components/MovementSilhouette";
+import PushUpSilhouette from "@/components/PushUpSilhouette";
 import { getAppIcon } from "@/components/AppIcons";
-import { usePoseDetection, BodyZone } from "@/hooks/usePoseDetection";
+import { usePushUpDetection } from "@/hooks/usePushUpDetection";
 import { cn } from "@/lib/utils";
 
-interface MovementTask {
-  id: string;
-  instruction: string;
-  zone: BodyZone;
-  duration: number; // ms to hold
-}
+type ChallengeState = "intro" | "demo" | "countdown" | "active" | "complete";
 
-const MOVEMENT_TASKS: MovementTask[] = [
-  { id: "right-arm", instruction: "Lève ton bras droit", zone: "right-arm", duration: 2000 },
-  { id: "left-arm", instruction: "Lève ton bras gauche", zone: "left-arm", duration: 2000 },
-  { id: "torso", instruction: "Écarte les bras", zone: "torso", duration: 2500 },
-];
+const REQUIRED_PUSHUPS = 4;
 
 const MovementChallenge = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("app") || "instagram";
-  
-  const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
-  const [holdProgress, setHoldProgress] = useState(0);
-  const [isValidated, setIsValidated] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
-  const [holdStartTime, setHoldStartTime] = useState<number | null>(null);
 
-  const { 
-    isLoading, 
-    isReady, 
-    error, 
-    activeZone, 
-    videoRef, 
-    startDetection 
-  } = usePoseDetection();
+  const [state, setState] = useState<ChallengeState>("intro");
+  const [countdown, setCountdown] = useState(3);
 
-  const currentTask = MOVEMENT_TASKS[currentTaskIndex];
+  const {
+    isLoading,
+    isReady,
+    error,
+    phase,
+    count,
+    videoRef,
+    startDetection,
+  } = usePushUpDetection();
 
-  // Start camera when component mounts
+  const isComplete = count >= REQUIRED_PUSHUPS;
+
+  // Start camera early
   useEffect(() => {
     startDetection();
   }, [startDetection]);
 
-  // Track if correct zone is active
-  const isCorrectZone = activeZone === currentTask.zone;
-
-  // Handle hold progress based on real pose detection
+  // Handle intro -> demo transition
   useEffect(() => {
-    if (isValidated || isComplete || !isReady) return;
-
-    if (isCorrectZone) {
-      // Start holding
-      if (holdStartTime === null) {
-        setHoldStartTime(Date.now());
-      }
-    } else {
-      // Reset if wrong position
-      setHoldStartTime(null);
-      setHoldProgress(0);
-    }
-  }, [isCorrectZone, isValidated, isComplete, isReady, holdStartTime]);
-
-  // Progress update loop
-  useEffect(() => {
-    if (holdStartTime === null || isValidated) return;
-
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - holdStartTime;
-      const progress = Math.min((elapsed / currentTask.duration) * 100, 100);
-      setHoldProgress(progress);
-
-      if (progress >= 100) {
-        clearInterval(interval);
-        setIsValidated(true);
-        
-        // Move to next task or complete
-        setTimeout(() => {
-          if (currentTaskIndex < MOVEMENT_TASKS.length - 1) {
-            setCurrentTaskIndex(prev => prev + 1);
-            setIsValidated(false);
-            setHoldStartTime(null);
-            setHoldProgress(0);
-          } else {
-            setIsComplete(true);
-          }
-        }, 800);
-      }
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, [holdStartTime, isValidated, currentTask.duration, currentTaskIndex]);
-
-  // Auto-redirect when complete
-  useEffect(() => {
-    if (isComplete) {
+    if (state === "intro" && isReady) {
       const timer = setTimeout(() => {
-        navigate("/");
+        setState("demo");
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [isComplete, navigate]);
+  }, [state, isReady]);
+
+  // Handle demo -> countdown transition
+  useEffect(() => {
+    if (state === "demo") {
+      const timer = setTimeout(() => {
+        setState("countdown");
+        setCountdown(3);
+      }, 4000); // Show demo for 4 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [state]);
+
+  // Handle countdown
+  useEffect(() => {
+    if (state === "countdown" && countdown > 0) {
+      const timer = setTimeout(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (state === "countdown" && countdown === 0) {
+      setState("active");
+    }
+  }, [state, countdown]);
+
+  // Handle completion
+  useEffect(() => {
+    if (isComplete && state === "active") {
+      setState("complete");
+    }
+  }, [isComplete, state]);
+
+  // Auto-redirect when complete
+  useEffect(() => {
+    if (state === "complete") {
+      const timer = setTimeout(() => {
+        navigate("/");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [state, navigate]);
+
+  const renderContent = () => {
+    switch (state) {
+      case "intro":
+        return (
+          <>
+            <div className="text-center space-y-4 animate-fade-in">
+              <h2 className="text-2xl font-bold text-foreground">
+                Challenge Pompes
+              </h2>
+              <p className="text-muted-foreground">
+                Fais {REQUIRED_PUSHUPS} pompes pour continuer
+              </p>
+              {isLoading && (
+                <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="text-sm">Préparation...</span>
+                </div>
+              )}
+            </div>
+            <PushUpSilhouette phase="up" />
+          </>
+        );
+
+      case "demo":
+        return (
+          <>
+            <div className="text-center space-y-4 animate-fade-in">
+              <h2 className="text-xl font-medium text-foreground">
+                Regarde bien le mouvement
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                La silhouette te montre l'exemple
+              </p>
+            </div>
+            <PushUpSilhouette phase="up" isDemo />
+          </>
+        );
+
+      case "countdown":
+        return (
+          <>
+            <div className="text-center space-y-4">
+              <h2 className="text-xl font-medium text-foreground">
+                Prépare-toi !
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                Le défi commence dans...
+              </p>
+            </div>
+            <div className="relative flex items-center justify-center w-32 h-32">
+              <span className="text-6xl font-bold text-white animate-pulse">
+                {countdown}
+              </span>
+              <div className="absolute inset-0 border-4 border-white/30 rounded-full" />
+            </div>
+            <PushUpSilhouette phase="up" />
+          </>
+        );
+
+      case "active":
+        return (
+          <>
+            <div className="text-center space-y-2">
+              <h2 className="text-xl font-medium text-foreground">
+                C'est parti !
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                {phase === "down" ? "Maintenant remonte !" : "Descends vers le sol"}
+              </p>
+            </div>
+            <PushUpSilhouette
+              phase={phase}
+              count={count}
+              totalRequired={REQUIRED_PUSHUPS}
+            />
+            {/* Progress dots */}
+            <div className="flex gap-2">
+              {Array.from({ length: REQUIRED_PUSHUPS }).map((_, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "w-3 h-3 rounded-full transition-all duration-300",
+                    index < count
+                      ? "bg-green-400 scale-110"
+                      : "bg-muted/30"
+                  )}
+                />
+              ))}
+            </div>
+          </>
+        );
+
+      case "complete":
+        return (
+          <>
+            <div className="flex items-center justify-center gap-2 text-green-400 animate-scale-in">
+              <Check className="w-8 h-8" />
+              <h2 className="text-3xl font-bold">Bravo !</h2>
+            </div>
+            <PushUpSilhouette phase="up" isValidated />
+            <p className="text-muted-foreground text-sm">
+              Ouverture de l'application...
+            </p>
+          </>
+        );
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-between py-8 px-4 relative overflow-hidden">
@@ -117,10 +205,14 @@ const MovementChallenge = () => {
 
       {/* Header with camera indicator */}
       <div className="w-full flex items-center justify-center">
-        <div className={cn(
-          "flex items-center gap-2 px-3 py-1.5 rounded-full",
-          isReady ? "bg-green-500/20 text-green-400" : "bg-muted/20 text-muted-foreground"
-        )}>
+        <div
+          className={cn(
+            "flex items-center gap-2 px-3 py-1.5 rounded-full",
+            isReady
+              ? "bg-green-500/20 text-green-400"
+              : "bg-muted/20 text-muted-foreground"
+          )}
+        >
           {isLoading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
@@ -149,83 +241,21 @@ const MovementChallenge = () => {
         </div>
       )}
 
-      {/* Main content */}
+      {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-center gap-8">
-        {/* Silhouette with active zone highlight */}
-        <MovementSilhouette 
-          activeZone={activeZone} 
-          isValidated={isValidated || isComplete}
-        />
-
-        {/* Instructions */}
-        <div className="text-center space-y-2">
-          {isComplete ? (
-            <>
-              <div className="flex items-center justify-center gap-2 text-green-400">
-                <Check className="w-6 h-6" />
-                <h2 className="text-2xl font-medium">Bien joué !</h2>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Ouverture de l'application...
-              </p>
-            </>
-          ) : (
-            <>
-              <h2 className="text-2xl font-medium text-foreground">
-                Bouge pour continuer
-              </h2>
-              <p className="text-muted-foreground">
-                {currentTask.instruction}
-              </p>
-              {isReady && (
-                <p className="text-xs text-muted-foreground/60 mt-2">
-                  {isCorrectZone ? "Maintiens la position..." : "Position-toi face à la caméra"}
-                </p>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Progress indicator */}
-        {!isComplete && (
-          <div className="w-48 h-1.5 bg-muted/30 rounded-full overflow-hidden">
-            <div 
-              className={cn(
-                "h-full transition-all duration-100 rounded-full",
-                isValidated ? "bg-green-400" : isCorrectZone ? "bg-white" : "bg-muted/50"
-              )}
-              style={{ width: `${holdProgress}%` }}
-            />
-          </div>
-        )}
-
-        {/* Task progress dots */}
-        <div className="flex gap-2">
-          {MOVEMENT_TASKS.map((task, index) => (
-            <div
-              key={task.id}
-              className={cn(
-                "w-2 h-2 rounded-full transition-all duration-300",
-                index < currentTaskIndex || isComplete
-                  ? "bg-green-400"
-                  : index === currentTaskIndex
-                  ? "bg-white"
-                  : "bg-muted/30"
-              )}
-            />
-          ))}
-        </div>
+        {renderContent()}
       </div>
 
-      {/* Bottom hint */}
+      {/* Bottom status */}
       <div className="w-full">
         <p className="text-center text-xs text-muted-foreground">
-          {isComplete 
+          {state === "complete"
             ? "Redirection en cours..."
-            : isLoading 
+            : state === "active"
+            ? "La caméra suit tes mouvements en temps réel"
+            : isLoading
             ? "Initialisation de la détection..."
-            : "La caméra détecte tes mouvements en temps réel"
-          }
+            : "Place-toi face à la caméra"}
         </p>
       </div>
     </div>
