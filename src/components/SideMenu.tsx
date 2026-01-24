@@ -66,19 +66,21 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop - prevent any touch/scroll events from reaching behind */}
       <div
         className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={handleBackdropClick}
+        style={{ touchAction: 'none' }}
       >
-        {/* Side Menu Panel - 65% width like ChatGPT, solid background, no overflow */}
+        {/* Side Menu Panel - 65% width like ChatGPT, solid background */}
         <div
-          className={`fixed left-0 top-0 h-full w-[65%] max-w-[280px] bg-background flex flex-col transition-transform duration-300 ease-out overflow-hidden ${
+          className={`fixed left-0 top-0 h-full w-[65%] max-w-[280px] bg-background flex flex-col transition-transform duration-300 ease-out ${
             isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           onClick={(e) => e.stopPropagation()}
+          style={{ overscrollBehavior: 'contain' }}
         >
           {/* Header with separator */}
           <div className="flex items-center justify-between p-4 pt-5 border-b border-border">
@@ -132,7 +134,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                 <span className="text-[15px]">Applications connectées</span>
               </button>
 
-              {/* Connected Apps List */}
+              {/* Connected Apps List with connection badge */}
               {connectedApps.length > 0 && (
                 <div className="mt-2 space-y-1 pl-2">
                   {connectedApps.map((app) => (
@@ -141,8 +143,14 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                       onClick={() => {}}
                       className="w-full flex items-center gap-3 px-2 py-2 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
                     >
-                      <div className="w-8 h-8 shrink-0">
+                      <div className="relative w-8 h-8 shrink-0">
                         {getAppIcon(app.id, "sm", true)}
+                        {/* Connection badge - white circle with checkmark */}
+                        <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                          <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{app.name}</p>

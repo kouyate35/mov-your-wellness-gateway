@@ -7,7 +7,7 @@ import EmptySection from "@/components/EmptySection";
 import SideMenu from "@/components/SideMenu";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
-import { Menu } from "lucide-react";
+import { Menu, Globe } from "lucide-react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,13 +53,20 @@ const Index = () => {
 
       {/* Header */}
       <header className="pt-3 pb-4 px-4">
-        {/* Menu hamburger */}
-        <button 
-          className="mb-4 p-1 -ml-1"
-          onClick={() => setIsMenuOpen(true)}
-        >
-          <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
-        </button>
+        {/* Top bar with hamburger and globe icon */}
+        <div className="flex items-center justify-between mb-4">
+          <button 
+            className="p-1 -ml-1"
+            onClick={() => setIsMenuOpen(true)}
+          >
+            <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
+          </button>
+          
+          {/* Globe icon - circular with background matching interface */}
+          <button className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted transition-colors">
+            <Globe className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+          </button>
+        </div>
         
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
