@@ -1,29 +1,62 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
 import EmptySection from "@/components/EmptySection";
 import SideMenu from "@/components/SideMenu";
+import AppAccessModal from "@/components/AppAccessModal";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
+import { useInstalledApps } from "@/hooks/useInstalledApps";
 import { Menu, Globe } from "lucide-react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showAccessModal, setShowAccessModal] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
+  const { 
+    hasAccessGranted, 
+    hasAccessDenied, 
+    detectedApps, 
+    isDetecting, 
+    grantAccess, 
+    denyAccess 
+  } = useInstalledApps();
+
+  // Afficher le modal au premier lancement si accès non accordé/refusé
+  useEffect(() => {
+    if (!hasAccessGranted && !hasAccessDenied) {
+      // Petit délai pour que l'interface se charge d'abord
+      const timer = setTimeout(() => setShowAccessModal(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [hasAccessGranted, hasAccessDenied]);
+
+  // Utiliser les apps détectées si disponibles, sinon toutes les apps
+  const availableApps = hasAccessGranted && detectedApps.length > 0 ? detectedApps : apps;
 
   const filteredApps = useMemo(() => {
-    if (!searchQuery.trim()) return apps;
+    if (!searchQuery.trim()) return availableApps;
     const query = searchQuery.toLowerCase();
-    return apps.filter(
+    return availableApps.filter(
       (app) =>
         app.name.toLowerCase().includes(query) ||
         app.description.toLowerCase().includes(query)
     );
-  }, [searchQuery]);
+  }, [searchQuery, availableApps]);
+
+  const handleGrantAccess = async () => {
+    await grantAccess();
+    setShowAccessModal(false);
+  };
+
+  const handleDenyAccess = () => {
+    denyAccess();
+    setShowAccessModal(false);
+  };
 
   const activeApps = useMemo(() => {
     return Object.fromEntries(
@@ -48,6 +81,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-8">
+      {/* App Access Modal */}
+      <AppAccessModal
+        isOpen={showAccessModal}
+        isDetecting={isDetecting}
+        onGrantAccess={handleGrantAccess}
+        onDenyAccess={handleDenyAccess}
+      />
+
       {/* Side Menu */}
       <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
