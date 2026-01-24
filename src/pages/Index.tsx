@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
@@ -6,6 +6,7 @@ import SectionTabs from "@/components/SectionTabs";
 import EmptySection from "@/components/EmptySection";
 import SideMenu from "@/components/SideMenu";
 import AppAccessModal from "@/components/AppAccessModal";
+import AppScanAnimation from "@/components/AppScanAnimation";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
@@ -16,6 +17,7 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAccessModal, setShowAccessModal] = useState(false);
+  const [showScanAnimation, setShowScanAnimation] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
   const { 
     hasAccessGranted, 
@@ -49,9 +51,16 @@ const Index = () => {
   }, [searchQuery, availableApps]);
 
   const handleGrantAccess = async () => {
-    await grantAccess();
     setShowAccessModal(false);
+    // Afficher l'animation de scan
+    setShowScanAnimation(true);
+    // Lancer la détection en parallèle
+    await grantAccess();
   };
+
+  const handleScanComplete = useCallback(() => {
+    setShowScanAnimation(false);
+  }, []);
 
   const handleDenyAccess = () => {
     denyAccess();
@@ -81,9 +90,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-8">
+      {/* Scan Animation */}
+      <AppScanAnimation 
+        isScanning={showScanAnimation} 
+        onComplete={handleScanComplete} 
+      />
+
       {/* App Access Modal */}
       <AppAccessModal
-        isOpen={showAccessModal}
+        isOpen={showAccessModal && !showScanAnimation}
         isDetecting={isDetecting}
         onGrantAccess={handleGrantAccess}
         onDenyAccess={handleDenyAccess}
