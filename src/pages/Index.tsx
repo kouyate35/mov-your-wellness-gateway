@@ -4,6 +4,7 @@ import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
 import EmptySection from "@/components/EmptySection";
+import SideMenu from "@/components/SideMenu";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { Menu } from "lucide-react";
@@ -11,6 +12,7 @@ import { Menu } from "lucide-react";
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
 
   const filteredApps = useMemo(() => {
@@ -46,10 +48,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-8">
+      {/* Side Menu */}
+      <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+
       {/* Header */}
       <header className="pt-3 pb-4 px-4">
         {/* Menu hamburger */}
-        <button className="mb-4 p-1 -ml-1">
+        <button 
+          className="mb-4 p-1 -ml-1"
+          onClick={() => setIsMenuOpen(true)}
+        >
           <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
         </button>
         
