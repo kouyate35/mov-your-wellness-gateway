@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Sparkles, Search, LayoutGrid, Link2, Settings, HelpCircle, LogOut, ChevronRight } from "lucide-react";
 import movIcon from "@/assets/mov-icon.png";
+import { apps } from "@/data/apps";
+import { getAppIcon } from "@/components/AppIcons";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 interface UserData {
   name: string;
@@ -17,6 +20,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   const [userId] = useState(() => Math.random().toString().slice(2, 12));
   const footerRef = useRef<HTMLDivElement>(null);
   const [popupBottom, setPopupBottom] = useState(80);
+  const { settings } = useAppSettings();
   
   // Mock user data - in production this would come from auth context
   const user: UserData = {
@@ -25,6 +29,9 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   };
 
   const userInitial = user.name.charAt(0).toUpperCase();
+
+  // Get connected apps
+  const connectedApps = apps.filter(app => settings[app.id]?.isActive);
 
   // Calculate popup position based on footer position
   useEffect(() => {
@@ -50,11 +57,6 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
     { icon: Search, label: "Explorer", action: () => {} },
   ];
 
-  const secondaryItems = [
-    { icon: LayoutGrid, label: "Programmes", action: () => {} },
-    { icon: Link2, label: "Applications connectées", action: () => {} },
-  ];
-
   const profileMenuItems = [
     { icon: Sparkles, label: "Passer au forfait supérieur", action: () => {} },
     { icon: Settings, label: "Paramètres", action: () => {} },
@@ -71,15 +73,15 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
         }`}
         onClick={handleBackdropClick}
       >
-        {/* Side Menu Panel - 65% width like ChatGPT */}
+        {/* Side Menu Panel - 65% width like ChatGPT, solid background, no overflow */}
         <div
-          className={`fixed left-0 top-0 h-full w-[65%] max-w-[280px] bg-background flex flex-col transition-transform duration-300 ease-out ${
+          className={`fixed left-0 top-0 h-full w-[65%] max-w-[280px] bg-background flex flex-col transition-transform duration-300 ease-out overflow-hidden ${
             isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 pt-5">
+          {/* Header with separator */}
+          <div className="flex items-center justify-between p-4 pt-5 border-b border-border">
             <img 
               src={movIcon} 
               alt="Mov" 
@@ -93,8 +95,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
             </button>
           </div>
 
-          {/* Main Menu Items */}
-          <nav className="flex-1 px-3 py-4 overflow-y-auto">
+          {/* Main Menu Items - scrollable content */}
+          <nav className="flex-1 px-3 py-4 overflow-y-auto overflow-x-hidden">
             {/* Primary Actions */}
             <div className="space-y-1 mb-6">
               {menuItems.map((item, index) => (
@@ -114,21 +116,47 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
 
             {/* Secondary Items */}
             <div className="space-y-1">
-              {secondaryItems.map((item, index) => (
-                <button
-                  key={index}
-                  onClick={item.action}
-                  className="w-full flex items-center gap-3 px-3 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
-                >
-                  <item.icon className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-[15px]">{item.label}</span>
-                </button>
-              ))}
+              <button
+                onClick={() => {}}
+                className="w-full flex items-center gap-3 px-3 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
+              >
+                <LayoutGrid className="w-5 h-5 text-muted-foreground" />
+                <span className="text-[15px]">Programmes</span>
+              </button>
+              
+              <button
+                onClick={() => {}}
+                className="w-full flex items-center gap-3 px-3 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
+              >
+                <Link2 className="w-5 h-5 text-muted-foreground" />
+                <span className="text-[15px]">Applications connectées</span>
+              </button>
+
+              {/* Connected Apps List */}
+              {connectedApps.length > 0 && (
+                <div className="mt-2 space-y-1 pl-2">
+                  {connectedApps.map((app) => (
+                    <button
+                      key={app.id}
+                      onClick={() => {}}
+                      className="w-full flex items-center gap-3 px-2 py-2 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
+                    >
+                      <div className="w-8 h-8 shrink-0">
+                        {getAppIcon(app.id, "sm", true)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{app.name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{app.description}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </nav>
 
           {/* Footer - User Section */}
-          <div ref={footerRef} className="p-4 border-t border-border">
+          <div ref={footerRef} className="p-4 border-t border-border bg-background">
             <div className="flex items-center justify-between">
               {/* User Avatar & Info */}
               <button 
