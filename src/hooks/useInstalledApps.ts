@@ -20,19 +20,10 @@ interface UseInstalledAppsReturn {
 }
 
 export const useInstalledApps = (): UseInstalledAppsReturn => {
-  const [hasAccessGranted, setHasAccessGranted] = useState<boolean>(() => {
-    return localStorage.getItem(ACCESS_GRANTED_KEY) === "true";
-  });
-  
-  const [hasAccessDenied, setHasAccessDenied] = useState<boolean>(() => {
-    return localStorage.getItem(ACCESS_DENIED_KEY) === "true";
-  });
-  
-  const [detectedApps, setDetectedApps] = useState<DetectedApp[]>(() => {
-    const stored = localStorage.getItem(DETECTED_APPS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  });
-  
+  // Toujours réinitialiser au démarrage pour afficher le modal à chaque fois
+  const [hasAccessGranted, setHasAccessGranted] = useState<boolean>(false);
+  const [hasAccessDenied, setHasAccessDenied] = useState<boolean>(false);
+  const [detectedApps, setDetectedApps] = useState<DetectedApp[]>([]);
   const [isDetecting, setIsDetecting] = useState(false);
 
   // Charger les apps détectées au démarrage si accès déjà accordé
