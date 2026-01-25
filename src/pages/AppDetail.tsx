@@ -6,13 +6,16 @@ import { useAppSettings } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
+import { Category } from "@/data/categories";
+
+type CategoryId = Category["id"];
 
 const AppDetail = () => {
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const { getAppSetting, toggleApp, setProgram } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<"move" | "breath" | "focus">("move");
+  const [selectedCategory, setSelectedCategory] = useState<CategoryId>("move");
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
 
   const app = apps.find((a) => a.id === appId);
@@ -33,7 +36,7 @@ const AppDetail = () => {
     setShowConnectModal(false);
   };
 
-  const handleCategorySelect = (id: "move" | "breath" | "focus") => {
+  const handleCategorySelect = (id: CategoryId) => {
     setSelectedCategory(id);
     setSelectedProgramId(null); // Reset program when category changes
     setProgram(app.id, id);

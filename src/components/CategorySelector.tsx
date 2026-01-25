@@ -1,26 +1,31 @@
-import { categories, getCategoryById } from "@/data/categories";
+import { categories, getCategoryById, Category } from "@/data/categories";
 import { useRef, useState, useEffect } from "react";
 import categoryMoveImg from "@/assets/category-move.jpg";
+import categoryFlexImg from "@/assets/category-flex.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
 import { ChevronRight, Check } from "lucide-react";
 import ProgramCarousel from "./ProgramCarousel";
 
+type CategoryId = Category["id"];
+
 interface CategorySelectorProps {
-  selectedCategory: "move" | "breath" | "focus";
-  onSelectCategory: (id: "move" | "breath" | "focus") => void;
+  selectedCategory: CategoryId;
+  onSelectCategory: (id: CategoryId) => void;
   selectedProgramId: string | null;
   onSelectProgram: (programId: string) => void;
 }
 
 const categoryImages: Record<string, string> = {
   move: categoryMoveImg,
+  flex: categoryFlexImg,
   breath: categoryBreathImg,
   focus: categoryFocusImg,
 };
 
 const categoryFeatures: Record<string, string[]> = {
   move: ["Exercices rapides", "Condition physique", "Mobilité"],
+  flex: ["Étirements doux", "Souplesse", "Articulations"],
   breath: ["Respiration guidée", "Méditation", "Relaxation"],
   focus: ["Intention claire", "Discipline", "Habitudes"],
 };
@@ -28,6 +33,7 @@ const categoryFeatures: Record<string, string[]> = {
 // Short descriptions for each category (ChatGPT style)
 const categoryDescriptions: Record<string, string> = {
   move: "Réveille ton corps avec des exercices rapides avant de scroller. Chaque mouvement compte pour ta santé.",
+  flex: "Améliore ta souplesse et libère les tensions avec des étirements doux. Prends soin de tes articulations.",
   breath: "Calme ton esprit et réduis l'impulsivité avec des exercices de respiration guidée.",
   focus: "Crée une intention claire avant d'ouvrir l'app. Prends le contrôle de tes habitudes.",
 };
@@ -77,6 +83,17 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
   };
 
   const currentCategory = categories[currentIndex];
+
+  // Color classes for dots
+  const getCategoryDotColor = (catId: string) => {
+    switch(catId) {
+      case 'move': return 'bg-move';
+      case 'flex': return 'bg-amber-500';
+      case 'breath': return 'bg-breath';
+      case 'focus': return 'bg-focus';
+      default: return 'bg-white';
+    }
+  };
 
   return (
     <div className="w-full">
@@ -174,7 +191,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
               className={`
                 h-2 rounded-full transition-all duration-300
                 ${currentIndex === index 
-                  ? `w-7 ${category.id === 'move' ? 'bg-move' : ''} ${category.id === 'breath' ? 'bg-breath' : ''} ${category.id === 'focus' ? 'bg-focus' : ''}` 
+                  ? `w-7 ${getCategoryDotColor(category.id)}` 
                   : "w-2 bg-white/40 hover:bg-white/60"
                 }
               `}
