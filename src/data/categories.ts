@@ -6,7 +6,7 @@ export interface Program {
 }
 
 export interface Category {
-  id: "move" | "breath" | "focus";
+  id: "move" | "flex" | "breath" | "focus";
   name: string;
   tagline: string;
   description: string;
@@ -44,17 +44,34 @@ export const categories: Category[] = [
         duration: "1 min",
         description: "Renforce ta ceinture abdominale",
       },
+    ],
+  },
+  {
+    id: "flex",
+    name: "FLEX",
+    tagline: "Souplesse & Articulation",
+    description: "Améliore ta flexibilité et délie tes articulations. Des étirements doux pour libérer les tensions.",
+    icon: "🧘‍♀️",
+    color: "flex",
+    gradient: "from-amber-500 to-orange-500",
+    programs: [
       {
-        id: "etirements",
-        name: "Étirements",
-        duration: "2 min",
-        description: "Étire ton dos et tes épaules",
+        id: "lateral-stretch",
+        name: "Flexion latérale",
+        duration: "1 min",
+        description: "Étire les côtés de ton corps en douceur",
       },
       {
-        id: "mobilite",
-        name: "Mobilité",
-        duration: "2 min",
-        description: "Améliore ta flexibilité articulaire",
+        id: "forward-fold",
+        name: "Pince debout",
+        duration: "45 sec",
+        description: "Étire ton dos et tes ischio-jambiers",
+      },
+      {
+        id: "yoga-arms",
+        name: "Bras en prière",
+        duration: "30 sec",
+        description: "Étire tes épaules et ton dos",
       },
     ],
   },
@@ -85,18 +102,6 @@ export const categories: Category[] = [
         duration: "30 sec",
         description: "Ferme les yeux et respire profondément",
       },
-      {
-        id: "scan",
-        name: "Scan corporel",
-        duration: "2 min",
-        description: "Parcours ton corps de la tête aux pieds",
-      },
-      {
-        id: "meditation",
-        name: "Mini méditation",
-        duration: "5 min",
-        description: "Méditation guidée courte",
-      },
     ],
   },
   {
@@ -125,18 +130,6 @@ export const categories: Category[] = [
         name: "Affirmation",
         duration: "10 sec",
         description: "Répète une affirmation positive",
-      },
-      {
-        id: "checkin",
-        name: "Check-in mental",
-        duration: "20 sec",
-        description: "Comment te sens-tu en ce moment ?",
-      },
-      {
-        id: "defi",
-        name: "Défi du jour",
-        duration: "Variable",
-        description: "Complète un petit défi avant d'accéder",
       },
     ],
   },

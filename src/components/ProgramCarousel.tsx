@@ -3,10 +3,17 @@ import { useRef } from "react";
 import { Check, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-// Import exercise videos
+// Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
 import exercisePushups from "@/assets/exercise-pushups.mp4";
 import exercisePlank from "@/assets/exercise-plank.mp4";
+
+// Import exercise videos - Flex (new category)
+import exerciseLateralStretch from "@/assets/exercise-lateral-stretch.mp4";
+import exerciseForwardFold from "@/assets/exercise-forward-fold.mp4";
+import exerciseYogaArms from "@/assets/exercise-yoga-arms.mp4";
+
+// Import exercise videos - Breath
 import exerciseBoxBreathing from "@/assets/exercise-box-breathing.mp4";
 import exerciseCoherence from "@/assets/exercise-coherence.mp4";
 import exercisePause from "@/assets/exercise-pause.mp4";
@@ -19,9 +26,15 @@ interface ProgramCarouselProps {
 
 // Map program IDs to their video assets
 const programVideos: Record<string, string> = {
+  // Move
   "squats-10": exerciseSquats,
   "pompes-10": exercisePushups,
   "gainage": exercisePlank,
+  // Flex
+  "lateral-stretch": exerciseLateralStretch,
+  "forward-fold": exerciseForwardFold,
+  "yoga-arms": exerciseYogaArms,
+  // Breath
   "box-breathing": exerciseBoxBreathing,
   "coherence": exerciseCoherence,
   "pause": exercisePause,
@@ -47,8 +60,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
     }
   };
 
-  // Check if category has videos (move and breath)
-  const hasVideos = category.id === "move" || category.id === "breath";
+  // Check if category has videos (move, flex and breath)
+  const hasVideos = category.id === "move" || category.id === "flex" || category.id === "breath";
 
   return (
     <div className="w-full">

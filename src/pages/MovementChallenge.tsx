@@ -5,26 +5,49 @@ import { useARPoseDetection } from "@/hooks/useARPoseDetection";
 import SkeletonOverlay from "@/components/SkeletonOverlay";
 import { cn } from "@/lib/utils";
 
-// Import exercise tutorial videos
+// Import exercise tutorial videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
 import exercisePushups from "@/assets/exercise-pushups.mp4";
 import exercisePlank from "@/assets/exercise-plank.mp4";
+
+// Import exercise videos - Flex
+import exerciseLateralStretch from "@/assets/exercise-lateral-stretch.mp4";
+import exerciseForwardFold from "@/assets/exercise-forward-fold.mp4";
+import exerciseYogaArms from "@/assets/exercise-yoga-arms.mp4";
+
+// Import exercise videos - Breath
 import exerciseBoxBreathing from "@/assets/exercise-box-breathing.mp4";
 import exerciseCoherence from "@/assets/exercise-coherence.mp4";
 import exercisePause from "@/assets/exercise-pause.mp4";
-import pushupTutorial from "@/assets/pushup-tutorial.mp4";
 
 // Map program IDs to their tutorial videos
 const programTutorials: Record<string, string> = {
+  // Move
   "squats-10": exerciseSquats,
   "pompes-10": exercisePushups,
   "gainage": exercisePlank,
+  // Flex
+  "lateral-stretch": exerciseLateralStretch,
+  "forward-fold": exerciseForwardFold,
+  "yoga-arms": exerciseYogaArms,
+  // Breath
   "box-breathing": exerciseBoxBreathing,
   "coherence": exerciseCoherence,
   "pause": exercisePause,
 };
 
-const REQUIRED_PUSHUPS = 4;
+// Program-specific configurations
+const programConfig: Record<string, { required: number; instruction: string; instructionAlt: string }> = {
+  "squats-10": { required: 4, instruction: "⬆️ Monte !", instructionAlt: "⬇️ Descends !" },
+  "pompes-10": { required: 4, instruction: "⬆️ Remonte !", instructionAlt: "⬇️ Descends !" },
+  "gainage": { required: 1, instruction: "🔒 Tiens !", instructionAlt: "🔒 Encore !" },
+  "lateral-stretch": { required: 4, instruction: "⬅️ Gauche !", instructionAlt: "➡️ Droite !" },
+  "forward-fold": { required: 4, instruction: "⬆️ Monte !", instructionAlt: "⬇️ Descends !" },
+  "yoga-arms": { required: 4, instruction: "🙏 Étire !", instructionAlt: "🔄 Relâche !" },
+  "box-breathing": { required: 4, instruction: "💨 Inspire !", instructionAlt: "😮‍💨 Expire !" },
+  "coherence": { required: 4, instruction: "💨 Inspire !", instructionAlt: "😮‍💨 Expire !" },
+  "pause": { required: 1, instruction: "🧘 Respire...", instructionAlt: "🧘 Calme..." },
+};
 
 const MovementChallenge = () => {
   const navigate = useNavigate();
@@ -34,7 +57,8 @@ const MovementChallenge = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // Get the tutorial video for the selected program
-  const tutorialVideo = programTutorials[programId] || pushupTutorial;
+  const tutorialVideo = programTutorials[programId] || exercisePushups;
+  const config = programConfig[programId] || { required: 4, instruction: "⬆️ Remonte !", instructionAlt: "⬇️ Descends !" };
 
   const {
     isLoading,
@@ -49,17 +73,26 @@ const MovementChallenge = () => {
     startDetection,
   } = useARPoseDetection();
 
-  // Start camera immediately
+  // Start camera and detection immediately when component mounts
   useEffect(() => {
-    startDetection();
-  }, [startDetection]);
+    const initCamera = async () => {
+      try {
+        await startDetection();
+        console.log("Camera and detection started for program:", programId);
+      } catch (err) {
+        console.error("Failed to start camera:", err);
+      }
+    };
+    
+    initCamera();
+  }, [startDetection, programId]);
 
   // Handle completion
   useEffect(() => {
-    if (count >= REQUIRED_PUSHUPS && !isComplete) {
+    if (count >= config.required && !isComplete) {
       setIsComplete(true);
     }
-  }, [count, isComplete]);
+  }, [count, isComplete, config.required]);
 
   // Auto-redirect when complete
   useEffect(() => {
@@ -80,6 +113,7 @@ const MovementChallenge = () => {
         style={{ transform: "scaleX(-1)" }} // Mirror front camera
         playsInline
         muted
+        autoPlay
       />
 
       {/* Skeleton overlay drawn on top of video */}
@@ -180,13 +214,13 @@ const MovementChallenge = () => {
           {/* Phase instruction */}
           <div className="bg-black/50 backdrop-blur-sm px-6 py-2 rounded-full">
             <p className="text-white font-medium">
-              {phase === "down" ? "⬆️ Remonte !" : "⬇️ Descends !"}
+              {phase === "down" ? config.instruction : config.instructionAlt}
             </p>
           </div>
 
           {/* Progress dots */}
           <div className="flex gap-3">
-            {Array.from({ length: REQUIRED_PUSHUPS }).map((_, index) => (
+            {Array.from({ length: config.required }).map((_, index) => (
               <div
                 key={index}
                 className={cn(
@@ -201,7 +235,7 @@ const MovementChallenge = () => {
 
           {/* Instructions */}
           <p className="text-white/50 text-xs text-center max-w-xs">
-            Fais {REQUIRED_PUSHUPS} pompes face à la caméra pour débloquer l'app
+            Fais {config.required} répétitions face à la caméra pour débloquer l'app
           </p>
         </div>
       </div>
