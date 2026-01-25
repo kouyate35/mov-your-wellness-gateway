@@ -4,6 +4,7 @@ import { Camera, Check, Loader2 } from "lucide-react";
 import { useARPoseDetection } from "@/hooks/useARPoseDetection";
 import SkeletonOverlay from "@/components/SkeletonOverlay";
 import { cn } from "@/lib/utils";
+import pushupTutorial from "@/assets/pushup-tutorial.gif";
 
 const REQUIRED_PUSHUPS = 4;
 
@@ -103,36 +104,46 @@ const MovementChallenge = () => {
 
       {/* HUD Overlay - Top area */}
       <div className="absolute top-0 left-0 right-0 z-10 p-4 pointer-events-none">
-        {/* Camera status */}
-        <div className="flex justify-center">
-          <div
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm",
-              isReady
-                ? "bg-green-500/30 text-green-300"
-                : "bg-white/20 text-white/70"
-            )}
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Camera className="w-4 h-4" />
-            )}
-            <span className="text-sm font-medium">
-              {isLoading ? "Chargement..." : isReady ? "Caméra active" : "En attente"}
-            </span>
-          </div>
-        </div>
-
-        {/* App info */}
-        <div className="flex justify-center mt-3">
-          <div className="bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full">
-            <span className="text-white/80 text-sm">
-              Avant d'accéder à{" "}
-              <span className="font-semibold text-white">
-                {appId.charAt(0).toUpperCase() + appId.slice(1)}
+        <div className="flex justify-between items-start">
+          {/* Left side - Camera status and app info */}
+          <div className="flex flex-col gap-2">
+            {/* Camera status */}
+            <div
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm w-fit",
+                isReady
+                  ? "bg-green-500/30 text-green-300"
+                  : "bg-white/20 text-white/70"
+              )}
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Camera className="w-4 h-4" />
+              )}
+              <span className="text-sm font-medium">
+                {isLoading ? "Chargement..." : isReady ? "Caméra active" : "En attente"}
               </span>
-            </span>
+            </div>
+
+            {/* App info */}
+            <div className="bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full w-fit">
+              <span className="text-white/80 text-sm">
+                Avant d'accéder à{" "}
+                <span className="font-semibold text-white">
+                  {appId.charAt(0).toUpperCase() + appId.slice(1)}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          {/* Right side - Tutorial video */}
+          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-white/30 bg-black/40 backdrop-blur-sm shadow-lg">
+            <img 
+              src={pushupTutorial} 
+              alt="Comment faire une pompe"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>
