@@ -4,6 +4,10 @@ import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryFlexImg from "@/assets/category-flex.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
+import categoryMoveVideo from "@/assets/category-move-video.mp4";
+import categoryFlexVideo from "@/assets/category-flex-video.mp4";
+import categoryBreathVideo from "@/assets/category-breath-video.mp4";
+import categoryFocusVideo from "@/assets/category-focus-video.mp4";
 import { ChevronRight } from "lucide-react";
 
 interface CategoryCarouselProps {
@@ -11,6 +15,7 @@ interface CategoryCarouselProps {
   onSelectCategory: React.Dispatch<React.SetStateAction<"move" | "flex" | "breath" | "focus">>;
 }
 
+// Fallback images for poster
 const categoryImages: Record<string, string> = {
   move: categoryMoveImg,
   flex: categoryFlexImg,
@@ -18,12 +23,12 @@ const categoryImages: Record<string, string> = {
   focus: categoryFocusImg,
 };
 
-// Category-specific animation styles
-const categoryAnimations: Record<string, string> = {
-  move: "animate-category-move",
-  flex: "animate-category-flex", 
-  breath: "animate-category-breath",
-  focus: "animate-category-focus",
+// Video sources for each category
+const categoryVideos: Record<string, string> = {
+  move: categoryMoveVideo,
+  flex: categoryFlexVideo,
+  breath: categoryBreathVideo,
+  focus: categoryFocusVideo,
 };
 
 const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
@@ -99,13 +104,15 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
               index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
-            {/* Background image with category-specific animation */}
-            <img 
-              src={categoryImages[category.id]} 
-              alt={category.name}
-              className={`absolute inset-0 w-full h-full object-cover ${
-                index === currentIndex ? categoryAnimations[category.id] : ''
-              }`}
+            {/* Background video with poster fallback */}
+            <video 
+              src={categoryVideos[category.id]}
+              poster={categoryImages[category.id]}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
             />
             
             {/* Gradient overlay */}
