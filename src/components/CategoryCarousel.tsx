@@ -1,17 +1,19 @@
 import { categories } from "@/data/categories";
 import { useState, useEffect, useCallback } from "react";
 import categoryMoveImg from "@/assets/category-move.jpg";
+import categoryFlexImg from "@/assets/category-flex.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
 import { ChevronRight } from "lucide-react";
 
 interface CategoryCarouselProps {
-  selectedCategory: "move" | "breath" | "focus";
-  onSelectCategory: React.Dispatch<React.SetStateAction<"move" | "breath" | "focus">>;
+  selectedCategory: "move" | "flex" | "breath" | "focus";
+  onSelectCategory: React.Dispatch<React.SetStateAction<"move" | "flex" | "breath" | "focus">>;
 }
 
 const categoryImages: Record<string, string> = {
   move: categoryMoveImg,
+  flex: categoryFlexImg,
   breath: categoryBreathImg,
   focus: categoryFocusImg,
 };
@@ -34,7 +36,7 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
     // Short delay for fade-out, then switch
     setTimeout(() => {
       setCurrentIndex(nextIndex);
-      onSelectCategory(categories[nextIndex].id as "move" | "breath" | "focus");
+      onSelectCategory(categories[nextIndex].id as "move" | "flex" | "breath" | "focus");
       // Allow fade-in to complete
       setTimeout(() => setIsTransitioning(false), 300);
     }, 150);
