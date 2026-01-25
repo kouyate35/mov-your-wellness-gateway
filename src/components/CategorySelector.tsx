@@ -156,7 +156,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
               {/* Content - Bottom */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <ul className="space-y-2 mb-4">
-                  {categoryFeatures[category.id].map((feature, i) => (
+                  {(categoryFeatures[category.id] || []).map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-white/90 text-sm">
                       <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
                       {feature}
