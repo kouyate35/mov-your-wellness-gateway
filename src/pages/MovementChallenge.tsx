@@ -4,7 +4,25 @@ import { Camera, Check, Loader2 } from "lucide-react";
 import { useARPoseDetection } from "@/hooks/useARPoseDetection";
 import SkeletonOverlay from "@/components/SkeletonOverlay";
 import { cn } from "@/lib/utils";
+
+// Import exercise tutorial videos
+import exerciseSquats from "@/assets/exercise-squats.mp4";
+import exercisePushups from "@/assets/exercise-pushups.mp4";
+import exercisePlank from "@/assets/exercise-plank.mp4";
+import exerciseBoxBreathing from "@/assets/exercise-box-breathing.mp4";
+import exerciseCoherence from "@/assets/exercise-coherence.mp4";
+import exercisePause from "@/assets/exercise-pause.mp4";
 import pushupTutorial from "@/assets/pushup-tutorial.mp4";
+
+// Map program IDs to their tutorial videos
+const programTutorials: Record<string, string> = {
+  "squats-10": exerciseSquats,
+  "pompes-10": exercisePushups,
+  "gainage": exercisePlank,
+  "box-breathing": exerciseBoxBreathing,
+  "coherence": exerciseCoherence,
+  "pause": exercisePause,
+};
 
 const REQUIRED_PUSHUPS = 4;
 
@@ -12,7 +30,11 @@ const MovementChallenge = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("app") || "instagram";
+  const programId = searchParams.get("program") || "pompes-10";
   const [isComplete, setIsComplete] = useState(false);
+
+  // Get the tutorial video for the selected program
+  const tutorialVideo = programTutorials[programId] || pushupTutorial;
 
   const {
     isLoading,
@@ -140,7 +162,7 @@ const MovementChallenge = () => {
           {/* Right side - Tutorial video */}
           <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-white/30 bg-black/60 backdrop-blur-sm shadow-lg">
             <video 
-              src={pushupTutorial} 
+              src={tutorialVideo} 
               autoPlay
               loop
               muted
