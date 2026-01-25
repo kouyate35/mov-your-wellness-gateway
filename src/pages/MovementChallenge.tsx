@@ -4,7 +4,7 @@ import { Camera, Check, Loader2 } from "lucide-react";
 import { useARPoseDetection } from "@/hooks/useARPoseDetection";
 import SkeletonOverlay from "@/components/SkeletonOverlay";
 import { cn } from "@/lib/utils";
-import pushupDemo from "@/assets/pushup-demo.png";
+import pushupTutorial from "@/assets/pushup-tutorial.mp4";
 
 const REQUIRED_PUSHUPS = 4;
 
@@ -137,12 +137,15 @@ const MovementChallenge = () => {
             </div>
           </div>
 
-          {/* Right side - Tutorial demo */}
-          <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-white/30 bg-black/60 backdrop-blur-sm shadow-lg">
-            <img 
-              src={pushupDemo} 
-              alt="Comment faire une pompe"
-              className="w-full h-full object-contain p-1"
+          {/* Right side - Tutorial video */}
+          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-white/30 bg-black/60 backdrop-blur-sm shadow-lg">
+            <video 
+              src={pushupTutorial} 
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
@@ -152,13 +155,9 @@ const MovementChallenge = () => {
       <div className="absolute bottom-0 left-0 right-0 z-10 p-6 pointer-events-none">
         {/* Push-up counter */}
         <div className="flex flex-col items-center gap-4">
-          {/* Big counter */}
-          <div className="bg-black/60 backdrop-blur-md px-8 py-4 rounded-2xl">
-            <div className="flex items-baseline gap-2">
-              <span className="text-6xl font-bold text-white">{count}</span>
-              <span className="text-2xl text-white/60">/ {REQUIRED_PUSHUPS}</span>
-            </div>
-            <p className="text-center text-white/70 text-sm mt-1">
+          {/* Phase instruction */}
+          <div className="bg-black/50 backdrop-blur-sm px-6 py-2 rounded-full">
+            <p className="text-white font-medium">
               {phase === "down" ? "⬆️ Remonte !" : "⬇️ Descends !"}
             </p>
           </div>
