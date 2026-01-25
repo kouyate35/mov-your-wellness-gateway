@@ -18,6 +18,14 @@ const categoryImages: Record<string, string> = {
   focus: categoryFocusImg,
 };
 
+// Category-specific animation styles
+const categoryAnimations: Record<string, string> = {
+  move: "animate-category-move",
+  flex: "animate-category-flex", 
+  breath: "animate-category-breath",
+  focus: "animate-category-focus",
+};
+
 const AUTO_SCROLL_INTERVAL = 4000; // 4 seconds
 
 const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarouselProps) => {
@@ -91,11 +99,13 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
               index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
-            {/* Background image */}
+            {/* Background image with category-specific animation */}
             <img 
               src={categoryImages[category.id]} 
               alt={category.name}
-              className="absolute inset-0 w-full h-full object-cover"
+              className={`absolute inset-0 w-full h-full object-cover ${
+                index === currentIndex ? categoryAnimations[category.id] : ''
+              }`}
             />
             
             {/* Gradient overlay */}

@@ -108,6 +108,28 @@ export default {
           "50%": { transform: "scale(1.2)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        // Category-specific animations for home carousel
+        "category-move": {
+          "0%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.03)" },
+          "100%": { transform: "scale(1)" },
+        },
+        "category-flex": {
+          "0%": { transform: "scale(1) rotate(0deg)" },
+          "25%": { transform: "scale(1.02) rotate(0.5deg)" },
+          "75%": { transform: "scale(1.02) rotate(-0.5deg)" },
+          "100%": { transform: "scale(1) rotate(0deg)" },
+        },
+        "category-breath": {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.05)", opacity: "0.95" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        "category-focus": {
+          "0%": { transform: "scale(1)", filter: "brightness(1)" },
+          "50%": { transform: "scale(1.02)", filter: "brightness(1.05)" },
+          "100%": { transform: "scale(1)", filter: "brightness(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,6 +138,11 @@ export default {
         "pulse-ring": "pulse-ring 2s ease-in-out infinite",
         "scan-line": "scan-line 2s ease-in-out infinite",
         "pop-in": "pop-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards",
+        // Category carousel animations
+        "category-move": "category-move 3s ease-in-out infinite",
+        "category-flex": "category-flex 4s ease-in-out infinite",
+        "category-breath": "category-breath 5s ease-in-out infinite",
+        "category-focus": "category-focus 4s ease-in-out infinite",
       },
     },
   },
