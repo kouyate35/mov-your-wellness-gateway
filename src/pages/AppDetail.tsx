@@ -4,6 +4,7 @@ import { ChevronRight, Menu, Settings } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
+import ConnectionRequiredModal from "@/components/ConnectionRequiredModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
 import { Category } from "@/data/categories";
@@ -15,6 +16,7 @@ const AppDetail = () => {
   const navigate = useNavigate();
   const { getAppSetting, toggleApp, setProgram } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
+  const [showConnectionRequiredModal, setShowConnectionRequiredModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>("move");
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
 
@@ -34,16 +36,30 @@ const AppDetail = () => {
   const handleConnect = () => {
     toggleApp(app.id);
     setShowConnectModal(false);
+    setShowConnectionRequiredModal(false);
   };
 
   const handleCategorySelect = (id: CategoryId) => {
+    if (!isConnected) {
+      setShowConnectionRequiredModal(true);
+      return;
+    }
     setSelectedCategory(id);
-    setSelectedProgramId(null); // Reset program when category changes
+    setSelectedProgramId(null);
     setProgram(app.id, id);
   };
 
   const handleProgramSelect = (programId: string) => {
+    if (!isConnected) {
+      setShowConnectionRequiredModal(true);
+      return;
+    }
     setSelectedProgramId(programId);
+  };
+
+  const handleOpenConnectFromRequired = () => {
+    setShowConnectionRequiredModal(false);
+    setShowConnectModal(true);
   };
 
   return (
@@ -110,23 +126,21 @@ const AppDetail = () => {
         </div>
       </section>
 
-      {/* Category Selection - Only shown when connected (ChatGPT style) */}
-      {isConnected && (
-        <section className="px-4 pt-8">
-          {/* Title - ChatGPT style */}
-          <h2 className="text-white text-lg font-normal mb-6">
-            Choisissez le plan qui vous convient
-          </h2>
-          
-          {/* Category Carousel with selection */}
-          <CategorySelector
-            selectedCategory={selectedCategory}
-            onSelectCategory={handleCategorySelect}
-            selectedProgramId={selectedProgramId}
-            onSelectProgram={handleProgramSelect}
-          />
-        </section>
-      )}
+      {/* Category Selection - Always shown, but blocked when not connected */}
+      <section className="px-4 pt-8">
+        {/* Title - ChatGPT style */}
+        <h2 className="text-white text-lg font-normal mb-6">
+          Choisissez le plan qui vous convient
+        </h2>
+        
+        {/* Category Carousel with selection */}
+        <CategorySelector
+          selectedCategory={selectedCategory}
+          onSelectCategory={handleCategorySelect}
+          selectedProgramId={selectedProgramId}
+          onSelectProgram={handleProgramSelect}
+        />
+      </section>
 
       {/* Connection Modal */}
       <ConnectAppModal
@@ -134,6 +148,13 @@ const AppDetail = () => {
         isOpen={showConnectModal}
         onClose={() => setShowConnectModal(false)}
         onConnect={handleConnect}
+      />
+
+      {/* Connection Required Modal - shown when trying to select without being connected */}
+      <ConnectionRequiredModal
+        isOpen={showConnectionRequiredModal}
+        onClose={() => setShowConnectionRequiredModal(false)}
+        onConnect={handleOpenConnectFromRequired}
       />
     </div>
   );
