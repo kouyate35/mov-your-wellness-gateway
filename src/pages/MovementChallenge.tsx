@@ -4,7 +4,7 @@ import { Camera, Check, Loader2 } from "lucide-react";
 import { useARPoseDetection } from "@/hooks/useARPoseDetection";
 import SkeletonOverlay from "@/components/SkeletonOverlay";
 import { cn } from "@/lib/utils";
-import pushupTutorial from "@/assets/pushup-tutorial.gif";
+import pushupDemo from "@/assets/pushup-demo.png";
 
 const REQUIRED_PUSHUPS = 4;
 
@@ -137,12 +137,12 @@ const MovementChallenge = () => {
             </div>
           </div>
 
-          {/* Right side - Tutorial video */}
-          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-white/30 bg-black/40 backdrop-blur-sm shadow-lg">
+          {/* Right side - Tutorial demo */}
+          <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-white/30 bg-black/60 backdrop-blur-sm shadow-lg">
             <img 
-              src={pushupTutorial} 
+              src={pushupDemo} 
               alt="Comment faire une pompe"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain p-1"
             />
           </div>
         </div>
