@@ -132,17 +132,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-4 safe-area-inset-top">
-        <button 
-          onClick={() => navigate("/")}
-          className="p-2 rounded-full hover:bg-secondary transition-colors"
-        >
-          <ArrowLeft className="h-5 w-5 text-foreground" />
-        </button>
-        <div className="w-10" /> {/* Spacer for centering */}
-      </div>
+    <div className="min-h-screen bg-background flex flex-col pt-8">
 
       {/* Content */}
       <div className="flex-1 flex flex-col justify-center px-6 pb-8">
