@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import AppDetail from "./pages/AppDetail";
 import MovementChallenge from "./pages/MovementChallenge";
 import Onboarding from "./pages/Onboarding";
+import OnboardingStep2 from "./pages/OnboardingStep2";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,6 +21,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Onboarding />} />
+          <Route path="/onboarding-2" element={<OnboardingStep2 />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/home" element={<Index />} />
           <Route path="/app/:appId" element={<AppDetail />} />
           <Route path="/challenge" element={<MovementChallenge />} />

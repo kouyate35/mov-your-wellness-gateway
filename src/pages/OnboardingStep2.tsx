@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import onboardingHero from "@/assets/onboarding-hero.jpg";
 
-const Onboarding = () => {
+const OnboardingStep2 = () => {
   const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
   const [dragX, setDragX] = useState(0);
@@ -20,14 +20,12 @@ const Onboarding = () => {
   const handleMove = (clientX: number) => {
     if (!isDragging) return;
     const diff = clientX - startXRef.current;
-    // Only allow right swipe
     setDragX(Math.max(0, Math.min(diff, SWIPE_THRESHOLD + 50)));
   };
 
   const handleEnd = () => {
     if (dragX > SWIPE_THRESHOLD) {
-      // Navigate to second onboarding step
-      navigate("/onboarding-2");
+      navigate("/auth");
     }
     setIsDragging(false);
     setDragX(0);
@@ -53,44 +51,46 @@ const Onboarding = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-background">
-      {/* Background Image */}
+      {/* Background Image with blur effect */}
       <div className="absolute inset-0">
         <img
           src={onboardingHero}
           alt="MOV Onboarding"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover blur-sm scale-105"
         />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background" />
+        {/* Darker overlay for readability */}
+        <div className="absolute inset-0 bg-background/70" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex h-full flex-col justify-between px-6 pt-6 pb-8">
-        {/* Top Section - Title */}
-        <div className="pt-safe-area-inset-top">
-          <h1 className="text-4xl font-bold leading-tight tracking-tight text-foreground">
-            Reprenez le{" "}
-            <span className="inline-block rounded-lg bg-primary/20 px-2 py-1 text-primary">
-              contrôle
-            </span>
+      <div className="relative z-10 flex h-full flex-col justify-center items-center px-8 text-center">
+        {/* Main Message */}
+        <div className="space-y-8 max-w-sm">
+          <p className="text-xl leading-relaxed text-muted-foreground">
+            Certaines apps demandent
             <br />
-            de votre{" "}
-            <span className="inline-block rounded-lg bg-secondary/30 px-2 py-1">
-              temps
+            <span className="text-foreground font-medium">votre attention.</span>
+          </p>
+          
+          <div className="w-16 h-px bg-border mx-auto" />
+          
+          <p className="text-2xl font-semibold leading-relaxed text-foreground">
+            MOV vous demande
+            <br />
+            <span className="inline-block rounded-lg bg-primary/20 px-3 py-1 text-primary">
+              votre mouvement.
             </span>
-          </h1>
+          </p>
         </div>
 
-        {/* Bottom Section */}
-        <div className="space-y-6">
-          {/* Subtitle */}
-          <p className="text-lg leading-relaxed text-muted-foreground">
-            Bougez, respirez, et réduisez
-            <br />
-            l'usage excessif de vos apps.
-          </p>
+        {/* Swipe Button - positioned at bottom */}
+        <div className="absolute bottom-8 left-6 right-6">
+          {/* Step indicator */}
+          <div className="flex justify-center gap-2 mb-6">
+            <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+            <div className="w-2 h-2 rounded-full bg-primary" />
+          </div>
 
-          {/* Swipe Button */}
           <div
             ref={containerRef}
             className="relative mx-auto h-16 w-full max-w-sm overflow-hidden rounded-full bg-card/80 backdrop-blur-md border border-border/50"
@@ -125,7 +125,7 @@ const Onboarding = () => {
                 className="text-sm font-medium text-muted-foreground transition-opacity"
                 style={{ opacity: 1 - progress * 0.5 }}
               >
-                Glisser pour commencer
+                Créer mon compte
               </span>
               <ChevronRight 
                 className="ml-1 h-4 w-4 text-muted-foreground transition-opacity" 
@@ -139,4 +139,4 @@ const Onboarding = () => {
   );
 };
 
-export default Onboarding;
+export default OnboardingStep2;
