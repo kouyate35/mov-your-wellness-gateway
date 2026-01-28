@@ -12,19 +12,21 @@ interface UseInstalledAppsReturn {
   hasAccessDenied: boolean;
   detectedApps: DetectedApp[];
   isDetecting: boolean;
+  needsPermission: boolean;
   
   // Actions
   grantAccess: () => Promise<void>;
   denyAccess: () => void;
   resetAccess: () => void;
+  openPermissionSettings: () => Promise<void>;
 }
 
 export const useInstalledApps = (): UseInstalledAppsReturn => {
-  // Toujours réinitialiser au démarrage pour afficher le modal à chaque fois
   const [hasAccessGranted, setHasAccessGranted] = useState<boolean>(false);
   const [hasAccessDenied, setHasAccessDenied] = useState<boolean>(false);
   const [detectedApps, setDetectedApps] = useState<DetectedApp[]>([]);
   const [isDetecting, setIsDetecting] = useState(false);
+  const [needsPermission, setNeedsPermission] = useState(false);
 
   // Charger les apps détectées au démarrage si accès déjà accordé
   useEffect(() => {
@@ -48,8 +50,23 @@ export const useInstalledApps = (): UseInstalledAppsReturn => {
 
   const grantAccess = useCallback(async () => {
     setIsDetecting(true);
+    setNeedsPermission(false);
     
     try {
+      // Sur Android, initialiser et vérifier la permission
+      if (appDetectionService.isNativeAndroid()) {
+        await appDetectionService.initialize();
+        const hasPermission = await appDetectionService.checkPermission();
+        
+        if (!hasPermission) {
+          // Ouvrir les paramètres pour accorder la permission
+          setNeedsPermission(true);
+          await appDetectionService.requestPermission();
+          setIsDetecting(false);
+          return;
+        }
+      }
+      
       // Marquer l'accès comme accordé
       localStorage.setItem(ACCESS_GRANTED_KEY, "true");
       localStorage.removeItem(ACCESS_DENIED_KEY);
@@ -67,6 +84,14 @@ export const useInstalledApps = (): UseInstalledAppsReturn => {
     }
   }, []);
 
+  const openPermissionSettings = useCallback(async () => {
+    try {
+      await appDetectionService.requestPermission();
+    } catch (error) {
+      console.error("Erreur ouverture paramètres:", error);
+    }
+  }, []);
+
   const denyAccess = useCallback(() => {
     localStorage.setItem(ACCESS_DENIED_KEY, "true");
     setHasAccessDenied(true);
@@ -79,6 +104,7 @@ export const useInstalledApps = (): UseInstalledAppsReturn => {
     setHasAccessGranted(false);
     setHasAccessDenied(false);
     setDetectedApps([]);
+    setNeedsPermission(false);
   }, []);
 
   return {
@@ -86,8 +112,10 @@ export const useInstalledApps = (): UseInstalledAppsReturn => {
     hasAccessDenied,
     detectedApps,
     isDetecting,
+    needsPermission,
     grantAccess,
     denyAccess,
     resetAccess,
+    openPermissionSettings,
   };
 };

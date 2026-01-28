@@ -24,8 +24,10 @@ const Index = () => {
     hasAccessDenied, 
     detectedApps, 
     isDetecting, 
+    needsPermission,
     grantAccess, 
-    denyAccess 
+    denyAccess,
+    openPermissionSettings,
   } = useInstalledApps();
 
   // Afficher le modal au premier lancement si accès non accordé/refusé
@@ -100,8 +102,10 @@ const Index = () => {
       <AppAccessModal
         isOpen={showAccessModal && !showScanAnimation}
         isDetecting={isDetecting}
+        needsPermission={needsPermission}
         onGrantAccess={handleGrantAccess}
         onDenyAccess={handleDenyAccess}
+        onOpenSettings={openPermissionSettings}
       />
 
       {/* Side Menu */}
