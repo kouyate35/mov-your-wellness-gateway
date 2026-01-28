@@ -55,15 +55,15 @@ const OnboardingStep2 = () => {
       <div className="absolute inset-0 flex flex-col justify-center items-center px-6">
         {/* Main Message */}
         <div className="space-y-6 max-w-sm text-center mb-16">
-          <p className="text-lg leading-relaxed text-muted-foreground">
+          <p className="text-lg leading-relaxed text-muted-foreground animate-fade-in" style={{ animationDelay: "0.1s", animationFillMode: "both" }}>
             Certaines apps demandent
             <br />
             <span className="text-foreground font-medium">votre attention.</span>
           </p>
           
-          <div className="w-12 h-px bg-border mx-auto" />
+          <div className="w-12 h-px bg-border mx-auto animate-fade-in" style={{ animationDelay: "0.25s", animationFillMode: "both" }} />
           
-          <p className="text-xl font-semibold leading-relaxed text-foreground">
+          <p className="text-xl font-semibold leading-relaxed text-foreground animate-fade-in" style={{ animationDelay: "0.4s", animationFillMode: "both" }}>
             MOV vous demande
             <br />
             <span className="inline-block rounded-lg bg-primary/20 px-3 py-1 text-primary">
@@ -73,7 +73,7 @@ const OnboardingStep2 = () => {
         </div>
 
         {/* Slider Container - Bottom */}
-        <div className="absolute bottom-8 left-6 right-6">
+        <div className="absolute bottom-8 left-6 right-6 animate-fade-in" style={{ animationDelay: "0.6s", animationFillMode: "both" }}>
           <div
             ref={containerRef}
             className="relative h-14 bg-card/50 backdrop-blur-sm rounded-full border border-border overflow-hidden"

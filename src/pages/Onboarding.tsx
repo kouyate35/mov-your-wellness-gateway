@@ -21,7 +21,7 @@ const Onboarding = () => {
       {/* Content - Positioned absolutely to avoid scroll */}
       <div className="absolute inset-0 flex flex-col px-6 py-8">
         {/* Top Section - Title */}
-        <div className="pt-4">
+        <div className="pt-4 animate-fade-in" style={{ animationDelay: "0.1s", animationFillMode: "both" }}>
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-foreground">
             Reprenez le{" "}
             <span className="inline-block rounded-lg bg-primary/20 px-2 py-0.5 text-primary">
@@ -39,7 +39,7 @@ const Onboarding = () => {
         <div className="flex-1" />
 
         {/* Bottom Section */}
-        <div className="flex items-end justify-between pb-4">
+        <div className="flex items-end justify-between pb-4 animate-fade-in" style={{ animationDelay: "0.3s", animationFillMode: "both" }}>
           {/* Subtitle */}
           <p className="text-base leading-relaxed text-muted-foreground max-w-[65%]">
             Bougez, respirez, et réduisez
