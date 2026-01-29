@@ -44,7 +44,7 @@ const OnboardingStep2 = () => {
       <div className="absolute inset-0">
         <img
           src={onboardingHero}
-          alt="MOV Onboarding"
+          alt="Workout Onboarding"
           className="h-full w-full object-cover blur-sm scale-105"
         />
         {/* Darker overlay for readability */}
@@ -64,7 +64,7 @@ const OnboardingStep2 = () => {
           <div className="w-12 h-px bg-border mx-auto animate-fade-in" style={{ animationDelay: "0.25s", animationFillMode: "both" }} />
           
           <p className="text-xl font-semibold leading-relaxed text-foreground animate-fade-in" style={{ animationDelay: "0.4s", animationFillMode: "both" }}>
-            MOV vous demande
+            WORKOUT vous demande
             <br />
             <span className="inline-block rounded-lg bg-primary/20 px-3 py-1 text-primary">
               votre mouvement.

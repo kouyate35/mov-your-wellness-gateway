@@ -130,10 +130,10 @@ const Index = () => {
         
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
-            M<span className="font-normal">ov</span>
+            Work<span className="font-normal">out</span>
           </h1>
           <span className="px-3 py-1.5 text-[11px] font-medium bg-secondary/80 rounded-full text-muted-foreground border border-border/50">
-            Bouger avant de scroller
+            Work avant de scroll
           </span>
         </div>
       </header>

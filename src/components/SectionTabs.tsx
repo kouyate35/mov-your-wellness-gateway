@@ -14,13 +14,13 @@ const tabs = [
 
 const SectionTabs = ({ activeTab, onTabChange }: SectionTabsProps) => {
   return (
-    <div className="flex gap-2 px-4 py-3 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+    <div className="flex justify-between w-full px-4 py-3">
       {tabs.map((tab, index) => (
         <button
           key={tab.id}
           onClick={() => onTabChange(index)}
           className={`
-            px-5 py-2.5 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200
+            px-3 py-2 rounded-full whitespace-nowrap text-xs font-medium transition-all duration-200
             ${activeTab === index 
               ? "bg-secondary text-foreground" 
               : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"

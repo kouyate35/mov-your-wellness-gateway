@@ -11,7 +11,7 @@ const Onboarding = () => {
       <div className="absolute inset-0">
         <img
           src={onboardingHero}
-          alt="MOV Onboarding"
+          alt="Workout Onboarding"
           className="h-full w-full object-cover"
         />
         {/* Gradient Overlay */}

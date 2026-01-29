@@ -20,14 +20,17 @@ const svgSizeClasses = {
   xl: "w-10 h-10",
 };
 
-// MOV icon with black squircle background
-export const MovIcon = ({ size = "md" }: { size?: "sm" | "md" | "lg" | "xl" }) => {
+// Workout icon with black squircle background
+export const WorkoutIcon = ({ size = "md" }: { size?: "sm" | "md" | "lg" | "xl" }) => {
   return (
     <div className={`${sizeClasses[size]} bg-black rounded-2xl flex items-center justify-center shrink-0 overflow-hidden`}>
-      <img src={movIconImage} alt="MOV" className="w-[70%] h-[70%] object-contain" />
+      <img src={movIconImage} alt="Workout" className="w-[70%] h-[70%] object-contain" />
     </div>
   );
 };
+
+// Legacy alias for backward compatibility
+export const MovIcon = WorkoutIcon;
 
 // TikTok icon with authentic black background
 export const TikTokIcon = ({ size = "md", withBg = true }: IconProps) => {
