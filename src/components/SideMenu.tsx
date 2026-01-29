@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, Sparkles, Search, LayoutGrid, Link2, Settings, HelpCircle, LogOut, ChevronRight } from "lucide-react";
 import movIcon from "@/assets/mov-icon.png";
 import { apps } from "@/data/apps";
@@ -16,6 +17,7 @@ interface SideMenuProps {
 }
 
 const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
+  const navigate = useNavigate();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [userId] = useState(() => Math.random().toString().slice(2, 12));
   const footerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +56,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
 
   const menuItems = [
     { icon: Sparkles, label: "Nouveau moment", action: () => {} },
-    { icon: Search, label: "Explorer", action: () => {} },
+    { icon: Search, label: "Explorer", action: () => { navigate("/explore"); onClose(); } },
   ];
 
   const profileMenuItems = [
@@ -86,7 +88,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
           <div className="flex items-center justify-between p-4 pt-5 border-b border-border">
             <img 
               src={movIcon} 
-              alt="Mov" 
+              alt="Workout" 
               className="w-8 h-8 rounded-lg"
             />
             <button 
