@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-type BentoSize = "small" | "medium" | "large" | "wide";
+type BentoSize = "small" | "medium" | "large" | "wide" | "tall";
 
 interface BentoCardProps {
   id: string;
@@ -15,6 +15,7 @@ const sizeClasses: Record<BentoSize, string> = {
   medium: "col-span-1 row-span-2",
   large: "col-span-2 row-span-2",
   wide: "col-span-2 row-span-1",
+  tall: "col-span-1 row-span-3",
 };
 
 const BentoCard = ({ id, name, videoSrc, size, onClick }: BentoCardProps) => {
