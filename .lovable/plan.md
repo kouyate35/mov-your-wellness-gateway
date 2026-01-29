@@ -1,205 +1,154 @@
 
-# Plan : Modal de demande d'accès aux applications + Détection simulée
 
-## Contexte
+# Plan de Refonte : MOV devient WORKOUT + Nouvelle Page Explorer
 
-L'objectif est de créer une expérience utilisateur professionnelle (style ChatGPT) pour demander l'accès aux applications de l'utilisateur, puis afficher les applications de divertissement détectées.
+## Apercu des Changements
 
-### Contrainte technique importante
-
-La détection des **vraies applications** installées nécessite un plugin Capacitor natif (par exemple `capacitor-plugin-get-app-info` ou `installed-apps-plugin`). Pour le MVP, nous allons :
-1. Créer l'interface complète de demande d'accès
-2. Simuler la détection des applications populaires
-3. Préparer l'architecture pour intégrer un vrai plugin plus tard
+Ce plan couvre trois modifications majeures :
+1. Renommer l'application de "Mov" a "Workout"
+2. Afficher les 4 onglets (Applis, Routines, Programmes, Insights) sans scroll horizontal
+3. Creer une nouvelle page "Explorer" avec un layout de type "bento grid" (cartes en bulles avec animations d'exercices)
 
 ---
 
-## Phase 1 : Créer le modal "Accès aux applications"
+## 1. Renommage : MOV vers WORKOUT
 
-### Design (inspiré de ChatGPT - Image 2)
+### Fichiers a modifier
+
+| Fichier | Changement |
+|---------|-----------|
+| `src/pages/Index.tsx` | Titre header : "Mov" devient "Workout" |
+| `src/pages/Index.tsx` | Tagline : "Bouger avant de scroller" devient "Work avant de scroll" ou similaire |
+| `src/pages/Onboarding.tsx` | Alt text image |
+| `src/pages/OnboardingStep2.tsx` | "MOV vous demande" devient "WORKOUT vous demande" |
+| `src/components/SideMenu.tsx` | Alt text du logo |
+| `src/components/AppIcons.tsx` | Renommer `MovIcon` en `WorkoutIcon`, alt text |
+| `src/assets/mov-icon.png` | Idealement remplacer par un nouveau logo (ou garder en attendant) |
+| `index.html` | Titre de la page |
+
+### Exemple de changement (Index.tsx header)
 
 ```text
-┌─────────────────────────────────────────┐
-│                                         │
-│  Accès aux applications                 │
-│                                         │
-│  Pour personnaliser ton expérience Mouv │
-│                                         │
-├─────────────────────────────────────────┤
-│                                         │
-│ ⟳  Identifier tes applications         │
-│    de divertissement                    │
-│    Mouv analyse uniquement les          │
-│    applications liées au                │
-│    divertissement et aux réseaux        │
-│    sociaux (réseaux, vidéos, jeux)      │
-│    afin de t'aider à mieux gérer        │
-│    ton temps.                           │
-│                                         │
-│ ⚙  Aucune lecture de contenu           │
-│    Mouv ne lit ni tes messages,         │
-│    ni tes contenus. Seuls les noms      │
-│    des applications et leur             │
-│    catégorie sont utilisés.             │
-│                                         │
-│ 🛡  Tu gardes le contrôle               │
-│    Tu peux désactiver cet accès à       │
-│    tout moment depuis les réglages      │
-│    Mouv.                                │
-│                                         │
-│                                         │
-│                    ┌────────────────┐   │
-│                    │ Activer l'accès│   │
-│                    └────────────────┘   │
-│                                         │
-│                    Plus tard            │
-│                                         │
-└─────────────────────────────────────────┘
-```
-
-### Structure du composant
-
-**Nouveau fichier : `src/components/AppAccessModal.tsx`**
-
-- Style : fond sombre avec coins arrondis (rounded-3xl)
-- Titre principal en blanc, gras
-- Sous-titre en gris clair
-- 3 blocs d'information avec icônes minimalistes (outline)
-- Titres des blocs en gras blanc
-- Textes explicatifs en gris
-- Bouton principal "Activer l'accès" (blanc avec texte noir)
-- Lien secondaire "Plus tard" (texte gris, discret)
-
----
-
-## Phase 2 : Système de détection simulée
-
-### Nouveau fichier : `src/hooks/useInstalledApps.ts`
-
-Ce hook va gérer :
-1. L'état de permission (a-t-on demandé l'accès ?)
-2. La liste des applications "détectées" (simulées pour le MVP)
-3. La persistance via localStorage
-
-### Logique de détection simulée
-
-Quand l'utilisateur accepte l'accès :
-1. Marquer la permission comme accordée
-2. Simuler une liste d'applications catégorisées :
-   - **Réseaux sociaux** : Instagram, TikTok, Snapchat, Discord, Reddit, X
-   - **Vidéo & streaming** : YouTube, Twitch, Netflix
-   - **Messagerie** : WhatsApp, Facebook
-
-### Structure des données
-
-```typescript
-interface InstalledApp {
-  id: string;
-  name: string;
-  category: "social" | "video" | "messaging" | "games";
-  isInstalled: boolean; // Simulé pour le MVP
-}
+Avant:  M<span>ov</span>
+Apres:  W<span>orkout</span>
 ```
 
 ---
 
-## Phase 3 : Intégration dans l'interface
+## 2. Section Tabs Sans Scroll
 
-### Modification de `Index.tsx`
+### Probleme actuel
+Les 4 onglets (Applis, Routines, Programmes, Insights) sont dans un container `overflow-x-auto` avec `gap-2` et `px-5 py-2.5` - ils debordent et necessitent un scroll horizontal sur mobile.
 
-1. Vérifier si l'accès a été accordé au premier chargement
-2. Si non accordé : afficher le modal `AppAccessModal`
-3. Si accordé : afficher la liste des applications détectées
+### Solution
+Modifier le composant `SectionTabs.tsx` pour :
+- Utiliser `justify-between` au lieu de `gap-2`
+- Reduire le padding des boutons (`px-3 py-2` au lieu de `px-5 py-2.5`)
+- Ajuster la taille de police (`text-xs` au lieu de `text-sm`)
+- Supprimer `overflow-x-auto`
 
-### Modification de `AppList.tsx`
+### Structure CSS resultante
 
-Remplacer l'utilisation de `apps` (liste fixe) par les applications réellement "détectées" via `useInstalledApps`.
-
----
-
-## Phase 4 : Préparation pour la vraie détection (futur)
-
-### Architecture prête pour Capacitor
-
-Créer un fichier `src/services/appDetectionService.ts` avec :
-- Une fonction `detectInstalledApps()` abstraite
-- Mode "simulation" par défaut
-- Préparé pour intégrer un plugin Capacitor plus tard
-
-### Plugin Capacitor recommandé (pour plus tard)
-
-```bash
-npm install capacitor-plugin-get-app-info
+```text
+Container: flex justify-between w-full px-4
+Boutons:   px-3 py-2 text-xs font-medium rounded-full
 ```
 
-Ce plugin permet sur Android de :
-- Récupérer la liste des apps installées
-- Obtenir le nom et l'icône de chaque app
-- Lancer des apps
+Cela garantit que les 4 onglets occupent toute la largeur et sont toujours visibles.
 
 ---
 
-## Fichiers à créer/modifier
+## 3. Nouvelle Page Explorer avec Bento Grid
 
-| Action | Fichier | Description |
-|--------|---------|-------------|
-| Créer | `src/components/AppAccessModal.tsx` | Modal de demande d'accès style ChatGPT |
-| Créer | `src/hooks/useInstalledApps.ts` | Hook pour gérer les apps détectées |
-| Créer | `src/services/appDetectionService.ts` | Service abstrait pour la détection |
-| Modifier | `src/pages/Index.tsx` | Afficher le modal au premier lancement |
-| Modifier | `src/data/apps.ts` | Ajouter les catégories aux apps |
-| Modifier | `src/components/AppList.tsx` | Utiliser les apps détectées |
+### Concept
+Une page inspiree de l'image 4 (reference sante) avec des cartes de differentes tailles disposees en grille organique ("bento box"). Chaque carte represente une categorie ou un programme avec une video d'exercice en boucle.
 
----
+### Structure de la page
 
-## Détails techniques
-
-### AppAccessModal.tsx
-
-- Utilise le composant Dialog de Radix UI existant
-- Animation d'entrée fluide
-- Fond semi-transparent avec backdrop
-- Boutons avec hover states appropriés
-- Typographie Inter (déjà utilisée dans le projet)
-
-### useInstalledApps.ts
-
-```typescript
-// Clés localStorage
-const ACCESS_GRANTED_KEY = "mov-app-access-granted";
-const DETECTED_APPS_KEY = "mov-detected-apps";
-
-// États
-- hasAccessGranted: boolean
-- detectedApps: InstalledApp[]
-- isDetecting: boolean
-
-// Méthodes
-- grantAccess(): void
-- denyAccess(): void
-- detectApps(): Promise<void>
+```text
++------------------------------------------+
+|  Header: "Explorer"                      |
++------------------------------------------+
+|                                          |
+|  +--------+  +------------------+        |
+|  |        |  |                  |        |
+|  | MOVE   |  |      FLEX        |        |
+|  | (video)|  |     (video)      |        |
+|  +--------+  +------------------+        |
+|                                          |
+|  +------------------+  +--------+        |
+|  |                  |  |        |        |
+|  |     BREATH       |  | FOCUS  |        |
+|  |     (video)      |  |(video) |        |
+|  +------------------+  +--------+        |
+|                                          |
+|  +--------+  +--------+  +--------+      |
+|  | Squats |  | Pompes |  | Box    |      |
+|  |        |  |        |  | Breath |      |
+|  +--------+  +--------+  +--------+      |
+|                                          |
++------------------------------------------+
 ```
 
-### Simulation réaliste
+### Fichiers a creer
 
-Pour rendre la simulation crédible :
-- Délai artificiel de 1.5s lors de la "détection"
-- Animation de chargement pendant la détection
-- Affichage progressif des apps trouvées
+| Fichier | Description |
+|---------|-------------|
+| `src/pages/Explore.tsx` | Nouvelle page avec bento grid |
+| `src/components/BentoCard.tsx` | Composant de carte avec video animee |
+
+### Caracteristiques des cartes Bento
+
+- **Pas de texte lourd** : Juste un petit badge glassmorphism avec le nom
+- **Videos en boucle** : Reutiliser les videos existantes des categories/programmes
+- **Tailles variees** : CSS Grid avec `grid-row-span` et `grid-col-span` differents
+- **Coins arrondis** : Aspect "bulle" avec `rounded-3xl`
+- **Au clic** : Navigation vers le detail de la categorie/programme
+
+### Integration dans l'application
+
+1. Ajouter la route `/explore` dans `App.tsx`
+2. Connecter le bouton "Explorer" du `SideMenu` a cette nouvelle page
+3. Style de fond sombre avec gradient subtil (comme l'image 3)
 
 ---
 
-## Comportement utilisateur attendu
+## Details Techniques
 
-1. L'utilisateur arrive sur l'app pour la première fois
-2. Le modal "Accès aux applications" s'affiche
-3. L'utilisateur lit les 3 blocs d'information
-4. Il clique sur "Activer l'accès"
-5. Une animation de détection s'affiche brièvement
-6. Les applications sont affichées dans la liste principale
-7. Les apps connectées apparaissent aussi dans le menu hamburger
+### BentoCard Component
 
-Si l'utilisateur clique "Plus tard" :
-- Le modal se ferme
-- La liste affiche les apps par défaut (comme actuellement)
-- Le modal réapparaîtra au prochain lancement
+```text
+Props:
+- id: string (categorie ou programme)
+- name: string
+- videoSrc: string
+- size: "small" | "medium" | "large"
+- onClick: () => void
+
+Styles:
+- Container: relative overflow-hidden rounded-3xl
+- Video: absolute inset-0 object-cover autoplay loop muted
+- Badge: absolute top-3 left-3, backdrop-blur, bg-white/20
+```
+
+### CSS Grid pour Bento Layout
+
+```text
+grid-template-columns: repeat(4, 1fr)
+grid-auto-rows: 100px
+
+Carte large:  col-span-2 row-span-2
+Carte medium: col-span-2 row-span-1
+Carte small:  col-span-1 row-span-1
+```
+
+---
+
+## Ordre d'Implementation
+
+1. **Renommage MOV vers WORKOUT** (tous les fichiers)
+2. **Modification SectionTabs** (affichage sans scroll)
+3. **Creation BentoCard component**
+4. **Creation page Explore**
+5. **Integration route et navigation**
+
