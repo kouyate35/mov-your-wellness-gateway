@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import BentoCard from "@/components/BentoCard";
-
-// Import category videos
-import categoryMoveVideo from "@/assets/category-move-video.mp4";
-import categoryFlexVideo from "@/assets/category-flex-video.mp4";
-import categoryBreathVideo from "@/assets/category-breath-video.mp4";
-import categoryFocusVideo from "@/assets/category-focus-video.mp4";
+import { ArrowLeft } from "lucide-react";
+import { categories } from "@/data/categories";
+import ExploreCard from "@/components/ExploreCard";
 
 // Import exercise videos
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -17,78 +13,74 @@ import exerciseYogaArms from "@/assets/exercise-yoga-arms.mp4";
 import exerciseBoxBreathing from "@/assets/exercise-box-breathing.mp4";
 import exerciseCoherence from "@/assets/exercise-coherence.mp4";
 import exercisePause from "@/assets/exercise-pause.mp4";
+import categoryFocusVideo from "@/assets/category-focus-video.mp4";
 
-interface BentoItem {
-  id: string;
-  name: string;
-  videoSrc: string;
-  size: "small" | "medium" | "large" | "wide" | "tall";
-}
+// Map program IDs to videos
+const programVideos: Record<string, string> = {
+  "squats-10": exerciseSquats,
+  "pompes-10": exercisePushups,
+  "gainage": exercisePlank,
+  "lateral-stretch": exerciseLateralStretch,
+  "forward-fold": exerciseForwardFold,
+  "yoga-arms": exerciseYogaArms,
+  "box-breathing": exerciseBoxBreathing,
+  "coherence": exerciseCoherence,
+  "pause": exercisePause,
+  "intention": categoryFocusVideo,
+  "timer": categoryFocusVideo,
+  "affirmation": categoryFocusVideo,
+};
 
-// All 16 cards: 4 categories + 12 programs (3 per category)
-const bentoItems: BentoItem[] = [
-  // Row 1: MOVE (tall) + FLEX (large)
-  { id: "move", name: "MOVE", videoSrc: categoryMoveVideo, size: "tall" },
-  { id: "flex", name: "FLEX", videoSrc: categoryFlexVideo, size: "large" },
-  
-  // Row 2: Squats (small) + BREATH (large spanning)
-  { id: "squats-10", name: "Squats", videoSrc: exerciseSquats, size: "small" },
-  { id: "breath", name: "BREATH", videoSrc: categoryBreathVideo, size: "large" },
-  
-  // Row 3: Pompes + Focus (tall)
-  { id: "pompes-10", name: "Pompes", videoSrc: exercisePushups, size: "small" },
-  { id: "focus", name: "FOCUS", videoSrc: categoryFocusVideo, size: "tall" },
-  
-  // Row 4: Gainage (wide) + Flexion latérale
-  { id: "gainage", name: "Gainage", videoSrc: exercisePlank, size: "wide" },
-  { id: "lateral-stretch", name: "Flexion latérale", videoSrc: exerciseLateralStretch, size: "small" },
-  
-  // Row 5: Pince debout + Bras en prière (wide)
-  { id: "forward-fold", name: "Pince debout", videoSrc: exerciseForwardFold, size: "small" },
-  { id: "yoga-arms", name: "Bras en prière", videoSrc: exerciseYogaArms, size: "wide" },
-  
-  // Row 6: Box Breathing (medium) + Cohérence (medium)
-  { id: "box-breathing", name: "Box Breathing", videoSrc: exerciseBoxBreathing, size: "medium" },
-  { id: "coherence", name: "Cohérence", videoSrc: exerciseCoherence, size: "medium" },
-  
-  // Row 7: Pause consciente (wide)
-  { id: "pause", name: "Pause consciente", videoSrc: exercisePause, size: "wide" },
-  
-  // Focus programs - simplified names
-  { id: "intention", name: "Intention", videoSrc: categoryFocusVideo, size: "small" },
-  { id: "timer", name: "Timer", videoSrc: categoryFocusVideo, size: "small" },
-  { id: "affirmation", name: "Affirmation", videoSrc: categoryFocusVideo, size: "small" },
-];
+// Build flat list of all programs with their categories
+const allPrograms = categories.flatMap((category) =>
+  category.programs.map((program) => ({
+    program,
+    category: {
+      id: category.id,
+      name: category.name,
+      color: category.color,
+    },
+    videoSrc: programVideos[program.id] || categoryFocusVideo,
+  }))
+);
 
 const Explore = () => {
   const navigate = useNavigate();
 
-  const handleCardClick = (id: string) => {
-    // Navigate to category or program detail
-    console.log("Clicked:", id);
+  const handleStartProgram = (programId: string) => {
+    navigate(`/challenge?program=${programId}`);
   };
 
   return (
-    <div className="min-h-screen bg-background p-3">
-      {/* Bento Grid - No header, just the grid */}
-      <div 
-        className="grid gap-2"
-        style={{
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gridAutoRows: "100px",
-        }}
+    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth">
+      {/* Floating back button */}
+      <button
+        onClick={() => navigate("/home")}
+        className="fixed top-6 left-4 z-50 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md flex items-center justify-center border border-white/10"
       >
-        {bentoItems.map((item) => (
-          <BentoCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            videoSrc={item.videoSrc}
-            size={item.size}
-            onClick={() => handleCardClick(item.id)}
+        <ArrowLeft className="w-5 h-5 text-white" />
+      </button>
+
+      {/* Navigation dots */}
+      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2">
+        {allPrograms.map((item, index) => (
+          <div
+            key={item.program.id}
+            className="w-2 h-2 rounded-full bg-white/30"
           />
         ))}
       </div>
+
+      {/* Fullscreen swipeable cards */}
+      {allPrograms.map((item) => (
+        <ExploreCard
+          key={item.program.id}
+          program={item.program}
+          category={item.category}
+          videoSrc={item.videoSrc}
+          onStart={() => handleStartProgram(item.program.id)}
+        />
+      ))}
     </div>
   );
 };

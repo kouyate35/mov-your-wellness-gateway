@@ -10,6 +10,7 @@ import Onboarding from "./pages/Onboarding";
 import OnboardingStep2 from "./pages/OnboardingStep2";
 import Auth from "./pages/Auth";
 import Explore from "./pages/Explore";
+import RoutineDetail from "./pages/RoutineDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/app/:appId" element={<AppDetail />} />
           <Route path="/challenge" element={<MovementChallenge />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/routine/:appId" element={<RoutineDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
