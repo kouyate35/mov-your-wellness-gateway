@@ -7,7 +7,7 @@ import EmptySection from "@/components/EmptySection";
 import SideMenu from "@/components/SideMenu";
 import AppAccessModal from "@/components/AppAccessModal";
 import AppScanAnimation from "@/components/AppScanAnimation";
-import RoutinesList from "@/components/RoutinesList";
+import ProgressionSection from "@/components/ProgressionSection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
@@ -76,17 +76,12 @@ const Index = () => {
     );
   }, [settings]);
 
-  // Get connected apps for Routines tab
-  const connectedApps = useMemo(() => {
-    return availableApps.filter(app => activeApps[app.id] === true);
-  }, [availableApps, activeApps]);
-
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
         return <AppList apps={filteredApps} activeApps={activeApps} />;
       case 1:
-        return <RoutinesList apps={connectedApps} />;
+        return <ProgressionSection />;
       case 2:
         return <EmptySection title="Programmes" />;
       case 3:
