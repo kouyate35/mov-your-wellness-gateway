@@ -1,120 +1,178 @@
 
+# Plan de Correction Routines + Développement Programmes
 
-# Plan de Refonte Totale : Section Routines
+## Partie 1 : Correction des badges d'apps dans Routines
 
-## Diagnostic du Probleme
+### Problèmes identifiés (screenshots)
 
-La section "Routines" actuelle casse completement l'esthetique premium de l'application :
+| Problème | Cause |
+|----------|-------|
+| Badge trop gros | `w-5 h-5` au lieu de `w-4 h-4` |
+| Position maladroite | `-bottom-1 -left-1` crée un chevauchement |
+| Ring de sélection disgracieux | `ring-2 ring-offset-2` = double bordure |
+| Effet confus "deux blocs" | Scale + opacity mal gérés |
 
-| Ce qui marche ailleurs | Ce qui casse dans Routines |
-|------------------------|---------------------------|
-| Videos en fond, overlay noir | Gradients orange/jaune voyants |
-| Texte blanc sur fond sombre | Icones colorees enfantines (Flame, Trophy) |
-| Minimalisme, peu de texte | Dashboard surcharge d'infos |
-| Pas de bordures colorees | Cards avec bordures orange/yellow |
-| Squircles sobres | Emojis dans les categories |
+### Solution : Aligner sur le style AppList
 
----
+Le composant `AppList` a déjà un badge de connexion élégant et discret :
+```text
+- Badge plus petit (w-4 h-4)
+- Position naturelle (-bottom-0.5 -left-0.5)
+- Bordure background pour intégration
+- Pas de ring, juste une légère opacité pour non-sélectionné
+```
 
-## Nouveau Concept : "Journal Minimaliste"
+### Fichier à modifier
+`src/components/ProgressionSection.tsx`
 
-### Philosophie
-- **Tout est sombre** : meme palette que le reste (13% lightness)
-- **Pas d'icones colorees** : juste du texte et des formes subtiles
-- **Respiration** : beaucoup d'espace vide, peu d'elements
-- **Videos** : reutiliser les videos d'exercice comme element visuel principal
-- **Pas de gamification voyante** : pas de flames, trophees, badges colores
-
----
-
-## Structure de la Nouvelle Interface
+### Nouveau design du sélecteur d'apps
 
 ```text
 +------------------------------------------+
 |                                          |
-|  Cette semaine                           |
-|                                          |
-|  Lun  Mar  Mer  Jeu  Ven  Sam  Dim       |
-|  ●    ●    ●    ○    ○    ○    ○         |
-|                                          |
-|  7 jours consecutifs                     |
+|  [TikTok] [Insta] [Snap] [Discord]       |
+|     ✓        ✓       ✓       ✓           |
 |                                          |
 +------------------------------------------+
-|                                          |
-|  +------------------------------------+  |
-|  |                                    |  |
-|  |  [VIDEO DERNIERE ACTIVITE]         |  |
-|  |        (fullscreen card)           |  |
-|  |                                    |  |
-|  |  Aujourd'hui, 14:32                |  |
-|  |  10 Squats · TikTok debloque       |  |
-|  |                                    |  |
-|  +------------------------------------+  |
-|                                          |
-|  +-------------+  +-------------+        |
-|  | Hier 22:45  |  | Hier 18:20  |        |
-|  | 10 Pompes   |  | Flex lat.   |        |
-|  +-------------+  +-------------+        |
-|                                          |
-+------------------------------------------+
+
+- Taille icône : w-12 h-12 (au lieu de md qui est w-12)
+- Badge : w-4 h-4, -bottom-0.5 -left-0.5
+- Sélection : juste scale-110 + légère ombre
+- Non sélectionné : opacity-50
+- PAS de ring/outline de sélection
 ```
 
 ---
 
-## Elements de Design
+## Partie 2 : Section Programmes
 
-### 1. Indicateur de Serie (Streak)
-- **Pas d'icone flame** : juste des cercles
-- Cercles remplis (●) pour les jours completes
-- Cercles vides (○) pour les jours futurs/manques
-- Texte sobre : "7 jours consecutifs"
-- Couleur : blanc/gris uniquement
+### Objectif
+Créer une interface "Programmes" qui affiche les 12 programmes organisés par catégorie, avec un design cohérent et premium.
 
-### 2. Derniere Activite (Hero Card)
-- **Video en fond** de l'exercice realise
-- Overlay gradient noir
-- Timestamp discret en haut
-- Nom du programme + app debloquee
-- Meme style que ExploreCard mais en miniature
+### Concept : Liste par catégorie avec preview vidéo
 
-### 3. Activites Precedentes (Petites Cards)
-- Grid de 2 colonnes
-- Fond sombre uni (pas de video pour economiser les ressources)
-- Timestamp + nom de l'exercice
-- Coins tres arrondis (rounded-2xl)
+Inspiré des autres sections mais adapté pour une navigation par catégorie :
 
-### 4. Statistiques (si necessaire)
-- **En bas de page**, tres discret
-- Juste des chiffres : "47 sessions · 2h 36min"
-- Pas de cards, pas de bordures
-- Texte muted-foreground
+```text
++------------------------------------------+
+|                                          |
+|  MOVE                                    |
+|  Corps & Mobilité                        |
+|                                          |
+|  +-------+ +-------+ +-------+           |
+|  |       | |       | |       |           |
+|  | VIDEO | | VIDEO | | VIDEO |  <- scroll|
+|  |       | |       | |       |     horiz |
+|  |Squats | |Pompes | |Gainage|           |
+|  +-------+ +-------+ +-------+           |
+|                                          |
+|  FLEX                                    |
+|  Souplesse & Articulation                |
+|                                          |
+|  +-------+ +-------+ +-------+           |
+|  | VIDEO | | VIDEO | | VIDEO |           |
+|  |Lateral| |Pince  | |Yoga   |           |
+|  +-------+ +-------+ +-------+           |
+|                                          |
+|  BREATH                                  |
+|  ...                                     |
+|                                          |
++------------------------------------------+
+```
+
+### Structure des cartes programme
+
+```text
++-------------------+
+|                   |
+|  [VIDEO LOOP]     |  <- aspect-[3/4]
+|                   |
+|  Gradient bottom  |
+|                   |
+|  10 Squats        |
+|  30 sec           |
++-------------------+
+```
+
+### Design sobre et professionnel
+
+- **Titres catégorie** : Texte simple, pas de badges colorés
+- **Cartes** : Fond vidéo, overlay gradient, texte blanc
+- **Scroll horizontal** par catégorie
+- **Pas d'icônes décoratives**
+- **Palette** : Uniquement grayscale + blanc
+
+### Fichier à créer
+`src/components/ProgramsSection.tsx`
+
+### Intégration
+Remplacer `EmptySection` pour l'onglet Programmes dans `Index.tsx`
 
 ---
 
-## Implementation Technique
+## Partie 3 : Réorganisation de l'ordre dans ProgressionSection
 
-### Fichiers a modifier
+Selon les screenshots, l'ordre actuel n'est pas optimal. Nouvel ordre :
 
-| Fichier | Action |
-|---------|--------|
-| `src/components/ProgressionSection.tsx` | Remplacer completement |
-
-### Composants supprimes
-- Toutes les icones Lucide (Flame, Trophy, TrendingUp, Calendar)
-- Tous les gradients colores (from-orange-500, from-yellow-500)
-- Toutes les bordures colorees (border-orange-500/30)
-- Tous les emojis dans les categories
-
-### Nouveaux elements
-- Cercles de semaine (simples div avec bg-white ou bg-muted)
-- Hero card avec video (reutiliser les assets existants)
-- Grid de petites cards grises
+1. `Cette semaine` + cercles jours
+2. Applications connectées (horizontal scroll)
+3. `X jours consécutifs`
+4. Hero card vidéo
+5. Grille activités précédentes
+6. Stats footer
 
 ---
 
-## Mapping Videos pour Activites
+## Détails techniques
 
-Reutiliser les videos existantes :
+### Badge de connexion (style unifié)
+
+```text
+<div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-background rounded-full flex items-center justify-center">
+  <div className="w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center">
+    <Check className="w-2 h-2 text-gray-800" strokeWidth={3} />
+  </div>
+</div>
+```
+
+### Effet de sélection simplifié
+
+```text
+// Sélectionné
+className="scale-110 shadow-lg"
+
+// Non sélectionné  
+className="opacity-40 hover:opacity-70"
+
+// Transition
+className="transition-all duration-200"
+```
+
+### Programme Card
+
+```text
+<div className="relative w-36 aspect-[3/4] rounded-2xl overflow-hidden shrink-0">
+  <video src={videoSrc} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" />
+  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+  <div className="absolute bottom-3 left-3 right-3">
+    <p className="text-sm font-medium text-white">{name}</p>
+    <p className="text-xs text-white/60">{duration}</p>
+  </div>
+</div>
+```
+
+---
+
+## Ordre d'implémentation
+
+1. **Corriger ProgressionSection** - Refaire le sélecteur d'apps avec badges propres
+2. **Créer ProgramsSection** - Nouvelle interface programmes par catégorie
+3. **Intégrer dans Index.tsx** - Remplacer EmptySection
+
+---
+
+## Mapping vidéos pour programmes
+
 ```text
 squats-10 → exercise-squats.mp4
 pompes-10 → exercise-pushups.mp4
@@ -129,44 +187,8 @@ pause → exercise-pause.mp4
 
 ---
 
-## Palette de Couleurs (stricte)
+## Résultat attendu
 
-- **Fond principal** : bg-background (13% lightness)
-- **Cards** : bg-card ou bg-secondary (12-18% lightness)
-- **Texte principal** : text-foreground (blanc 95%)
-- **Texte secondaire** : text-muted-foreground (gris 60%)
-- **Accents** : AUCUN - tout en niveaux de gris
-- **Cercles actifs** : bg-white
-- **Cercles inactifs** : bg-muted
-
----
-
-## Code Simplifie
-
-La nouvelle structure sera beaucoup plus legere :
-
-```text
-ProgressionSection
-├── WeekIndicator (7 cercles + texte streak)
-├── HeroActivityCard (video + overlay + info)
-└── PreviousActivitiesGrid (2 colonnes, 4-6 cards max)
-```
-
-Pas de :
-- Dropdown/toggle semaine/mois
-- Graphiques
-- Progress bars colorees
-- Category breakdown avec emojis
-- Icones Lucide decoratives
-
----
-
-## Resultat Attendu
-
-Une interface qui :
-- S'integre parfaitement avec le reste de l'app
-- Fait "professionnel" et "premium"
-- Utilise les videos comme element visuel principal
-- Reste sobre et minimaliste
-- Ne surcharge pas l'utilisateur d'informations
-
+- **Routines** : Sélecteur d'apps discret et élégant, cohérent avec AppList
+- **Programmes** : Liste organisée par catégorie avec preview vidéo
+- **Cohérence visuelle** : Même esthétique sombre et minimaliste partout
