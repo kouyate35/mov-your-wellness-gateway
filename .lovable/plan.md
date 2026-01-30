@@ -1,194 +1,191 @@
 
-# Plan de Correction Routines + Développement Programmes
+# Plan : Ajout FOCUS aux Programmes + Section Insights Premium
 
-## Partie 1 : Correction des badges d'apps dans Routines
+## Partie 1 : Catégorie FOCUS dans Programmes
 
-### Problèmes identifiés (screenshots)
+### Situation actuelle
+Les 3 programmes FOCUS (intention, timer, affirmation) n'ont pas de vidéos individuelles. Actuellement :
+- `category-focus-video.mp4` existe (vidéo générique de la catégorie)
+- `ProgramsSection.tsx` exclut FOCUS explicitement (ligne 87)
+- `Explore.tsx` utilise `categoryFocusVideo` comme fallback
 
-| Problème | Cause |
-|----------|-------|
-| Badge trop gros | `w-5 h-5` au lieu de `w-4 h-4` |
-| Position maladroite | `-bottom-1 -left-1` crée un chevauchement |
-| Ring de sélection disgracieux | `ring-2 ring-offset-2` = double bordure |
-| Effet confus "deux blocs" | Scale + opacity mal gérés |
+### Solution proposée
+Plutôt que de créer des vidéos (impossible dans ce contexte), utiliser la vidéo générique FOCUS comme fond pour les 3 cartes, avec des variations visuelles subtiles :
 
-### Solution : Aligner sur le style AppList
-
-Le composant `AppList` a déjà un badge de connexion élégant et discret :
 ```text
-- Badge plus petit (w-4 h-4)
-- Position naturelle (-bottom-0.5 -left-0.5)
-- Bordure background pour intégration
-- Pas de ring, juste une légère opacité pour non-sélectionné
++-------+ +-------+ +-------+
+|       | |       | |       |
+| VIDEO | | VIDEO | | VIDEO |  <- même vidéo focus mais overlay différent
+|       | |       | |       |
+|Intent.| |Timer  | |Affirm.|
++-------+ +-------+ +-------+
 ```
 
-### Fichier à modifier
-`src/components/ProgressionSection.tsx`
+### Fichiers à modifier
 
-### Nouveau design du sélecteur d'apps
+| Fichier | Modification |
+|---------|--------------|
+| `src/components/ProgramsSection.tsx` | Ajouter mapping vidéo FOCUS + inclure catégorie |
 
-```text
-+------------------------------------------+
-|                                          |
-|  [TikTok] [Insta] [Snap] [Discord]       |
-|     ✓        ✓       ✓       ✓           |
-|                                          |
-+------------------------------------------+
+### Code clé
+```typescript
+// Ajouter au videoMap
+"intention": "/src/assets/category-focus-video.mp4",
+"timer": "/src/assets/category-focus-video.mp4",
+"affirmation": "/src/assets/category-focus-video.mp4",
 
-- Taille icône : w-12 h-12 (au lieu de md qui est w-12)
-- Badge : w-4 h-4, -bottom-0.5 -left-0.5
-- Sélection : juste scale-110 + légère ombre
-- Non sélectionné : opacity-50
-- PAS de ring/outline de sélection
+// Retirer le filtre exclusion FOCUS
+const categoriesWithVideos = categories; // Toutes les catégories maintenant
 ```
 
 ---
 
-## Partie 2 : Section Programmes
+## Partie 2 : Section Insights Premium
 
-### Objectif
-Créer une interface "Programmes" qui affiche les 12 programmes organisés par catégorie, avec un design cohérent et premium.
+### Concept : "Journal de Bien-être Digital"
 
-### Concept : Liste par catégorie avec preview vidéo
+L'onglet Insights doit offrir une vue analytique claire et premium sur l'usage des apps et l'impact de Workout.
 
-Inspiré des autres sections mais adapté pour une navigation par catégorie :
+### Structure proposée
 
 ```text
 +------------------------------------------+
 |                                          |
-|  MOVE                                    |
-|  Corps & Mobilité                        |
+|  Temps économisé                         |
+|  2h 34min cette semaine                  |
+|  ↑ 45% vs la semaine dernière            |
 |                                          |
-|  +-------+ +-------+ +-------+           |
-|  |       | |       | |       |           |
-|  | VIDEO | | VIDEO | | VIDEO |  <- scroll|
-|  |       | |       | |       |     horiz |
-|  |Squats | |Pompes | |Gainage|           |
-|  +-------+ +-------+ +-------+           |
++------------------------------------------+
 |                                          |
-|  FLEX                                    |
-|  Souplesse & Articulation                |
+|  +------------------------------------+  |
+|  |                                    |  |
+|  |  [GRAPHIQUE MINIMALISTE]           |  |
+|  |  Courbe temps d'écran 7 jours      |  |
+|  |                                    |  |
+|  +------------------------------------+  |
 |                                          |
-|  +-------+ +-------+ +-------+           |
-|  | VIDEO | | VIDEO | | VIDEO |           |
-|  |Lateral| |Pince  | |Yoga   |           |
-|  +-------+ +-------+ +-------+           |
++------------------------------------------+
 |                                          |
-|  BREATH                                  |
-|  ...                                     |
+|  Apps les plus défiées                   |
+|                                          |
+|  TikTok     ████████████░  32 sessions   |
+|  Instagram  ████████░░░░░  21 sessions   |
+|  Snapchat   ████░░░░░░░░░  12 sessions   |
+|                                          |
++------------------------------------------+
+|                                          |
+|  Impact bien-être                        |
+|                                          |
+|  +-------------+ +-------------+         |
+|  | 147         | | 23          |         |
+|  | Squats      | | Minutes     |         |
+|  | effectués   | | respiration |         |
+|  +-------------+ +-------------+         |
+|                                          |
++------------------------------------------+
+|                                          |
+|  Meilleur moment                         |
+|  Tu es plus actif à 14h-16h              |
 |                                          |
 +------------------------------------------+
 ```
 
-### Structure des cartes programme
+### Principes de design
 
-```text
-+-------------------+
-|                   |
-|  [VIDEO LOOP]     |  <- aspect-[3/4]
-|                   |
-|  Gradient bottom  |
-|                   |
-|  10 Squats        |
-|  30 sec           |
-+-------------------+
-```
+1. **Minimalisme total** : Pas de graphiques complexes, juste des barres horizontales simples
+2. **Palette grayscale** : Uniquement noir/blanc/gris, pas de couleurs d'accent
+3. **Typographie claire** : Grands chiffres pour les métriques clés
+4. **Hiérarchie visuelle** : Les infos les plus importantes en haut
+5. **Pas d'icônes décoratives** : Juste du texte et des formes géométriques
 
-### Design sobre et professionnel
+### Composants Insights
 
-- **Titres catégorie** : Texte simple, pas de badges colorés
-- **Cartes** : Fond vidéo, overlay gradient, texte blanc
-- **Scroll horizontal** par catégorie
-- **Pas d'icônes décoratives**
-- **Palette** : Uniquement grayscale + blanc
+| Composant | Description |
+|-----------|-------------|
+| `TimeSavedHero` | Grand chiffre "temps économisé" + comparaison semaine |
+| `WeeklyChart` | Courbe minimaliste 7 jours (barres verticales grises) |
+| `TopAppsRanking` | Top 3 apps avec barres de progression horizontales |
+| `WellnessImpact` | Grid 2 colonnes avec métriques (squats, minutes respiration) |
+| `BestMoment` | Insight sur l'heure la plus active |
 
 ### Fichier à créer
-`src/components/ProgramsSection.tsx`
+`src/components/InsightsSection.tsx`
 
 ### Intégration
-Remplacer `EmptySection` pour l'onglet Programmes dans `Index.tsx`
+Remplacer `EmptySection` pour l'onglet Insights dans `Index.tsx` (case 3)
 
 ---
 
-## Partie 3 : Réorganisation de l'ordre dans ProgressionSection
+## Partie 3 : Mise à jour des autres fichiers
 
-Selon les screenshots, l'ordre actuel n'est pas optimal. Nouvel ordre :
+### ProgressionSection.tsx
+Ajouter les programmes FOCUS au videoMap si utilisés dans l'historique
 
-1. `Cette semaine` + cercles jours
-2. Applications connectées (horizontal scroll)
-3. `X jours consécutifs`
-4. Hero card vidéo
-5. Grille activités précédentes
-6. Stats footer
+### Explore.tsx
+Déjà configuré avec fallback FOCUS (aucun changement nécessaire)
 
 ---
 
-## Détails techniques
-
-### Badge de connexion (style unifié)
+## Structure finale InsightsSection
 
 ```text
-<div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-background rounded-full flex items-center justify-center">
-  <div className="w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center">
-    <Check className="w-2 h-2 text-gray-800" strokeWidth={3} />
-  </div>
-</div>
+InsightsSection
+├── TimeSavedHero (chiffre principal + tendance)
+├── WeeklyActivityChart (7 barres verticales)
+├── TopChallengedApps (3 apps avec progress bars)
+├── WellnessImpactGrid (2x2 stats cards)
+└── BestMomentInsight (texte simple)
 ```
 
-### Effet de sélection simplifié
+---
 
-```text
-// Sélectionné
-className="scale-110 shadow-lg"
+## Palette stricte pour Insights
 
-// Non sélectionné  
-className="opacity-40 hover:opacity-70"
+- **Fond** : `bg-background` (13% lightness)
+- **Cards** : `bg-secondary` (légèrement plus clair)
+- **Texte principal** : `text-foreground` (blanc)
+- **Texte secondaire** : `text-muted-foreground` (gris)
+- **Barres de progression** : `bg-foreground` (blanc) sur `bg-muted` (gris foncé)
+- **Aucune couleur d'accent** : Pas de vert, bleu, violet, etc.
 
-// Transition
-className="transition-all duration-200"
-```
+---
 
-### Programme Card
+## Données mockées pour Insights
 
-```text
-<div className="relative w-36 aspect-[3/4] rounded-2xl overflow-hidden shrink-0">
-  <video src={videoSrc} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-  <div className="absolute bottom-3 left-3 right-3">
-    <p className="text-sm font-medium text-white">{name}</p>
-    <p className="text-xs text-white/60">{duration}</p>
-  </div>
-</div>
+```typescript
+const mockInsights = {
+  timeSaved: { 
+    minutes: 154, 
+    percentChange: 45 
+  },
+  weeklyActivity: [3, 5, 4, 6, 2, 0, 0], // sessions par jour
+  topApps: [
+    { id: "tiktok", sessions: 32 },
+    { id: "instagram", sessions: 21 },
+    { id: "snapchat", sessions: 12 },
+  ],
+  wellnessStats: {
+    totalSquats: 147,
+    breathMinutes: 23,
+    stretchMinutes: 18,
+    focusSessions: 9,
+  },
+  bestHour: "14h-16h",
+};
 ```
 
 ---
 
 ## Ordre d'implémentation
 
-1. **Corriger ProgressionSection** - Refaire le sélecteur d'apps avec badges propres
-2. **Créer ProgramsSection** - Nouvelle interface programmes par catégorie
-3. **Intégrer dans Index.tsx** - Remplacer EmptySection
-
----
-
-## Mapping vidéos pour programmes
-
-```text
-squats-10 → exercise-squats.mp4
-pompes-10 → exercise-pushups.mp4
-gainage → exercise-plank.mp4
-lateral-stretch → exercise-lateral-stretch.mp4
-forward-fold → exercise-forward-fold.mp4
-yoga-arms → exercise-yoga-arms.mp4
-box-breathing → exercise-box-breathing.mp4
-coherence → exercise-coherence.mp4
-pause → exercise-pause.mp4
-```
+1. **Modifier ProgramsSection.tsx** : Ajouter FOCUS au videoMap + retirer le filtre
+2. **Créer InsightsSection.tsx** : Nouvelle interface analytics minimaliste
+3. **Modifier Index.tsx** : Remplacer EmptySection par InsightsSection pour case 3
 
 ---
 
 ## Résultat attendu
 
-- **Routines** : Sélecteur d'apps discret et élégant, cohérent avec AppList
-- **Programmes** : Liste organisée par catégorie avec preview vidéo
-- **Cohérence visuelle** : Même esthétique sombre et minimaliste partout
+- **Programmes** : 4 catégories complètes (MOVE, FLEX, BREATH, FOCUS)
+- **Insights** : Dashboard analytique premium et minimaliste
+- **Cohérence** : Même esthétique sombre partout
