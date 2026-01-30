@@ -2,15 +2,22 @@ import { categories } from "@/data/categories";
 
 // Video mapping for programs
 const videoMap: Record<string, string> = {
+  // MOVE
   "squats-10": "/src/assets/exercise-squats.mp4",
   "pompes-10": "/src/assets/exercise-pushups.mp4",
   "gainage": "/src/assets/exercise-plank.mp4",
+  // FLEX
   "lateral-stretch": "/src/assets/exercise-lateral-stretch.mp4",
   "forward-fold": "/src/assets/exercise-forward-fold.mp4",
   "yoga-arms": "/src/assets/exercise-yoga-arms.mp4",
+  // BREATH
   "box-breathing": "/src/assets/exercise-box-breathing.mp4",
   "coherence": "/src/assets/exercise-coherence.mp4",
   "pause": "/src/assets/exercise-pause.mp4",
+  // FOCUS
+  "intention": "/src/assets/category-focus-video.mp4",
+  "timer": "/src/assets/category-focus-video.mp4",
+  "affirmation": "/src/assets/category-focus-video.mp4",
 };
 
 // Program card with video background
@@ -83,10 +90,8 @@ const CategoryRow = ({
 };
 
 const ProgramsSection = () => {
-  // Filter categories that have programs (exclude focus for now as no videos)
-  const categoriesWithVideos = categories.filter(cat => 
-    cat.id === "move" || cat.id === "flex" || cat.id === "breath"
-  );
+  // All categories now have video support
+  const categoriesWithVideos = categories;
 
   return (
     <div className="py-6 space-y-8 animate-fade-in">

@@ -3,7 +3,7 @@ import CategoryCarousel from "@/components/CategoryCarousel";
 import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
-import EmptySection from "@/components/EmptySection";
+import InsightsSection from "@/components/InsightsSection";
 import ProgramsSection from "@/components/ProgramsSection";
 import SideMenu from "@/components/SideMenu";
 import AppAccessModal from "@/components/AppAccessModal";
@@ -86,7 +86,7 @@ const Index = () => {
       case 2:
         return <ProgramsSection />;
       case 3:
-        return <EmptySection title="Insights" />;
+        return <InsightsSection />;
       default:
         return null;
     }
