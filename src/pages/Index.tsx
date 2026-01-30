@@ -4,6 +4,7 @@ import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
 import EmptySection from "@/components/EmptySection";
+import ProgramsSection from "@/components/ProgramsSection";
 import SideMenu from "@/components/SideMenu";
 import AppAccessModal from "@/components/AppAccessModal";
 import AppScanAnimation from "@/components/AppScanAnimation";
@@ -83,7 +84,7 @@ const Index = () => {
       case 1:
         return <ProgressionSection />;
       case 2:
-        return <EmptySection title="Programmes" />;
+        return <ProgramsSection />;
       case 3:
         return <EmptySection title="Insights" />;
       default:
