@@ -100,7 +100,7 @@ const getVideoForProgram = (programId: string): string => {
   return videoMap[programId] || videoMap["squats-10"];
 };
 
-// Connected apps selector with badges
+// Connected apps selector with badges - clean style matching AppList
 const ConnectedAppsSelector = ({ 
   connectedApps, 
   selectedApp, 
@@ -111,7 +111,7 @@ const ConnectedAppsSelector = ({
   onSelectApp: (appId: string) => void;
 }) => {
   return (
-    <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="flex items-center gap-4 overflow-x-auto pb-1 scrollbar-hide">
       {connectedApps.map((appId) => {
         const app = apps.find(a => a.id === appId);
         if (!app) return null;
@@ -123,21 +123,18 @@ const ConnectedAppsSelector = ({
             key={appId}
             onClick={() => onSelectApp(appId)}
             className={`relative shrink-0 transition-all duration-200 ${
-              isSelected ? "scale-105" : "opacity-70 hover:opacity-100"
+              isSelected ? "scale-110" : "opacity-40 hover:opacity-70"
             }`}
           >
             {/* App icon */}
             {getAppIcon(appId, "md", true)}
             
-            {/* Connection badge - white circle with checkmark */}
-            <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-foreground rounded-full flex items-center justify-center shadow-lg">
-              <Check className="w-3 h-3 text-background" strokeWidth={3} />
+            {/* Connection badge - ChatGPT style (small check circle at bottom-left) */}
+            <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-background rounded-full flex items-center justify-center">
+              <div className="w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center">
+                <Check className="w-2 h-2 text-gray-800" strokeWidth={3} />
+              </div>
             </div>
-            
-            {/* Selection indicator ring */}
-            {isSelected && (
-              <div className="absolute inset-0 rounded-2xl ring-2 ring-foreground ring-offset-2 ring-offset-background" />
-            )}
           </button>
         );
       })}
