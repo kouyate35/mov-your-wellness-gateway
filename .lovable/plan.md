@@ -1,243 +1,172 @@
 
-# Plan de Refonte : Explorer + Routines
 
-## Vue d'ensemble
+# Plan de Refonte Totale : Section Routines
 
-Ce plan couvre deux modifications majeures :
-1. **Repenser completement la page Explorer** - Abandonner le bento grid pour une approche "game changer" plus immersive
-2. **Creer la section Routines** - Interface affichant uniquement les apps connectees avec barres de temps d'usage et detail premium
+## Diagnostic du Probleme
+
+La section "Routines" actuelle casse completement l'esthetique premium de l'application :
+
+| Ce qui marche ailleurs | Ce qui casse dans Routines |
+|------------------------|---------------------------|
+| Videos en fond, overlay noir | Gradients orange/jaune voyants |
+| Texte blanc sur fond sombre | Icones colorees enfantines (Flame, Trophy) |
+| Minimalisme, peu de texte | Dashboard surcharge d'infos |
+| Pas de bordures colorees | Cards avec bordures orange/yellow |
+| Squircles sobres | Emojis dans les categories |
 
 ---
 
-## 1. Nouvelle Page Explorer - Concept "Immersive Feed"
+## Nouveau Concept : "Journal Minimaliste"
 
-### Probleme actuel
-Le bento grid avec cartes de differentes tailles ne fonctionne pas visuellement. Il manque d'impact et ressemble trop a une simple grille.
+### Philosophie
+- **Tout est sombre** : meme palette que le reste (13% lightness)
+- **Pas d'icones colorees** : juste du texte et des formes subtiles
+- **Respiration** : beaucoup d'espace vide, peu d'elements
+- **Videos** : reutiliser les videos d'exercice comme element visuel principal
+- **Pas de gamification voyante** : pas de flames, trophees, badges colores
 
-### Nouveau concept : "Fullscreen Vertical Swipe"
-Inspire des stories Instagram/TikTok mais pour les exercices. Un format vertical immersif ou chaque programme prend tout l'ecran.
+---
+
+## Structure de la Nouvelle Interface
 
 ```text
 +------------------------------------------+
 |                                          |
-|         VIDEO EXERCICE                   |
-|         (Fullscreen)                     |
+|  Cette semaine                           |
 |                                          |
-|     [Overlay gradient bottom]            |
+|  Lun  Mar  Mer  Jeu  Ven  Sam  Dim       |
+|  ●    ●    ●    ○    ○    ○    ○         |
 |                                          |
-|  +---------+                             |
-|  | MOVE    |  <- Badge category          |
-|  +---------+                             |
-|                                          |
-|  SQUATS                                  |
-|  ~~~~~~~~                                |
-|  30 secondes · Renforce tes jambes       |
-|                                          |
-|       [ Commencer ]                      |
+|  7 jours consecutifs                     |
 |                                          |
 +------------------------------------------+
-|  o   o   o   o   <- Navigation dots      |
+|                                          |
+|  +------------------------------------+  |
+|  |                                    |  |
+|  |  [VIDEO DERNIERE ACTIVITE]         |  |
+|  |        (fullscreen card)           |  |
+|  |                                    |  |
+|  |  Aujourd'hui, 14:32                |  |
+|  |  10 Squats · TikTok debloque       |  |
+|  |                                    |  |
+|  +------------------------------------+  |
+|                                          |
+|  +-------------+  +-------------+        |
+|  | Hier 22:45  |  | Hier 18:20  |        |
+|  | 10 Pompes   |  | Flex lat.   |        |
+|  +-------------+  +-------------+        |
+|                                          |
 +------------------------------------------+
 ```
 
-### Structure
-- Scroll vertical snap : chaque swipe = nouveau programme
-- 12 programmes defileraient (3 par categorie x 4 categories)
-- Video fullscreen en background
-- Badge category en haut a gauche avec couleur (vert MOVE, orange FLEX, bleu BREATH, violet FOCUS)
-- Bouton CTA "Commencer" pour lancer le challenge AR
-- Effet parallax sur le swipe
+---
+
+## Elements de Design
+
+### 1. Indicateur de Serie (Streak)
+- **Pas d'icone flame** : juste des cercles
+- Cercles remplis (●) pour les jours completes
+- Cercles vides (○) pour les jours futurs/manques
+- Texte sobre : "7 jours consecutifs"
+- Couleur : blanc/gris uniquement
+
+### 2. Derniere Activite (Hero Card)
+- **Video en fond** de l'exercice realise
+- Overlay gradient noir
+- Timestamp discret en haut
+- Nom du programme + app debloquee
+- Meme style que ExploreCard mais en miniature
+
+### 3. Activites Precedentes (Petites Cards)
+- Grid de 2 colonnes
+- Fond sombre uni (pas de video pour economiser les ressources)
+- Timestamp + nom de l'exercice
+- Coins tres arrondis (rounded-2xl)
+
+### 4. Statistiques (si necessaire)
+- **En bas de page**, tres discret
+- Juste des chiffres : "47 sessions · 2h 36min"
+- Pas de cards, pas de bordures
+- Texte muted-foreground
+
+---
+
+## Implementation Technique
 
 ### Fichiers a modifier
+
 | Fichier | Action |
 |---------|--------|
-| `src/pages/Explore.tsx` | Remplacer completement par le nouveau design immersif |
-| `src/components/BentoCard.tsx` | Supprimer (plus utilise) |
+| `src/components/ProgressionSection.tsx` | Remplacer completement |
 
-### Nouveau composant : ExploreCard
+### Composants supprimes
+- Toutes les icones Lucide (Flame, Trophy, TrendingUp, Calendar)
+- Tous les gradients colores (from-orange-500, from-yellow-500)
+- Toutes les bordures colorees (border-orange-500/30)
+- Tous les emojis dans les categories
+
+### Nouveaux elements
+- Cercles de semaine (simples div avec bg-white ou bg-muted)
+- Hero card avec video (reutiliser les assets existants)
+- Grid de petites cards grises
+
+---
+
+## Mapping Videos pour Activites
+
+Reutiliser les videos existantes :
 ```text
-Props:
-- program: Program (id, name, duration, description)
-- category: Category (id, name, color)
-- videoSrc: string
-- onStart: () => void
-
-Structure:
-- Container fullscreen h-screen snap-start
-- Video absolute inset-0
-- Gradient overlay from-transparent to-black/80
-- Category badge (rounded-full, bg-category-color)
-- Title + description + duration
-- CTA button
+squats-10 → exercise-squats.mp4
+pompes-10 → exercise-pushups.mp4
+gainage → exercise-plank.mp4
+lateral-stretch → exercise-lateral-stretch.mp4
+forward-fold → exercise-forward-fold.mp4
+yoga-arms → exercise-yoga-arms.mp4
+box-breathing → exercise-box-breathing.mp4
+coherence → exercise-coherence.mp4
+pause → exercise-pause.mp4
 ```
 
 ---
 
-## 2. Section Routines - Apps Connectees avec Usage
+## Palette de Couleurs (stricte)
 
-### Concept
-La section "Routines" (onglet 2 de la home) affiche uniquement les applications connectees a Workout, avec une barre de progression montrant le temps d'usage (comme Image 2).
-
-### Structure de la liste
-```text
-+------------------------------------------+
-|                                          |
-|  +------+  TikTok               >        |
-|  | icon |  ==================== 5h 19min |
-|  +------+                                |
-|                                          |
-|  +------+  Instagram            >        |
-|  | icon |  ========             2h 02min |
-|  +------+                                |
-|                                          |
-+------------------------------------------+
-```
-
-### Details
-- Icone app squircle avec badge de connexion (check)
-- Nom de l'app
-- Barre de progression grise (pourcentage du temps max)
-- Temps d'usage a droite
-- Chevron pour naviguer vers le detail
-
-### Nouveau composant : RoutinesList
-```text
-Props:
-- connectedApps: AppData[] (filtre sur isActive=true)
-
-Pour chaque app:
-- Icon + check badge
-- Name
-- Progress bar (gris sombre, remplissage gris clair)
-- Usage time (simule pour l'instant)
-- Chevron navigation
-```
+- **Fond principal** : bg-background (13% lightness)
+- **Cards** : bg-card ou bg-secondary (12-18% lightness)
+- **Texte principal** : text-foreground (blanc 95%)
+- **Texte secondaire** : text-muted-foreground (gris 60%)
+- **Accents** : AUCUN - tout en niveaux de gris
+- **Cercles actifs** : bg-white
+- **Cercles inactifs** : bg-muted
 
 ---
 
-## 3. Interface Detail Routine (au clic sur une app)
+## Code Simplifie
 
-### Concept (inspire de l'Image 3)
-Quand on clique sur une app dans Routines, on ouvre une interface premium avec :
-- Header video fullscreen du programme/categorie selectionne
-- Player controls (play/pause, timeline)
-- Titre du programme
-- Description
-- Section "My Progress" avec graphique
+La nouvelle structure sera beaucoup plus legere :
 
-### Structure
 ```text
-+------------------------------------------+
-|  <                              ...      |
-|                                          |
-|         [VIDEO EXERCICE]                 |
-|         (Header fullscreen 60%)          |
-|             [II]                          |
-|                                          |
-|    >   0:00 -------------------- 5:40    |
-+------------------------------------------+
-|                                          |
-|  Concentration Curl            O 15 min  |
-|  ~~~~~~~~~~~~~~~~~~                      |
-|  Seated Dumbbell                         |
-|                                          |
-|  Description du programme...             |
-|                                          |
-+------------------------------------------+
-|                                          |
-|  My Progress                    Edit +   |
-|  47.5kg                                  |
-|                                          |
-|  [=====GRAPH=====]                       |
-|  Mon  Wed  Thr  Sun                      |
-|                                          |
-+------------------------------------------+
+ProgressionSection
+├── WeekIndicator (7 cercles + texte streak)
+├── HeroActivityCard (video + overlay + info)
+└── PreviousActivitiesGrid (2 colonnes, 4-6 cards max)
 ```
 
-### Fichiers a creer
-| Fichier | Description |
-|---------|-------------|
-| `src/pages/RoutineDetail.tsx` | Page detail d'une routine app |
-| `src/components/RoutinesList.tsx` | Liste des apps connectees avec usage |
+Pas de :
+- Dropdown/toggle semaine/mois
+- Graphiques
+- Progress bars colorees
+- Category breakdown avec emojis
+- Icones Lucide decoratives
 
 ---
 
-## 4. Integration dans Index.tsx
+## Resultat Attendu
 
-### Modification du renderTabContent
-Remplacer le `EmptySection` pour l'onglet "Routines" par le nouveau composant `RoutinesList` qui filtre les apps sur `isActive === true`.
+Une interface qui :
+- S'integre parfaitement avec le reste de l'app
+- Fait "professionnel" et "premium"
+- Utilise les videos comme element visuel principal
+- Reste sobre et minimaliste
+- Ne surcharge pas l'utilisateur d'informations
 
-```text
-case 1: // Routines
-  return <RoutinesList apps={connectedApps} />;
-```
-
-### Logique de filtrage
-```text
-const connectedApps = useMemo(() => {
-  return availableApps.filter(app => activeApps[app.id] === true);
-}, [availableApps, activeApps]);
-```
-
----
-
-## 5. Donnees simulees pour l'usage
-
-En attendant l'integration Android reelle, on simule le temps d'usage :
-```text
-const mockUsageData: Record<string, number> = {
-  tiktok: 319, // 5h 19min en minutes
-  instagram: 122, // 2h 02min
-  youtube: 180,
-  // etc.
-};
-```
-
----
-
-## Ordre d'Implementation
-
-1. **Creer RoutinesList** - Composant liste des apps connectees avec barres d'usage
-2. **Integrer RoutinesList dans Index.tsx** - Remplacer EmptySection pour onglet Routines
-3. **Creer RoutineDetail** - Page detail avec video header et progression
-4. **Ajouter route /routine/:appId** - Dans App.tsx
-5. **Refaire Explore.tsx** - Design immersif vertical swipe fullscreen
-6. **Supprimer BentoCard.tsx** - Plus necessaire
-
----
-
-## Details Techniques
-
-### ExploreCard - Animations
-- Transition fade-in/out sur le swipe
-- Parallax sur le texte (bouge plus lentement que la video)
-- Scale effect sur le bouton au hover
-
-### RoutinesList - Progress Bar
-```text
-// Calcul pourcentage (max 6h = 360min)
-const maxMinutes = 360;
-const percentage = Math.min((usageMinutes / maxMinutes) * 100, 100);
-
-// Affichage
-<div className="h-1.5 bg-muted rounded-full flex-1">
-  <div 
-    className="h-full bg-muted-foreground/50 rounded-full"
-    style={{ width: `${percentage}%` }}
-  />
-</div>
-```
-
-### RoutineDetail - Video Player
-- Video autoplay loop muted
-- Overlay avec gradient
-- Controls: play/pause center, timeline bottom
-- Back button top-left
-- Options menu top-right
-
----
-
-## Assets existants a reutiliser
-- `exercise-squats.mp4`, `exercise-pushups.mp4`, etc. pour les videos programmes
-- `category-move-video.mp4`, etc. pour les headers categories
-- Images `.jpg` comme fallback poster
