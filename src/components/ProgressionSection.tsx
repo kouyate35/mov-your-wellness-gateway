@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { categories } from "@/data/categories";
+import { apps } from "@/data/apps";
+import { getAppIcon } from "@/components/AppIcons";
+import { Check } from "lucide-react";
 
 // Video mapping for activities
 const videoMap: Record<string, string> = {
@@ -13,6 +17,9 @@ const videoMap: Record<string, string> = {
   "pause": "/src/assets/exercise-pause.mp4",
 };
 
+// Mock connected apps - will be replaced with real data
+const mockConnectedApps = ["tiktok", "instagram", "snapchat", "discord"];
+
 // Mock data - will be replaced with Supabase data
 const mockData = {
   streak: 7,
@@ -25,18 +32,58 @@ const mockData = {
     { day: "Sam", completed: false },
     { day: "Dim", completed: false },
   ],
-  latestActivity: {
-    id: 1,
-    programId: "squats-10",
-    appUnlocked: "TikTok",
-    timestamp: "Aujourd'hui, 14:32",
-  },
-  previousActivities: [
-    { id: 2, programId: "box-breathing", appUnlocked: "Instagram", timestamp: "Aujourd'hui, 10:15" },
-    { id: 3, programId: "pompes-10", appUnlocked: "YouTube", timestamp: "Hier, 22:45" },
-    { id: 4, programId: "lateral-stretch", appUnlocked: "TikTok", timestamp: "Hier, 18:20" },
-    { id: 5, programId: "coherence", appUnlocked: "Twitter", timestamp: "Hier, 09:00" },
-  ],
+  // Activities per app
+  activitiesByApp: {
+    tiktok: {
+      latestActivity: {
+        id: 1,
+        programId: "squats-10",
+        appUnlocked: "TikTok",
+        timestamp: "Aujourd'hui, 14:32",
+      },
+      previousActivities: [
+        { id: 2, programId: "lateral-stretch", appUnlocked: "TikTok", timestamp: "Hier, 18:20" },
+        { id: 3, programId: "pompes-10", appUnlocked: "TikTok", timestamp: "Avant-hier, 11:00" },
+      ],
+    },
+    instagram: {
+      latestActivity: {
+        id: 4,
+        programId: "box-breathing",
+        appUnlocked: "Instagram",
+        timestamp: "Aujourd'hui, 10:15",
+      },
+      previousActivities: [
+        { id: 5, programId: "coherence", appUnlocked: "Instagram", timestamp: "Hier, 09:00" },
+        { id: 6, programId: "yoga-arms", appUnlocked: "Instagram", timestamp: "Lun, 20:30" },
+      ],
+    },
+    snapchat: {
+      latestActivity: {
+        id: 7,
+        programId: "pompes-10",
+        appUnlocked: "Snapchat",
+        timestamp: "Hier, 22:45",
+      },
+      previousActivities: [
+        { id: 8, programId: "gainage", appUnlocked: "Snapchat", timestamp: "Dim, 15:00" },
+      ],
+    },
+    discord: {
+      latestActivity: {
+        id: 9,
+        programId: "forward-fold",
+        appUnlocked: "Discord",
+        timestamp: "Mar, 19:20",
+      },
+      previousActivities: [
+        { id: 10, programId: "pause", appUnlocked: "Discord", timestamp: "Lun, 14:00" },
+      ],
+    },
+  } as Record<string, {
+    latestActivity: { id: number; programId: string; appUnlocked: string; timestamp: string };
+    previousActivities: { id: number; programId: string; appUnlocked: string; timestamp: string }[];
+  }>,
   totalSessions: 47,
   totalMinutes: 156,
 };
@@ -51,6 +98,51 @@ const getProgramName = (programId: string): string => {
 
 const getVideoForProgram = (programId: string): string => {
   return videoMap[programId] || videoMap["squats-10"];
+};
+
+// Connected apps selector with badges
+const ConnectedAppsSelector = ({ 
+  connectedApps, 
+  selectedApp, 
+  onSelectApp 
+}: { 
+  connectedApps: string[]; 
+  selectedApp: string; 
+  onSelectApp: (appId: string) => void;
+}) => {
+  return (
+    <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      {connectedApps.map((appId) => {
+        const app = apps.find(a => a.id === appId);
+        if (!app) return null;
+        
+        const isSelected = selectedApp === appId;
+        
+        return (
+          <button
+            key={appId}
+            onClick={() => onSelectApp(appId)}
+            className={`relative shrink-0 transition-all duration-200 ${
+              isSelected ? "scale-105" : "opacity-70 hover:opacity-100"
+            }`}
+          >
+            {/* App icon */}
+            {getAppIcon(appId, "md", true)}
+            
+            {/* Connection badge - white circle with checkmark */}
+            <div className="absolute -bottom-1 -left-1 w-5 h-5 bg-foreground rounded-full flex items-center justify-center shadow-lg">
+              <Check className="w-3 h-3 text-background" strokeWidth={3} />
+            </div>
+            
+            {/* Selection indicator ring */}
+            {isSelected && (
+              <div className="absolute inset-0 rounded-2xl ring-2 ring-foreground ring-offset-2 ring-offset-background" />
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
 };
 
 // Week indicator with simple circles
@@ -71,16 +163,20 @@ const WeekIndicator = ({ days, streak }: { days: typeof mockData.weekDays; strea
           </div>
         ))}
       </div>
-      
-      <p className="text-sm text-foreground">
-        {streak} jours consécutifs
-      </p>
     </div>
   );
 };
 
+// Type for activity
+type Activity = {
+  id: number;
+  programId: string;
+  appUnlocked: string;
+  timestamp: string;
+};
+
 // Hero card with video background
-const HeroActivityCard = ({ activity }: { activity: typeof mockData.latestActivity }) => {
+const HeroActivityCard = ({ activity }: { activity: Activity }) => {
   const programName = getProgramName(activity.programId);
   const videoSrc = getVideoForProgram(activity.programId);
 
@@ -113,7 +209,7 @@ const HeroActivityCard = ({ activity }: { activity: typeof mockData.latestActivi
 };
 
 // Small activity card
-const ActivityCard = ({ activity }: { activity: typeof mockData.previousActivities[0] }) => {
+const ActivityCard = ({ activity }: { activity: Activity }) => {
   const programName = getProgramName(activity.programId);
 
   return (
@@ -134,20 +230,41 @@ const FooterStats = ({ sessions, minutes }: { sessions: number; minutes: number 
 };
 
 const ProgressionSection = () => {
+  const [selectedApp, setSelectedApp] = useState(mockConnectedApps[0]);
+  
+  // Get current app data
+  const currentAppData = mockData.activitiesByApp[selectedApp];
+  
   return (
-    <div className="px-4 py-6 space-y-8 animate-fade-in">
+    <div className="px-4 py-6 space-y-6 animate-fade-in">
       {/* Week indicator */}
       <WeekIndicator days={mockData.weekDays} streak={mockData.streak} />
       
-      {/* Hero card - latest activity */}
-      <HeroActivityCard activity={mockData.latestActivity} />
+      {/* Connected apps selector */}
+      <ConnectedAppsSelector 
+        connectedApps={mockConnectedApps}
+        selectedApp={selectedApp}
+        onSelectApp={setSelectedApp}
+      />
       
-      {/* Previous activities grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {mockData.previousActivities.map((activity) => (
-          <ActivityCard key={activity.id} activity={activity} />
-        ))}
-      </div>
+      {/* Streak text */}
+      <p className="text-sm text-foreground">
+        {mockData.streak} jours consécutifs
+      </p>
+      
+      {/* Hero card - latest activity for selected app */}
+      {currentAppData && (
+        <HeroActivityCard activity={currentAppData.latestActivity} />
+      )}
+      
+      {/* Previous activities grid for selected app */}
+      {currentAppData && currentAppData.previousActivities.length > 0 && (
+        <div className="grid grid-cols-2 gap-3">
+          {currentAppData.previousActivities.map((activity) => (
+            <ActivityCard key={activity.id} activity={activity} />
+          ))}
+        </div>
+      )}
       
       {/* Footer stats */}
       <FooterStats sessions={mockData.totalSessions} minutes={mockData.totalMinutes} />
