@@ -8,6 +8,7 @@ import ConnectionRequiredModal from "@/components/ConnectionRequiredModal";
 import ProgramRequiredModal from "@/components/ProgramRequiredModal";
 import ChallengeModal from "@/components/ChallengeModal";
 import FireEmojiAnimation from "@/components/FireEmojiAnimation";
+import SettingsModal from "@/components/SettingsModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
 import { Category, getCategoryById } from "@/data/categories";
@@ -22,6 +23,7 @@ const AppDetail = () => {
   const [showConnectionRequiredModal, setShowConnectionRequiredModal] = useState(false);
   const [showProgramRequiredModal, setShowProgramRequiredModal] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showFireAnimation, setShowFireAnimation] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>("move");
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
@@ -162,7 +164,10 @@ const AppDetail = () => {
                   <button className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full cursor-default w-fit">
                     Appli connectée
                   </button>
-                  <button className="w-10 h-10 flex items-center justify-center rounded-full border border-muted-foreground/30 hover:bg-muted/50 transition-colors">
+                  <button
+                    onClick={() => setShowSettingsModal(true)}
+                    className="w-10 h-10 flex items-center justify-center rounded-full border border-muted-foreground/30 hover:bg-muted/50 transition-colors"
+                  >
                     <Settings className="w-5 h-5 text-muted-foreground" />
                   </button>
                 </>
@@ -222,6 +227,11 @@ const AppDetail = () => {
           programName={selectedProgram.name}
         />
       )}
+
+      <SettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+      />
     </div>
   );
 };
