@@ -52,7 +52,7 @@ const plans: Plan[] = [
     annualPrice: 3.99,
     description: "Débloquez tout le potentiel de votre entraînement quotidien.",
     highlight: true,
-    borderColor: "from-[hsl(199,89%,48%)] via-[hsl(270,70%,60%)] to-[hsl(199,89%,48%)]",
+    borderColor: "from-[hsl(199,89%,48%)] via-[hsl(270,70%,60%)] to-[hsl(320,70%,55%)]",
     features: [
       { text: "Programmes d'entraînement illimités", included: true },
       { text: "Suivi de progression avancé", included: true },
@@ -84,8 +84,8 @@ const plans: Plan[] = [
 const Subscription = () => {
   const navigate = useNavigate();
   const [billing, setBilling] = useState<Billing>("annual");
-  const [selectedPlan, setSelectedPlan] = useState<PlanId>("classique");
-  const [expandedPlan, setExpandedPlan] = useState<PlanId | null>("classique");
+  const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
+  const [expandedPlan, setExpandedPlan] = useState<PlanId | null>(null);
 
   const savings = billing === "annual" ? 20 : 0;
 
@@ -97,66 +97,72 @@ const Subscription = () => {
     return (plan.annualPrice * 12).toFixed(2);
   };
 
+  const handleSelectPlan = (planId: PlanId) => {
+    setSelectedPlan(planId);
+    setExpandedPlan(planId);
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Hero Header */}
-      <div className="relative w-full h-[280px] overflow-hidden">
+      {/* Hero Header — taller, richer gradients */}
+      <div className="relative w-full h-[320px] overflow-hidden">
         <img
           src={subscriptionHero}
           alt="Subscription hero"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        {/* Gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background" />
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        {/* Rich multi-layer gradient for seamless fusion */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(270,70%,30%)]/20 via-transparent to-[hsl(199,89%,40%)]/15" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background via-background/80 to-transparent" />
 
-        {/* Top bar */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-4 z-10">
+        {/* Back button only — no profile icon */}
+        <div className="absolute top-0 left-0 right-0 flex items-center px-4 pt-5 z-10">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-background/20 backdrop-blur-sm text-foreground hover:bg-background/30 transition-colors"
+            className="p-2.5 rounded-full bg-black/30 backdrop-blur-md text-foreground hover:bg-black/50 transition-all"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/20 backdrop-blur-sm">
-            <span className="text-foreground text-sm font-medium">Jojo</span>
-            <div className="w-7 h-7 rounded-full bg-info flex items-center justify-center">
-              <span className="text-info-foreground font-semibold text-xs">J</span>
-            </div>
-          </div>
         </div>
 
         {/* Title overlay */}
-        <div className="absolute bottom-6 left-5 z-10">
-          <div className="flex items-center gap-2 mb-1">
-            <img src={movIcon} alt="Workout" className="w-5 h-5 rounded" />
-            <span className="text-foreground/80 text-xs font-medium tracking-wide uppercase">Workout</span>
+        <div className="absolute bottom-8 left-5 z-10">
+          <div className="flex items-center gap-2.5 mb-2">
+            <img src={movIcon} alt="Workout" className="w-6 h-6 rounded-md shadow-lg" />
+            <span className="text-foreground/70 text-xs font-semibold tracking-[0.15em] uppercase">
+              Workout
+            </span>
           </div>
-          <h1 className="text-foreground text-2xl font-bold tracking-tight">Plans upgradés</h1>
+          <h1 className="text-foreground text-[1.75rem] font-extrabold tracking-tight leading-tight">
+            Plans upgradés
+          </h1>
         </div>
       </div>
 
       {/* Billing Toggle */}
-      <div className="px-5 -mt-1">
-        <div className="flex items-center justify-between bg-secondary/80 rounded-full px-4 py-3">
-          <span className="text-foreground text-sm font-medium">Plans annuels</span>
-          <div className="flex items-center gap-2">
+      <div className="px-5 -mt-2">
+        <div className="flex items-center justify-between bg-secondary/60 backdrop-blur-sm rounded-2xl px-5 py-3.5 border border-border/30">
+          <span className="text-foreground text-sm font-semibold">Plans annuels</span>
+          <div className="flex items-center gap-3">
             {savings > 0 && (
-              <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-info/20 text-info">
-                économisez {savings}% par an
+              <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[hsl(142,70%,45%)]/15 text-[hsl(142,70%,55%)] border border-[hsl(142,70%,45%)]/20">
+                -{savings}%
               </span>
             )}
             <button
               onClick={() => setBilling(billing === "annual" ? "monthly" : "annual")}
-              className={`relative w-11 h-6 rounded-full transition-colors ${
-                billing === "annual" ? "bg-foreground" : "bg-muted"
+              className={`relative w-12 h-[26px] rounded-full transition-all duration-300 ${
+                billing === "annual"
+                  ? "bg-gradient-to-r from-info to-[hsl(270,70%,60%)]"
+                  : "bg-muted"
               }`}
             >
               <span
-                className={`absolute top-[3px] w-[18px] h-[18px] rounded-full shadow-sm transition-transform ${
+                className={`absolute top-[3px] w-5 h-5 rounded-full shadow-md transition-all duration-300 ${
                   billing === "annual"
-                    ? "left-[23px] bg-background"
-                    : "left-[3px] bg-foreground"
+                    ? "left-[25px] bg-foreground"
+                    : "left-[3px] bg-foreground/80"
                 }`}
               />
             </button>
@@ -165,89 +171,89 @@ const Subscription = () => {
       </div>
 
       {/* Plans */}
-      <div className="flex-1 px-5 py-5 space-y-4 pb-32">
+      <div className="flex-1 px-5 py-5 space-y-3.5 pb-36">
         {plans.map((plan) => {
           const isSelected = selectedPlan === plan.id;
           const isExpanded = expandedPlan === plan.id;
           const price = getPrice(plan);
 
           return (
-            <div key={plan.id} className="relative">
-              {/* Gradient border for highlight plan */}
+            <div key={plan.id} className="relative group">
+              {/* Gradient border for highlighted plan */}
               {plan.highlight && (
-                <div className={`absolute -inset-[1.5px] rounded-2xl bg-gradient-to-r ${plan.borderColor} opacity-80`} />
+                <div
+                  className={`absolute -inset-[1.5px] rounded-[18px] bg-gradient-to-r ${plan.borderColor} transition-opacity ${
+                    isSelected ? "opacity-100" : "opacity-60 group-hover:opacity-80"
+                  }`}
+                />
+              )}
+
+              {/* Selected ring for non-highlight plans */}
+              {!plan.highlight && isSelected && (
+                <div className="absolute -inset-[1.5px] rounded-[18px] bg-foreground/30" />
               )}
 
               <div
-                onClick={() => setSelectedPlan(plan.id)}
-                className={`relative rounded-2xl p-5 cursor-pointer transition-all ${
+                onClick={() => handleSelectPlan(plan.id)}
+                className={`relative rounded-[17px] p-5 cursor-pointer transition-all duration-200 ${
                   plan.highlight
                     ? "bg-card"
-                    : isSelected
-                    ? "bg-card border border-border"
-                    : "bg-card/60 border border-border/50"
+                    : "bg-card/50 border border-border/40 hover:border-border/60"
                 }`}
               >
-                {/* Plan header */}
-                <div className="flex items-start justify-between mb-2">
+                {/* Radio + Badge + Price row */}
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      className={`w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
                         isSelected
-                          ? "border-foreground bg-foreground"
-                          : "border-muted-foreground/50"
+                          ? plan.highlight
+                            ? "border-info bg-info"
+                            : "border-foreground bg-foreground"
+                          : "border-muted-foreground/40"
                       }`}
                     >
                       {isSelected && (
-                        <div className="w-2 h-2 rounded-full bg-background" />
+                        <div className="w-[6px] h-[6px] rounded-full bg-background" />
                       )}
                     </div>
+                    <span
+                      className={`text-[10px] font-bold tracking-[0.12em] px-3 py-1 rounded-full ${
+                        plan.highlight
+                          ? "bg-gradient-to-r from-info/20 to-[hsl(270,70%,60%)]/20 text-info border border-info/20"
+                          : "bg-foreground/10 text-foreground/80"
+                      }`}
+                    >
+                      {plan.badge}
+                    </span>
                   </div>
 
-                  {billing === "annual" && price > 0 && (
-                    <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
-                      Économisez {((plan.monthlyPrice - plan.annualPrice) * 12).toFixed(0)} € par an*
-                    </span>
-                  )}
-                </div>
-
-                {/* Badge + Price */}
-                <div className="flex items-end justify-between mb-3">
-                  <span className="text-xs font-bold tracking-wider px-3 py-1 rounded-full bg-foreground text-background">
-                    {plan.badge}
-                  </span>
                   <div className="text-right">
                     {price === 0 ? (
-                      <span className="text-2xl font-bold text-foreground">Gratuit</span>
+                      <span className="text-xl font-bold text-foreground">Gratuit</span>
                     ) : (
-                      <>
-                        <span className="text-2xl font-bold text-foreground">
-                          {price.toFixed(2)} €
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-xl font-bold text-foreground">
+                          {price.toFixed(2)}€
                         </span>
-                        <span className="text-foreground/70 text-sm"> /mois</span>
-                        {billing === "annual" && (
-                          <p className="text-muted-foreground text-xs mt-0.5">
-                            {getAnnualTotal(plan)} € /an
-                          </p>
-                        )}
-                      </>
+                        <span className="text-foreground/50 text-xs font-medium">/mois</span>
+                      </div>
                     )}
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                <p className="text-muted-foreground text-[13px] leading-relaxed mb-3">
                   {plan.description}
                 </p>
 
-                {plan.id !== "free" && plans.indexOf(plan) > 0 && (
-                  <p className="text-foreground/80 text-xs font-medium mb-2">
-                    Tous les avantages de{" "}
-                    <span className="font-bold text-foreground">
-                      {plans[plans.indexOf(plan) - 1].badge}
-                    </span>{" "}
-                    et plus
-                  </p>
+                {/* Annual savings badge */}
+                {billing === "annual" && price > 0 && (
+                  <div className="mb-3">
+                    <span className="text-[11px] font-medium text-muted-foreground">
+                      {getAnnualTotal(plan)}€ facturé par an
+                    </span>
+                  </div>
                 )}
 
                 {/* Expand/Collapse features */}
@@ -256,35 +262,37 @@ const Subscription = () => {
                     e.stopPropagation();
                     setExpandedPlan(isExpanded ? null : plan.id);
                   }}
-                  className="flex items-center gap-1.5 text-foreground/80 text-sm font-medium hover:text-foreground transition-colors"
+                  className="flex items-center gap-1.5 text-foreground/60 text-[13px] font-medium hover:text-foreground transition-colors"
                 >
                   Voir les avantages
                   {isExpanded ? (
-                    <ChevronUp className="w-4 h-4" />
+                    <ChevronUp className="w-3.5 h-3.5" />
                   ) : (
-                    <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className="w-3.5 h-3.5" />
                   )}
                 </button>
 
                 {/* Features list */}
                 {isExpanded && (
-                  <div className="mt-4 space-y-3 pt-3 border-t border-border/30">
+                  <div className="mt-4 space-y-2.5 pt-3 border-t border-border/20">
                     {plan.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
+                      <div key={idx} className="flex items-center gap-2.5">
                         <div
-                          className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${
+                          className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${
                             feature.included
-                              ? "bg-info/20 text-info"
-                              : "bg-muted text-muted-foreground/40"
+                              ? plan.highlight
+                                ? "bg-info/15 text-info"
+                                : "bg-foreground/10 text-foreground/70"
+                              : "bg-muted text-muted-foreground/30"
                           }`}
                         >
-                          <Check className="w-2.5 h-2.5" />
+                          <Check className="w-2.5 h-2.5" strokeWidth={3} />
                         </div>
                         <span
-                          className={`text-sm ${
+                          className={`text-[13px] ${
                             feature.included
-                              ? "text-foreground/90"
-                              : "text-muted-foreground/50 line-through"
+                              ? "text-foreground/80"
+                              : "text-muted-foreground/40 line-through"
                           }`}
                         >
                           {feature.text}
@@ -299,31 +307,22 @@ const Subscription = () => {
         })}
 
         {/* Disclaimer */}
-        <p className="text-muted-foreground/60 text-xs text-center pt-2">
-          * Cette économie est calculée par rapport aux abonnements mensuels
+        <p className="text-muted-foreground/40 text-[11px] text-center pt-3">
+          * Les économies sont calculées par rapport à l'abonnement mensuel
         </p>
       </div>
 
-      {/* Fixed Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background to-transparent pt-8 pb-6 px-5 z-20">
-        {selectedPlan !== "free" ? (
-          <>
-            <button className="w-full py-4 rounded-2xl bg-gradient-to-r from-info via-[hsl(270,70%,60%)] to-[hsl(320,70%,55%)] text-foreground font-semibold text-base shadow-lg shadow-info/20 hover:opacity-90 transition-opacity">
-              Commencer l'essai gratuit
-            </button>
-            <button className="w-full py-3 text-muted-foreground text-sm font-medium hover:text-foreground transition-colors">
-              Passer l'essai et acheter maintenant
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => navigate(-1)}
-            className="w-full py-4 rounded-2xl bg-secondary text-foreground font-semibold text-base hover:bg-secondary/80 transition-colors"
-          >
-            Continuer avec le plan gratuit
+      {/* Fixed Bottom CTA — only visible when a paid plan is selected */}
+      {selectedPlan && selectedPlan !== "free" && (
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/95 to-transparent pt-8 pb-6 px-5 z-20 animate-in slide-in-from-bottom-4 duration-300">
+          <button className="w-full py-4 rounded-2xl bg-gradient-to-r from-info via-[hsl(270,70%,60%)] to-[hsl(320,70%,55%)] text-foreground font-bold text-[15px] shadow-xl shadow-info/25 hover:shadow-info/40 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200">
+            Commencer l'essai gratuit
           </button>
-        )}
-      </div>
+          <button className="w-full py-2.5 mt-1 text-muted-foreground text-[13px] font-medium hover:text-foreground transition-colors">
+            Passer l'essai et acheter maintenant
+          </button>
+        </div>
+      )}
     </div>
   );
 };
