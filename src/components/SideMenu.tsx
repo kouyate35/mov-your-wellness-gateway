@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { X, Sparkles, Search, LayoutGrid, Link2, Settings, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import movIcon from "@/assets/mov-icon.png";
 import { apps } from "@/data/apps";
 import { getAppIcon } from "@/components/AppIcons";
@@ -60,10 +62,10 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   ];
 
   const profileMenuItems = [
-    { icon: Sparkles, label: "Passer au forfait supérieur", action: () => {} },
-    { icon: Settings, label: "Paramètres", action: () => {} },
+    { icon: Sparkles, label: "Passer au forfait supérieur", action: () => { navigate("/settings"); onClose(); } },
+    { icon: Settings, label: "Paramètres", action: () => { navigate("/settings"); onClose(); } },
     { icon: HelpCircle, label: "Aide", hasChevron: true, action: () => {} },
-    { icon: LogOut, label: "Se déconnecter", action: () => {} },
+    { icon: LogOut, label: "Se déconnecter", action: async () => { await supabase.auth.signOut(); toast.success("Déconnexion réussie"); navigate("/"); onClose(); } },
   ];
 
   return (
