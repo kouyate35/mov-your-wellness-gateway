@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronRight, Menu, Settings } from "lucide-react";
 import { apps } from "@/data/apps";
@@ -6,8 +6,9 @@ import { useAppSettings } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
 import ConnectionRequiredModal from "@/components/ConnectionRequiredModal";
 import ProgramRequiredModal from "@/components/ProgramRequiredModal";
+import ChallengeModal from "@/components/ChallengeModal";
+import FireEmojiAnimation from "@/components/FireEmojiAnimation";
 import CategorySelector from "@/components/CategorySelector";
-import ChallengeCard from "@/components/ChallengeCard";
 import { getAppIcon } from "@/components/AppIcons";
 import { Category, getCategoryById } from "@/data/categories";
 
@@ -20,12 +21,37 @@ const AppDetail = () => {
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [showConnectionRequiredModal, setShowConnectionRequiredModal] = useState(false);
   const [showProgramRequiredModal, setShowProgramRequiredModal] = useState(false);
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [showFireAnimation, setShowFireAnimation] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>("move");
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const programSectionRef = useRef<HTMLDivElement>(null);
 
   const app = apps.find((a) => a.id === appId);
   const appSetting = appId ? getAppSetting(appId) : null;
+
+  const isConnected = appSetting?.isActive ?? false;
+
+  // Intercept browser back button (Android)
+  useEffect(() => {
+    if (!isConnected || selectedProgramId) return;
+
+    window.history.pushState({ programGuard: true }, "");
+
+    const handlePopState = () => {
+      setShowProgramRequiredModal(true);
+      window.history.pushState({ programGuard: true }, "");
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isConnected, selectedProgramId]);
+
+  const handleFireComplete = useCallback(() => {
+    setShowFireAnimation(false);
+  }, []);
 
   if (!app || !appSetting) {
     return (
@@ -34,8 +60,6 @@ const AppDetail = () => {
       </div>
     );
   }
-
-  const isConnected = appSetting.isActive;
 
   const handleConnect = () => {
     toggleApp(app.id);
@@ -66,7 +90,6 @@ const AppDetail = () => {
     setShowConnectModal(true);
   };
 
-  // Intercept back navigation when connected but no program selected
   const handleBack = () => {
     if (isConnected && !selectedProgramId) {
       setShowProgramRequiredModal(true);
@@ -80,18 +103,26 @@ const AppDetail = () => {
     programSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  // Get selected program name for challenge card
+  const handleChallengeClick = () => {
+    setShowFireAnimation(true);
+    setShowChallengeModal(true);
+  };
+
+
+  // Get selected program name
   const currentCategory = getCategoryById(selectedCategory);
   const selectedProgram = currentCategory?.programs.find(p => p.id === selectedProgramId);
 
   return (
     <div className="min-h-screen bg-background pb-8">
+      <FireEmojiAnimation isActive={showFireAnimation} onComplete={handleFireComplete} />
+
       {/* Header */}
       <header className="pt-6 pb-4 px-4">
         <div className="flex items-center gap-3">
           <button className="relative p-1">
             <Menu className="w-5 h-5 text-muted-foreground" />
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-500 rounded-full" />
+            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-primary rounded-full" />
           </button>
           
           <button
@@ -103,6 +134,17 @@ const AppDetail = () => {
           
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
           <span className="text-base font-medium text-muted-foreground">{app.name}</span>
+
+          {/* Challenge button - visible only when program is selected */}
+          {selectedProgramId && selectedProgram && (
+            <button
+              onClick={handleChallengeClick}
+              className="ml-auto flex items-center gap-1.5 px-4 py-2 bg-white text-black text-sm font-semibold rounded-full hover:bg-white/90 transition-all active:scale-95"
+            >
+              <span className="text-base animate-pulse">🔥</span>
+              <span>Challenge</span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -150,13 +192,7 @@ const AppDetail = () => {
           onSelectProgram={handleProgramSelect}
         />
 
-        {/* Anchor for scrolling to program section */}
         <div ref={programSectionRef} />
-
-        {/* Challenge Card - only when a program is selected */}
-        {selectedProgramId && selectedProgram && (
-          <ChallengeCard programName={selectedProgram.name} />
-        )}
       </section>
 
       {/* Modals */}
@@ -178,6 +214,14 @@ const AppDetail = () => {
         onClose={() => setShowProgramRequiredModal(false)}
         onSelectProgram={scrollToPrograms}
       />
+
+      {selectedProgram && (
+        <ChallengeModal
+          isOpen={showChallengeModal}
+          onClose={() => setShowChallengeModal(false)}
+          programName={selectedProgram.name}
+        />
+      )}
     </div>
   );
 };
