@@ -130,6 +130,15 @@ export default {
           "50%": { transform: "scale(1.02)", filter: "brightness(1.05)" },
           "100%": { transform: "scale(1)", filter: "brightness(1)" },
         },
+        "fire-fall": {
+          "0%": { transform: "translateY(0) rotate(0deg)", opacity: "1" },
+          "80%": { opacity: "1" },
+          "100%": { transform: "translateY(110vh) rotate(30deg)", opacity: "0" },
+        },
+        "slide-up": {
+          "0%": { transform: "translateY(100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -143,6 +152,8 @@ export default {
         "category-flex": "category-flex 4s ease-in-out infinite",
         "category-breath": "category-breath 5s ease-in-out infinite",
         "category-focus": "category-focus 4s ease-in-out infinite",
+        "fire-fall": "fire-fall 1.5s ease-in forwards",
+        "slide-up": "slide-up 0.3s ease-out forwards",
       },
     },
   },
