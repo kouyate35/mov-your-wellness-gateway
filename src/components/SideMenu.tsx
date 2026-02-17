@@ -64,7 +64,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   ];
 
   const profileMenuItems = [
-    { icon: Sparkles, label: "Passer au forfait supérieur", action: () => { setShowSettings(true); handleCloseProfileMenu(); } },
+    { icon: Sparkles, label: "Passer au forfait supérieur", action: () => { navigate("/subscription"); onClose(); handleCloseProfileMenu(); } },
     { icon: Settings, label: "Paramètres", action: () => { setShowSettings(true); handleCloseProfileMenu(); } },
     { icon: HelpCircle, label: "Aide", hasChevron: true, action: () => {} },
     { icon: LogOut, label: "Se déconnecter", action: async () => { await supabase.auth.signOut(); toast.success("Déconnexion réussie"); navigate("/"); onClose(); } },
@@ -189,7 +189,10 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
               </button>
 
               {/* Upgrade Button */}
-              <button className="px-3 py-1.5 bg-secondary rounded-full text-foreground text-xs font-medium hover:bg-secondary/80 transition-colors">
+              <button
+                onClick={() => { navigate("/subscription"); onClose(); }}
+                className="px-3 py-1.5 bg-secondary rounded-full text-foreground text-xs font-medium hover:bg-secondary/80 transition-colors"
+              >
                 Mettre à niveau
               </button>
             </div>

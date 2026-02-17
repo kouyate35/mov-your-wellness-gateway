@@ -111,7 +111,10 @@ const ProfilTab = ({ user, onDeleteAccount }: { user: { name: string; email: str
     <section>
       <div className="flex items-center justify-between mb-2">
         <span className="text-foreground text-sm font-medium">Obtenir Workout Plus</span>
-        <button className="px-4 py-1.5 bg-foreground text-background text-xs font-semibold rounded-full hover:opacity-90 transition-opacity">
+        <button
+          onClick={() => window.location.href = "/subscription"}
+          className="px-4 py-1.5 bg-foreground text-background text-xs font-semibold rounded-full hover:opacity-90 transition-opacity"
+        >
           Mettre à niveau
         </button>
       </div>
