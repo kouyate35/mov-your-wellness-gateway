@@ -82,47 +82,26 @@ const ChallengeModal = ({ isOpen, onClose, programName }: ChallengeModalProps) =
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Pagination dots */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {challenges.map((_, i) => (
-              <div
-                key={i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === currentIndex
-                    ? "w-6 bg-white"
-                    : "w-1.5 bg-white/40"
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Content */}
-        <div className="px-6 pb-8 pt-2 flex flex-col flex-1">
-          <h3 className="text-2xl font-bold text-foreground mb-1">
+        <div className="px-6 pb-10 pt-8 flex flex-col flex-1">
+          <h3 className="text-[26px] font-bold text-foreground leading-tight mb-2">
             {currentChallenge.title}
           </h3>
-          <p className="text-sm font-medium text-primary mb-3">
+          <p className="text-[15px] font-medium text-primary/90 mb-5">
             {currentChallenge.subtitle}
           </p>
-          <p className="text-sm text-muted-foreground leading-relaxed mb-8">
+          <p className="text-[15px] text-muted-foreground leading-relaxed mb-10">
             {currentChallenge.description}
           </p>
 
           {/* CTA */}
           <button
             onClick={handleSelect}
-            className="w-full py-4 rounded-2xl bg-white text-black font-semibold text-[15px] tracking-wide hover:bg-white/90 transition-colors"
+            className="w-full py-4 rounded-2xl bg-white text-black font-semibold text-[15px] tracking-wide hover:bg-white/90 transition-colors mt-auto"
           >
             Choisir ce défi
-          </button>
-
-          {/* Dismiss */}
-          <button
-            onClick={onClose}
-            className="w-full py-3 mt-2 text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
-          >
-            Renoncer
           </button>
         </div>
       </div>
