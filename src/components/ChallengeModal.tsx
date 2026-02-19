@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Smartphone, Timer } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import challengeMorningImg from "@/assets/challenge-morning.jpg";
+import challengeDurationImg from "@/assets/challenge-duration.jpg";
 
 interface Challenge {
   id: string;
   title: string;
+  subtitle: string;
   description: string;
-  icon: React.ReactNode;
+  image: string;
 }
 
 interface ChallengeModalProps {
@@ -18,108 +21,110 @@ const challenges: Challenge[] = [
   {
     id: "morning-unlock",
     title: "Défi du matin",
-    description: "Chaque matin, au déverrouillage de ton téléphone, effectue ton programme avant toute chose.",
-    icon: <Smartphone className="w-5 h-5" />,
+    subtitle: "Commence ta journée en mouvement",
+    description:
+      "Chaque matin, dès le déverrouillage de ton téléphone, effectue ton programme avant toute chose. Un rituel simple qui transforme tes habitudes et booste ton énergie pour la journée.",
+    image: challengeMorningImg,
   },
   {
     id: "time-based",
     title: "Défi de durée",
-    description: "Toutes les 45 minutes passées sur une app connectée, effectue ton programme pour continuer.",
-    icon: <Timer className="w-5 h-5" />,
+    subtitle: "Reste actif tout au long de la journée",
+    description:
+      "Toutes les 45 minutes passées sur une app connectée, effectue ton programme pour continuer. Un défi d'endurance qui t'aide à rester en forme tout au long de la journée.",
+    image: challengeDurationImg,
   },
 ];
 
 const ChallengeModal = ({ isOpen, onClose, programName }: ChallengeModalProps) => {
-  const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!isOpen) return null;
 
-  const toggleChallenge = (id: string) => {
-    setSelectedChallenges(prev =>
-      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
-    );
+  const currentChallenge = challenges[currentIndex];
+
+  const nextChallenge = () => {
+    setCurrentIndex((prev) => (prev + 1) % challenges.length);
   };
 
-  const handleConfirm = () => {
+  const handleSelect = () => {
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-8">
+    <div className="fixed inset-0 z-50 flex items-end justify-center">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-sm bg-secondary rounded-3xl p-8 animate-slide-up">
-        {/* Fire icon */}
-        <div className="flex justify-center mb-5">
-          <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center">
-            <span className="text-2xl">🔥</span>
+      {/* Card — slides up from bottom */}
+      <div className="relative w-full max-w-md rounded-t-3xl overflow-hidden bg-background animate-in slide-in-from-bottom duration-500 flex flex-col"
+           style={{ maxHeight: "85vh" }}>
+
+        {/* Hero image zone ~45% */}
+        <div className="relative w-full" style={{ minHeight: "42%" }}>
+          <img
+            src={currentChallenge.image}
+            alt={currentChallenge.title}
+            className="w-full h-64 object-cover transition-opacity duration-300"
+          />
+          {/* Gradient overlay bottom for seamless fusion */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+
+          {/* Navigation arrow — top right */}
+          <button
+            onClick={nextChallenge}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/60 transition-colors"
+            aria-label="Défi suivant"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          {/* Pagination dots */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {challenges.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === currentIndex
+                    ? "w-6 bg-white"
+                    : "w-1.5 bg-white/40"
+                }`}
+              />
+            ))}
           </div>
         </div>
 
-        {/* Text */}
-        <h3 className="text-xl font-semibold text-foreground text-center mb-2">
-          Défis supplémentaires
-        </h3>
-        <p className="text-muted-foreground text-center text-sm leading-relaxed mb-6">
-          Ajoute des défis liés à ton programme <span className="font-medium text-foreground/80">{programName}</span> pour aller plus loin.
-        </p>
+        {/* Content */}
+        <div className="px-6 pb-8 pt-2 flex flex-col flex-1">
+          <h3 className="text-2xl font-bold text-foreground mb-1">
+            {currentChallenge.title}
+          </h3>
+          <p className="text-sm font-medium text-primary mb-3">
+            {currentChallenge.subtitle}
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-8">
+            {currentChallenge.description}
+          </p>
 
-        {/* Challenge options */}
-        <div className="space-y-3 mb-6">
-          {challenges.map((challenge) => {
-            const isSelected = selectedChallenges.includes(challenge.id);
-            return (
-              <button
-                key={challenge.id}
-                onClick={() => toggleChallenge(challenge.id)}
-                className={`
-                  w-full flex items-start gap-3 p-4 rounded-xl text-left transition-all
-                  ${isSelected
-                    ? 'bg-foreground text-background'
-                    : 'bg-muted text-foreground hover:bg-muted/80'
-                  }
-                `}
-              >
-                <div className={`
-                  w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5
-                  ${isSelected ? 'bg-background/20' : 'bg-foreground/10'}
-                `}>
-                  <span className={isSelected ? 'text-background' : 'text-foreground'}>
-                    {challenge.icon}
-                  </span>
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-sm mb-1">{challenge.title}</p>
-                  <p className={`text-xs leading-relaxed ${isSelected ? 'text-background/70' : 'text-muted-foreground'}`}>
-                    {challenge.description}
-                  </p>
-                </div>
-                <div className={`
-                  w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1
-                  ${isSelected ? 'bg-background border-background' : 'border-muted-foreground/30'}
-                `}>
-                  {isSelected && <div className="w-2 h-2 rounded-full bg-foreground" />}
-                </div>
-              </button>
-            );
-          })}
+          {/* CTA */}
+          <button
+            onClick={handleSelect}
+            className="w-full py-4 rounded-2xl bg-white text-black font-semibold text-[15px] tracking-wide hover:bg-white/90 transition-colors"
+          >
+            Choisir ce défi
+          </button>
+
+          {/* Dismiss */}
+          <button
+            onClick={onClose}
+            className="w-full py-3 mt-2 text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
+          >
+            Renoncer
+          </button>
         </div>
-
-        {/* Buttons */}
-        <button
-          onClick={handleConfirm}
-          className="w-full py-3.5 bg-white text-black font-medium rounded-full text-sm hover:bg-white/90 transition-colors mb-3"
-        >
-          {selectedChallenges.length > 0 ? "Valider mes défis" : "Choisir un challenge"}
-        </button>
-        <button
-          onClick={onClose}
-          className="w-full py-3 text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
-        >
-          Renoncer
-        </button>
       </div>
     </div>
   );
