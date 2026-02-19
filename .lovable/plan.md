@@ -1,191 +1,70 @@
 
-# Plan : Ajout FOCUS aux Programmes + Section Insights Premium
+# Refonte du Challenge Modal - Style TradingView
 
-## Partie 1 : Catégorie FOCUS dans Programmes
+## Concept
+Remplacer le modal actuel (liste de challenges avec checkboxes) par une carte premium qui remonte du bas de l'ecran, style TradingView. Chaque defi s'affiche individuellement en plein ecran avec une image hero, du texte descriptif, et un bouton d'action. Une fleche permet de naviguer entre les deux defis.
 
-### Situation actuelle
-Les 3 programmes FOCUS (intention, timer, affirmation) n'ont pas de vidéos individuelles. Actuellement :
-- `category-focus-video.mp4` existe (vidéo générique de la catégorie)
-- `ProgramsSection.tsx` exclut FOCUS explicitement (ligne 87)
-- `Explore.tsx` utilise `categoryFocusVideo` comme fallback
-
-### Solution proposée
-Plutôt que de créer des vidéos (impossible dans ce contexte), utiliser la vidéo générique FOCUS comme fond pour les 3 cartes, avec des variations visuelles subtiles :
+## Structure du nouveau modal
 
 ```text
-+-------+ +-------+ +-------+
-|       | |       | |       |
-| VIDEO | | VIDEO | | VIDEO |  <- même vidéo focus mais overlay différent
-|       | |       | |       |
-|Intent.| |Timer  | |Affirm.|
-+-------+ +-------+ +-------+
++----------------------------------+
+|  [Image hero plein cadre]     -> |  <- fleche pour passer au defi suivant
+|  (image sportive adaptee au      |
+|   type de defi, haute qualite)   |
+|                                  |
++----------------------------------+
+|                                  |
+|  Titre du defi (gras, grand)     |
+|                                  |
+|  Description detaillee du defi   |
+|  expliquant en quoi il consiste  |
+|  et comment il fonctionne.       |
+|                                  |
+|  [====  Choisir ce defi  ====]   |  <- bouton blanc arrondi
+|                                  |
+|         Renoncer                 |
++----------------------------------+
 ```
 
-### Fichiers à modifier
+## Modifications prevues
 
-| Fichier | Modification |
-|---------|--------------|
-| `src/components/ProgramsSection.tsx` | Ajouter mapping vidéo FOCUS + inclure catégorie |
+### 1. Refonte complete de ChallengeModal.tsx
+- Supprimer la liste de challenges avec checkboxes
+- Creer un affichage "une carte a la fois" avec un index courant (0 = Defi du matin, 1 = Defi de duree)
+- En haut : zone image hero (environ 45% de la hauteur) avec une image sportive generee pour chaque defi
+  - Defi du matin : image d'un lever de soleil / reveil sportif
+  - Defi de duree : image d'un athlete en action / chronometre
+- En haut a droite de l'image : fleche (icone ChevronRight) pour passer au defi suivant, au lieu de la croix de TradingView
+- Sous l'image : titre en gras, description detaillee
+- Bouton "Choisir ce defi" (blanc, arrondi, style TradingView "Faites un essai gratuit")
+- Lien "Renoncer" en dessous
 
-### Code clé
-```typescript
-// Ajouter au videoMap
-"intention": "/src/assets/category-focus-video.mp4",
-"timer": "/src/assets/category-focus-video.mp4",
-"affirmation": "/src/assets/category-focus-video.mp4",
+### 2. Animation d'entree
+- Le modal remonte du bas avec une animation slide-in-from-bottom fluide
+- L'animation de flammes (FireEmojiAnimation) reste active et tombe depuis le haut de l'ecran par-dessus le modal
 
-// Retirer le filtre exclusion FOCUS
-const categoriesWithVideos = categories; // Toutes les catégories maintenant
-```
+### 3. Navigation entre defis
+- Clic sur la fleche : transition horizontale fluide (slide) vers le defi suivant
+- Quand on est au dernier defi, la fleche ramene au premier (boucle)
+- Indicateur de pagination discret (2 petits points en bas de l'image)
 
----
+### 4. Assets images
+- Creer 2 images hero de haute qualite pour chaque type de defi, stockees dans src/assets/
 
-## Partie 2 : Section Insights Premium
+## Details techniques
 
-### Concept : "Journal de Bien-être Digital"
+### Fichiers modifies
+- **src/components/ChallengeModal.tsx** : Refonte complete du composant
+  - useState pour `currentIndex` (0 ou 1)
+  - Transition CSS entre les slides (transform translateX avec transition-all)
+  - Zone image avec gradient overlay vers le noir en bas pour fusion avec le texte
+  - Bouton fleche positionne en absolute en haut a droite de l'image
+  - Animation d'entree : `animate-in slide-in-from-bottom-4 duration-500`
 
-L'onglet Insights doit offrir une vue analytique claire et premium sur l'usage des apps et l'impact de Workout.
+### Fichiers crees
+- **src/assets/challenge-morning.jpg** : Image hero pour le defi du matin
+- **src/assets/challenge-duration.jpg** : Image hero pour le defi de duree
 
-### Structure proposée
-
-```text
-+------------------------------------------+
-|                                          |
-|  Temps économisé                         |
-|  2h 34min cette semaine                  |
-|  ↑ 45% vs la semaine dernière            |
-|                                          |
-+------------------------------------------+
-|                                          |
-|  +------------------------------------+  |
-|  |                                    |  |
-|  |  [GRAPHIQUE MINIMALISTE]           |  |
-|  |  Courbe temps d'écran 7 jours      |  |
-|  |                                    |  |
-|  +------------------------------------+  |
-|                                          |
-+------------------------------------------+
-|                                          |
-|  Apps les plus défiées                   |
-|                                          |
-|  TikTok     ████████████░  32 sessions   |
-|  Instagram  ████████░░░░░  21 sessions   |
-|  Snapchat   ████░░░░░░░░░  12 sessions   |
-|                                          |
-+------------------------------------------+
-|                                          |
-|  Impact bien-être                        |
-|                                          |
-|  +-------------+ +-------------+         |
-|  | 147         | | 23          |         |
-|  | Squats      | | Minutes     |         |
-|  | effectués   | | respiration |         |
-|  +-------------+ +-------------+         |
-|                                          |
-+------------------------------------------+
-|                                          |
-|  Meilleur moment                         |
-|  Tu es plus actif à 14h-16h              |
-|                                          |
-+------------------------------------------+
-```
-
-### Principes de design
-
-1. **Minimalisme total** : Pas de graphiques complexes, juste des barres horizontales simples
-2. **Palette grayscale** : Uniquement noir/blanc/gris, pas de couleurs d'accent
-3. **Typographie claire** : Grands chiffres pour les métriques clés
-4. **Hiérarchie visuelle** : Les infos les plus importantes en haut
-5. **Pas d'icônes décoratives** : Juste du texte et des formes géométriques
-
-### Composants Insights
-
-| Composant | Description |
-|-----------|-------------|
-| `TimeSavedHero` | Grand chiffre "temps économisé" + comparaison semaine |
-| `WeeklyChart` | Courbe minimaliste 7 jours (barres verticales grises) |
-| `TopAppsRanking` | Top 3 apps avec barres de progression horizontales |
-| `WellnessImpact` | Grid 2 colonnes avec métriques (squats, minutes respiration) |
-| `BestMoment` | Insight sur l'heure la plus active |
-
-### Fichier à créer
-`src/components/InsightsSection.tsx`
-
-### Intégration
-Remplacer `EmptySection` pour l'onglet Insights dans `Index.tsx` (case 3)
-
----
-
-## Partie 3 : Mise à jour des autres fichiers
-
-### ProgressionSection.tsx
-Ajouter les programmes FOCUS au videoMap si utilisés dans l'historique
-
-### Explore.tsx
-Déjà configuré avec fallback FOCUS (aucun changement nécessaire)
-
----
-
-## Structure finale InsightsSection
-
-```text
-InsightsSection
-├── TimeSavedHero (chiffre principal + tendance)
-├── WeeklyActivityChart (7 barres verticales)
-├── TopChallengedApps (3 apps avec progress bars)
-├── WellnessImpactGrid (2x2 stats cards)
-└── BestMomentInsight (texte simple)
-```
-
----
-
-## Palette stricte pour Insights
-
-- **Fond** : `bg-background` (13% lightness)
-- **Cards** : `bg-secondary` (légèrement plus clair)
-- **Texte principal** : `text-foreground` (blanc)
-- **Texte secondaire** : `text-muted-foreground` (gris)
-- **Barres de progression** : `bg-foreground` (blanc) sur `bg-muted` (gris foncé)
-- **Aucune couleur d'accent** : Pas de vert, bleu, violet, etc.
-
----
-
-## Données mockées pour Insights
-
-```typescript
-const mockInsights = {
-  timeSaved: { 
-    minutes: 154, 
-    percentChange: 45 
-  },
-  weeklyActivity: [3, 5, 4, 6, 2, 0, 0], // sessions par jour
-  topApps: [
-    { id: "tiktok", sessions: 32 },
-    { id: "instagram", sessions: 21 },
-    { id: "snapchat", sessions: 12 },
-  ],
-  wellnessStats: {
-    totalSquats: 147,
-    breathMinutes: 23,
-    stretchMinutes: 18,
-    focusSessions: 9,
-  },
-  bestHour: "14h-16h",
-};
-```
-
----
-
-## Ordre d'implémentation
-
-1. **Modifier ProgramsSection.tsx** : Ajouter FOCUS au videoMap + retirer le filtre
-2. **Créer InsightsSection.tsx** : Nouvelle interface analytics minimaliste
-3. **Modifier Index.tsx** : Remplacer EmptySection par InsightsSection pour case 3
-
----
-
-## Résultat attendu
-
-- **Programmes** : 4 catégories complètes (MOVE, FLEX, BREATH, FOCUS)
-- **Insights** : Dashboard analytique premium et minimaliste
-- **Cohérence** : Même esthétique sombre partout
+### Aucun changement dans
+- **src/pages/AppDetail.tsx** : La logique d'ouverture reste identique
+- **src/components/FireEmojiAnimation.tsx** : Aucun changement, reste tel quel
