@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import challengeMorningImg from "@/assets/challenge-morning.jpg";
 import challengeDurationImg from "@/assets/challenge-duration.jpg";
@@ -38,6 +38,23 @@ const challenges: Challenge[] = [
 
 const ChallengeModal = ({ isOpen, onClose, programName }: ChallengeModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    }
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
