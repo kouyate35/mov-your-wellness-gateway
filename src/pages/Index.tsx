@@ -78,18 +78,7 @@ const Index = () => {
   }, [settings]);
 
   const renderTabContent = () => {
-    switch (activeTab) {
-      case 0:
-        return <AppList apps={filteredApps} activeApps={activeApps} />;
-      case 1:
-        return <ProgressionSection />;
-      case 2:
-        return <ProgramsSection />;
-      case 3:
-        return <InsightsSection />;
-      default:
-        return null;
-    }
+    return <AppList apps={filteredApps} activeApps={activeApps} />;
   };
 
   return (
