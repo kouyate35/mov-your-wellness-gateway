@@ -7,9 +7,6 @@ interface SectionTabsProps {
 
 const tabs = [
   { id: "applis", label: "Applis" },
-  { id: "routines", label: "Routines" },
-  { id: "programmes", label: "Programmes" },
-  { id: "insights", label: "Insights" },
 ];
 
 const SectionTabs = ({ activeTab, onTabChange }: SectionTabsProps) => {

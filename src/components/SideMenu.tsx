@@ -75,8 +75,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   };
 
   const menuItems = [
-    { icon: Sparkles, label: "Nouveau moment", action: () => {} },
     { icon: Search, label: "Explorer", action: () => { navigate("/explore"); onClose(); } },
+    { icon: Sparkles, label: "Statistiques d'usage", action: () => {} },
   ];
 
   const profileMenuItems = [
