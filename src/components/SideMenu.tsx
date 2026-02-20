@@ -78,7 +78,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={handleBackdropClick}
-        style={{ touchAction: 'none' }}
+        style={{ touchAction: 'none', overscrollBehavior: 'none' }}
       >
         {/* Side Menu Panel - 65% width like ChatGPT, solid background */}
         <div

@@ -52,16 +52,17 @@ const ChallengeModal = ({ isOpen, onClose, programName }: ChallengeModalProps) =
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+    <div className="fixed inset-0 z-50 flex items-end justify-center" style={{ touchAction: 'none', overscrollBehavior: 'none' }}>
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}
+        style={{ touchAction: 'none' }}
       />
 
       {/* Card — slides up from bottom */}
       <div className="relative w-full max-w-md rounded-t-3xl overflow-hidden bg-background animate-in slide-in-from-bottom duration-500 flex flex-col"
-           style={{ maxHeight: "85vh" }}>
+           style={{ maxHeight: "85vh", overscrollBehavior: 'contain', touchAction: 'pan-y' }}>
 
         {/* Hero image zone ~45% */}
         <div className="relative w-full" style={{ minHeight: "42%" }}>
