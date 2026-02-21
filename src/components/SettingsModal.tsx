@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getAppIcon } from "@/components/AppIcons";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -16,12 +17,19 @@ const tabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
   { id: "securite", label: "Sécurité", icon: Lock },
 ];
 
+interface AppInfo {
+  id: string;
+  name: string;
+}
+
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  appInfo?: AppInfo;
+  onDisconnectApp?: () => void;
 }
 
-const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
+const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsModalProps) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<SettingsTab>("profil");
 
@@ -79,7 +87,9 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
-          {activeTab === "profil" && <ProfilTab user={user} onDeleteAccount={handleDeleteAccount} />}
+          {activeTab === "profil" && (
+            <ProfilTab user={user} onDeleteAccount={handleDeleteAccount} appInfo={appInfo} onDisconnectApp={onDisconnectApp} />
+          )}
           {activeTab === "notifications" && (
             <NotificationsTab
               notifRappels={notifRappels} setNotifRappels={setNotifRappels}
@@ -98,8 +108,30 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
 
 /* ─── Tab Contents ─── */
 
-const ProfilTab = ({ user, onDeleteAccount }: { user: { name: string; email: string }; onDeleteAccount: () => void }) => (
+const ProfilTab = ({ user, onDeleteAccount, appInfo, onDisconnectApp }: { 
+  user: { name: string; email: string }; 
+  onDeleteAccount: () => void;
+  appInfo?: AppInfo;
+  onDisconnectApp?: () => void;
+}) => (
   <div className="space-y-5">
+    {/* App Info Section - shown when opened from AppDetail */}
+    {appInfo && (
+      <section>
+        <div className="flex items-center gap-3 py-3">
+          {getAppIcon(appInfo.id, "md", true)}
+          <span className="text-foreground text-base font-semibold flex-1">{appInfo.name}</span>
+          <button
+            onClick={onDisconnectApp}
+            className="px-4 py-2 rounded-full border border-border text-foreground text-xs font-medium hover:bg-muted/50 transition-colors"
+          >
+            Déconnecter
+          </button>
+        </div>
+        <div className="h-px bg-border/40 mt-1" />
+      </section>
+    )}
+
     <section>
       <h3 className="text-sm font-semibold text-foreground mb-4">Compte</h3>
       <div className="h-px bg-border/40 mb-4" />

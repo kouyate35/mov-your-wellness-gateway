@@ -12,6 +12,8 @@ import Auth from "./pages/Auth";
 import Explore from "./pages/Explore";
 import Settings from "./pages/Settings";
 import Subscription from "./pages/Subscription";
+import HelpCenter from "./pages/HelpCenter";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/explore" element={<Explore />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/subscription" element={<Subscription />} />
+          <Route path="/help-center" element={<HelpCenter />} />
+          <Route path="/terms" element={<Terms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
