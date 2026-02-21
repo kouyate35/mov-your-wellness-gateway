@@ -1,70 +1,75 @@
 
-# Refonte du Challenge Modal - Style TradingView
+# Statistiques d'usage -- Interface premium
 
-## Concept
-Remplacer le modal actuel (liste de challenges avec checkboxes) par une carte premium qui remonte du bas de l'ecran, style TradingView. Chaque defi s'affiche individuellement en plein ecran avec une image hero, du texte descriptif, et un bouton d'action. Une fleche permet de naviguer entre les deux defis.
+## Vision
 
-## Structure du nouveau modal
+Creer une page dediee "/usage-stats" accessible depuis le menu hamburger, avec un design premium inspire de TradingView (graphiques financiers elegants, fond sombre, typographie soignee) et des dashboards de sante haut de gamme (cartes de metriques avec mise en page aeree).
 
-```text
-+----------------------------------+
-|  [Image hero plein cadre]     -> |  <- fleche pour passer au defi suivant
-|  (image sportive adaptee au      |
-|   type de defi, haute qualite)   |
-|                                  |
-+----------------------------------+
-|                                  |
-|  Titre du defi (gras, grand)     |
-|                                  |
-|  Description detaillee du defi   |
-|  expliquant en quoi il consiste  |
-|  et comment il fonctionne.       |
-|                                  |
-|  [====  Choisir ce defi  ====]   |  <- bouton blanc arrondi
-|                                  |
-|         Renoncer                 |
-+----------------------------------+
-```
+## Structure de la page
 
-## Modifications prevues
+### 1. Header
+- Fleche retour + titre "Statistiques d'usage"
+- Style minimal, fond sombre continu
 
-### 1. Refonte complete de ChallengeModal.tsx
-- Supprimer la liste de challenges avec checkboxes
-- Creer un affichage "une carte a la fois" avec un index courant (0 = Defi du matin, 1 = Defi de duree)
-- En haut : zone image hero (environ 45% de la hauteur) avec une image sportive generee pour chaque defi
-  - Defi du matin : image d'un lever de soleil / reveil sportif
-  - Defi de duree : image d'un athlete en action / chronometre
-- En haut a droite de l'image : fleche (icone ChevronRight) pour passer au defi suivant, au lieu de la croix de TradingView
-- Sous l'image : titre en gras, description detaillee
-- Bouton "Choisir ce defi" (blanc, arrondi, style TradingView "Faites un essai gratuit")
-- Lien "Renoncer" en dessous
+### 2. Hero -- Metrique principale
+- Grande valeur "Temps economise" en typographie extra-large (style TradingView avec le prix)
+- Variation en pourcentage par rapport a la semaine precedente (fleche verte montante comme TradingView "+2,24%")
+- Sous-texte "cette semaine" discret
 
-### 2. Animation d'entree
-- Le modal remonte du bas avec une animation slide-in-from-bottom fluide
-- L'animation de flammes (FireEmojiAnimation) reste active et tombe depuis le haut de l'ecran par-dessus le modal
+### 3. Graphique d'activite (style TradingView)
+- Graphique en barres/lignes sur 7 jours avec le composant Recharts (deja installe)
+- Selecteur de periode en bas : "7J", "1M", "3M", "6M" (pilules comme TradingView "1D 5D 1M 3M")
+- Axe Y avec labels discrets, axe X avec jours
+- Couleur du graphique : blanc/gris clair sur fond sombre
+- Trait fin elegant, pas de grille lourde
 
-### 3. Navigation entre defis
-- Clic sur la fleche : transition horizontale fluide (slide) vers le defi suivant
-- Quand on est au dernier defi, la fleche ramene au premier (boucle)
-- Indicateur de pagination discret (2 petits points en bas de l'image)
+### 4. Section "Donnees cles" (style TradingView)
+- Liste cle/valeur alignee comme les "Donnees cles" de TradingView
+- Lignes :
+  - Sessions completees : valeur
+  - Moyenne par jour : valeur
+  - Meilleur jour : valeur
+  - Heure optimale : valeur
+- Separateurs fins entre chaque ligne
 
-### 4. Assets images
-- Creer 2 images hero de haute qualite pour chaque type de defi, stockees dans src/assets/
+### 5. Apps les plus defiees
+- Classement des 3-5 apps avec icones authentiques, nom, nombre de sessions
+- Barre de progression fine style grayscale
+- Disposition propre avec espacement genereux
+
+### 6. Impact bien-etre (grille 2x2)
+- 4 cartes avec fond subtil (secondary/50)
+- Chaque carte : grande valeur numerique + label
+  - Squats effectues
+  - Minutes respiration
+  - Minutes etirement
+  - Sessions focus
+- Bordure fine, coins arrondis
+
+### 7. Carte Insight
+- Encart avec icone TrendingUp
+- Message personnalise ("Tu es le plus actif entre 14h-16h")
+- Style glassmorphism subtil
 
 ## Details techniques
 
-### Fichiers modifies
-- **src/components/ChallengeModal.tsx** : Refonte complete du composant
-  - useState pour `currentIndex` (0 ou 1)
-  - Transition CSS entre les slides (transform translateX avec transition-all)
-  - Zone image avec gradient overlay vers le noir en bas pour fusion avec le texte
-  - Bouton fleche positionne en absolute en haut a droite de l'image
-  - Animation d'entree : `animate-in slide-in-from-bottom-4 duration-500`
+### Fichiers a creer
+- `src/pages/UsageStats.tsx` -- Page complete avec toutes les sections
 
-### Fichiers crees
-- **src/assets/challenge-morning.jpg** : Image hero pour le defi du matin
-- **src/assets/challenge-duration.jpg** : Image hero pour le defi de duree
+### Fichiers a modifier
+- `src/App.tsx` -- Ajouter la route "/usage-stats"
+- `src/components/SideMenu.tsx` -- Lier le bouton "Statistiques d'usage" a la navigation vers "/usage-stats"
 
-### Aucun changement dans
-- **src/pages/AppDetail.tsx** : La logique d'ouverture reste identique
-- **src/components/FireEmojiAnimation.tsx** : Aucun changement, reste tel quel
+### Bibliotheques utilisees
+- **Recharts** (deja installe) pour le graphique d'activite
+- **Lucide icons** pour les icones (ArrowUp, TrendingUp, ArrowLeft, etc.)
+- Donnees mock pour le moment (pas de backend necessaire)
+
+### Design tokens
+- Fond : `bg-background` (13% lightness)
+- Texte principal : `text-foreground` (95% lightness)
+- Texte secondaire : `text-muted-foreground` (60% lightness)
+- Graphique : traits blancs/gris clair
+- Cartes : `bg-secondary/50` avec `border-border/30`
+- Selecteur de periode actif : fond blanc texte noir (pilule)
+- Aucune couleur vive sauf le vert pour les variations positives
