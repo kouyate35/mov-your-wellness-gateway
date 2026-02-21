@@ -8,6 +8,7 @@ import { apps } from "@/data/apps";
 import { getAppIcon } from "@/components/AppIcons";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import SettingsModal from "@/components/SettingsModal";
+import HelpModal from "@/components/HelpModal";
 
 interface UserData {
   name: string;
@@ -23,6 +24,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   const navigate = useNavigate();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const [userId] = useState(() => Math.random().toString().slice(2, 12));
   const footerRef = useRef<HTMLDivElement>(null);
   const [popupBottom, setPopupBottom] = useState(80);
@@ -82,7 +84,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
   const profileMenuItems = [
     { icon: Sparkles, label: "Passer au forfait supérieur", action: () => { navigate("/subscription"); onClose(); handleCloseProfileMenu(); } },
     { icon: Settings, label: "Paramètres", action: () => { setShowSettings(true); handleCloseProfileMenu(); } },
-    { icon: HelpCircle, label: "Aide", hasChevron: true, action: () => {} },
+    { icon: HelpCircle, label: "Aide", hasChevron: true, action: () => { setShowHelp(true); handleCloseProfileMenu(); } },
     { icon: LogOut, label: "Se déconnecter", action: async () => { await supabase.auth.signOut(); toast.success("Déconnexion réussie"); navigate("/"); onClose(); } },
   ];
 
@@ -268,6 +270,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
       </div>
 
       <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
+      <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
     </>
   );
 };

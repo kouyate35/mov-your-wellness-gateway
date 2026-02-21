@@ -231,6 +231,13 @@ const AppDetail = () => {
       <SettingsModal
         isOpen={showSettingsModal}
         onClose={() => setShowSettingsModal(false)}
+        appInfo={app ? { id: app.id, name: app.name } : undefined}
+        onDisconnectApp={() => {
+          if (appId) {
+            toggleApp(appId);
+            setShowSettingsModal(false);
+          }
+        }}
       />
     </div>
   );
