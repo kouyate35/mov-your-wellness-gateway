@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
@@ -15,6 +16,7 @@ import { useInstalledApps } from "@/hooks/useInstalledApps";
 import { Menu, Globe } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -114,7 +116,9 @@ const Index = () => {
           </button>
           
           {/* Globe icon - circular with background matching interface */}
-          <button className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted transition-colors">
+          <button 
+            onClick={() => navigate("/community")}
+            className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted transition-colors">
             <Globe className="w-5 h-5 text-foreground" strokeWidth={1.5} />
           </button>
         </div>
