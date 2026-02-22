@@ -131,7 +131,7 @@ const Community = () => {
               data-card
               className="snap-center shrink-0 w-[75vw] max-w-[340px] rounded-2xl overflow-hidden border border-white/[0.06]"
               style={{
-                background: "linear-gradient(145deg, hsl(0 0% 12%), hsl(0 0% 7%))",
+                background: "linear-gradient(145deg, hsl(232 47% 13%), hsl(232 47% 9%))",
                 ...getCardStyle(i),
                 willChange: "transform, opacity",
               }}
@@ -148,9 +148,6 @@ const Community = () => {
                     {post.username}
                   </span>
                 </div>
-                <button className="p-1">
-                  <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-                </button>
               </div>
 
               {/* Text */}
