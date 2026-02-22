@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MoreHorizontal, Heart } from "lucide-react";
-import { useRef, useState } from "react";
+import { ArrowLeft, MoreHorizontal } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import movIcon from "@/assets/mov-icon.png";
 import post1 from "@/assets/community-post-1.jpg";
 import post2 from "@/assets/community-post-2.jpg";
@@ -15,7 +15,6 @@ const posts = [
     avatar: "S",
     text: "Session squats en groupe ce matin au parc 🔥 Qui veut rejoindre demain ?",
     images: [post1],
-    likes: 127,
   },
   {
     id: 2,
@@ -23,7 +22,6 @@ const posts = [
     avatar: "L",
     text: "Ma routine étirement du matin, 15 min qui changent tout 🧘‍♀️",
     images: [post2],
-    likes: 89,
   },
   {
     id: 3,
@@ -31,7 +29,6 @@ const posts = [
     avatar: "M",
     text: "100 pompes par jour pendant 30 jours — jour 12 ✅ Qui relève le défi ?",
     images: [post3],
-    likes: 234,
   },
   {
     id: 4,
@@ -39,7 +36,6 @@ const posts = [
     avatar: "N",
     text: "Respiration cohérente sur le rooftop au coucher du soleil 🌅",
     images: [post4],
-    likes: 56,
   },
   {
     id: 5,
@@ -47,7 +43,6 @@ const posts = [
     avatar: "A",
     text: "Trail matinal en forêt — rien de mieux pour commencer la journée 🌲",
     images: [post5],
-    likes: 178,
   },
 ];
 
@@ -62,15 +57,44 @@ const avatarColors = [
 const Community = () => {
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
+  const [scrollX, setScrollX] = useState(0);
+  const [cardWidth, setCardWidth] = useState(0);
 
-  const toggleLike = (id: number) => {
-    setLikedPosts((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  const handleScroll = useCallback(() => {
+    if (scrollRef.current) {
+      setScrollX(scrollRef.current.scrollLeft);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // Measure card width (75vw + gap)
+    const firstCard = el.querySelector("[data-card]") as HTMLElement;
+    if (firstCard) {
+      setCardWidth(firstCard.offsetWidth + 16); // 16 = gap-4
+    }
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  const getCardStyle = (index: number) => {
+    if (!cardWidth) return {};
+    const cardCenter = index * cardWidth + cardWidth / 2;
+    const viewCenter = scrollX + (scrollRef.current?.offsetWidth || 0) / 2;
+    const distance = (cardCenter - viewCenter) / cardWidth;
+    const clampedDistance = Math.max(-1.5, Math.min(1.5, distance));
+
+    const scale = 1 - Math.abs(clampedDistance) * 0.08;
+    const rotateY = clampedDistance * -6;
+    const translateZ = -Math.abs(clampedDistance) * 30;
+    const opacity = 1 - Math.abs(clampedDistance) * 0.25;
+
+    return {
+      transform: `perspective(800px) rotateY(${rotateY}deg) scale(${scale}) translateZ(${translateZ}px)`,
+      opacity: Math.max(0.5, opacity),
+      transition: "transform 0.05s linear, opacity 0.05s linear",
+    };
   };
 
   return (
@@ -82,7 +106,7 @@ const Community = () => {
         </button>
       </header>
 
-      {/* Branding area — like Threads */}
+      {/* Branding area */}
       <div className="flex flex-col items-center pt-6 pb-10">
         <img src={movIcon} alt="Workout" className="w-10 h-10 rounded-xl mb-3" />
         <h1 className="text-lg font-semibold text-foreground tracking-tight">
@@ -104,7 +128,13 @@ const Community = () => {
           {posts.map((post, i) => (
             <div
               key={post.id}
-              className="snap-center shrink-0 w-[75vw] max-w-[340px] rounded-2xl bg-secondary/40 border border-border/30 overflow-hidden"
+              data-card
+              className="snap-center shrink-0 w-[75vw] max-w-[340px] rounded-2xl overflow-hidden border border-white/[0.06]"
+              style={{
+                background: "linear-gradient(145deg, hsl(232 47% 13%), hsl(232 47% 9%))",
+                ...getCardStyle(i),
+                willChange: "transform, opacity",
+              }}
             >
               {/* Card header */}
               <div className="flex items-center justify-between px-4 pt-4 pb-3">
@@ -136,25 +166,6 @@ const Community = () => {
                   className="w-full aspect-[4/5] object-cover rounded-xl"
                   loading="lazy"
                 />
-              </div>
-
-              {/* Like row */}
-              <div className="px-4 pb-4 flex items-center gap-2">
-                <button
-                  onClick={() => toggleLike(post.id)}
-                  className="p-1 -ml-1 active:scale-125 transition-transform"
-                >
-                  <Heart
-                    className={`w-5 h-5 transition-colors ${
-                      likedPosts.has(post.id)
-                        ? "fill-red-500 text-red-500"
-                        : "text-muted-foreground"
-                    }`}
-                  />
-                </button>
-                <span className="text-xs text-muted-foreground">
-                  {post.likes + (likedPosts.has(post.id) ? 1 : 0)} J'aime
-                </span>
               </div>
             </div>
           ))}
