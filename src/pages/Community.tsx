@@ -24,7 +24,7 @@ const Community = () => {
       {/* Fixed blue header with arc */}
       <div className="fixed top-0 left-0 right-0 z-50">
         <div
-          className="relative pt-12 pb-24 flex flex-col items-center"
+          className="relative pt-10 pb-16 flex flex-col items-center"
           style={{ background: "hsl(199 89% 48%)" }}
         >
           <button
@@ -56,25 +56,25 @@ const Community = () => {
         {/* Arc curve overlay */}
         <div
           className="relative"
-          style={{ height: "60px", marginTop: "-1px" }}
+          style={{ height: "40px", marginTop: "-1px" }}
         >
           <svg
-            viewBox="0 0 1440 60"
+            viewBox="0 0 1440 40"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-full"
             preserveAspectRatio="none"
           >
             <path
-              d="M0 60V20C0 20 360 0 720 0C1080 0 1440 20 1440 20V60H0Z"
-              fill="hsl(var(--background))"
+              d="M0 40V12C0 12 360 0 720 0C1080 0 1440 12 1440 12V40H0Z"
+              fill="hsl(0 0% 13%)"
             />
           </svg>
         </div>
       </div>
 
-      {/* Scrollable content - padded to clear fixed header */}
-      <div className="px-3 pt-[240px] pb-6">
+      {/* Scrollable content */}
+      <div className="px-3 pt-[185px] pb-6">
         {/* Section title */}
         <p className="text-foreground font-bold text-base mb-4 px-1">
           Trouver un partenaire de sport
