@@ -61,7 +61,7 @@ const Community = () => {
           style={{ height: "50px" }}
         >
           <path
-            d="M0 0C0 0 360 120 720 120C1080 120 1440 0 1440 0V120H0V0Z"
+            d="M0 0 C480 120 960 120 1440 0 V120 H0 Z"
             fill="hsl(0 0% 13%)"
           />
         </svg>
