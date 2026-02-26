@@ -21,12 +21,10 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Fixed blue header with arc */}
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <div
-          className="relative pt-10 pb-16 flex flex-col items-center"
-          style={{ background: "hsl(199 89% 48%)" }}
-        >
+      {/* Fixed header — blue + arc as one block */}
+      <div className="fixed top-0 left-0 right-0 z-50" style={{ background: "hsl(199 89% 48%)" }}>
+        {/* Header content */}
+        <div className="relative pt-10 pb-6 flex flex-col items-center">
           <button
             onClick={() => navigate(-1)}
             className="absolute top-4 left-4 p-1"
@@ -53,34 +51,28 @@ const Community = () => {
           </button>
         </div>
 
-        {/* Arc curve overlay */}
-        <div
-          className="relative"
-          style={{ height: "40px", marginTop: "-1px" }}
+        {/* Arc: blue on top (transparent), dark background on bottom */}
+        <svg
+          viewBox="0 0 1440 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full block"
+          preserveAspectRatio="none"
+          style={{ height: "50px" }}
         >
-          <svg
-            viewBox="0 0 1440 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0 40V12C0 12 360 0 720 0C1080 0 1440 12 1440 12V40H0Z"
-              fill="hsl(0 0% 13%)"
-            />
-          </svg>
-        </div>
+          <path
+            d="M0 0C0 0 360 120 720 120C1080 120 1440 0 1440 0V120H0V0Z"
+            fill="hsl(0 0% 13%)"
+          />
+        </svg>
       </div>
 
       {/* Scrollable content */}
-      <div className="px-3 pt-[185px] pb-6">
-        {/* Section title */}
+      <div className="px-3 pt-[220px] pb-6">
         <p className="text-foreground font-bold text-base mb-4 px-1">
           Trouver un partenaire de sport
         </p>
 
-        {/* Profile cards grid */}
         <div className="grid grid-cols-2 gap-3">
           {mockProfiles.map((profile) => (
             <div
@@ -95,14 +87,12 @@ const Community = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
-              {/* Name top-left */}
               <div className="absolute top-3 left-3">
                 <span className="text-white font-bold text-lg drop-shadow-lg">
                   {profile.name}
                 </span>
               </div>
 
-              {/* Action buttons bottom-left */}
               <div className="absolute bottom-3 left-3 flex items-center gap-2">
                 <button
                   className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
