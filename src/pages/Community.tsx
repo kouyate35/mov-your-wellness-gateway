@@ -20,12 +20,12 @@ const Community = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col relative">
-      {/* Fixed blue header with arc */}
-      <div className="fixed top-0 left-0 right-0 z-50">
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Blue header with arc */}
+      <div className="relative">
         {/* Blue background */}
         <div
-          className="relative pt-12 pb-20 flex flex-col items-center"
+          className="relative pt-12 pb-24 flex flex-col items-center"
           style={{ background: "hsl(199 89% 48%)" }}
         >
           {/* Close button top-left */}
@@ -59,26 +59,26 @@ const Community = () => {
 
         {/* Arc curve overlay */}
         <div
-          className="relative"
-          style={{ height: "50px", marginTop: "-1px" }}
+          className="absolute bottom-0 left-0 right-0"
+          style={{ height: "60px", marginBottom: "-1px" }}
         >
           <svg
-            viewBox="0 0 1440 50"
+            viewBox="0 0 1440 60"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-full"
             preserveAspectRatio="none"
           >
             <path
-              d="M0 0V0C0 0 0 0 0 0H1440V0C1440 0 1440 0 1440 0V0C1440 0 1080 50 720 50C360 50 0 0 0 0Z"
-              fill="hsl(199 89% 48%)"
+              d="M0 60V20C0 20 360 0 720 0C1080 0 1440 20 1440 20V60H0Z"
+              fill="hsl(0 0% 13%)"
             />
           </svg>
         </div>
       </div>
 
-      {/* Scrollable content */}
-      <div className="pt-[220px] px-3 pb-6 flex-1 overflow-y-auto">
+      {/* Content area */}
+      <div className="flex-1 px-3 pt-2 pb-6">
         {/* Section title */}
         <p className="text-foreground font-bold text-base mb-4 px-1">
           Trouver un partenaire de sport
@@ -92,14 +92,11 @@ const Community = () => {
               className="relative rounded-2xl overflow-hidden"
               style={{ aspectRatio: "3 / 4" }}
             >
-              {/* Background image */}
               <img
                 src={profile.image}
                 alt={profile.name}
                 className="absolute inset-0 w-full h-full object-cover"
               />
-
-              {/* Gradient overlay for readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
               {/* Name top-left */}
