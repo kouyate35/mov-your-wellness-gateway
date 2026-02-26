@@ -20,15 +20,13 @@ const Community = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Blue header with arc */}
-      <div className="relative">
-        {/* Blue background */}
+    <div className="min-h-screen bg-background">
+      {/* Fixed blue header with arc */}
+      <div className="fixed top-0 left-0 right-0 z-50">
         <div
           className="relative pt-12 pb-24 flex flex-col items-center"
           style={{ background: "hsl(199 89% 48%)" }}
         >
-          {/* Close button top-left */}
           <button
             onClick={() => navigate(-1)}
             className="absolute top-4 left-4 p-1"
@@ -36,7 +34,6 @@ const Community = () => {
             <X className="w-6 h-6" style={{ color: "hsl(0 0% 8%)" }} />
           </button>
 
-          {/* Title */}
           <h1
             className="text-3xl font-black tracking-tight"
             style={{ color: "hsl(0 0% 8%)" }}
@@ -44,7 +41,6 @@ const Community = () => {
             Workout
           </h1>
 
-          {/* Tag button */}
           <button
             className="mt-4 px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2"
             style={{
@@ -59,8 +55,8 @@ const Community = () => {
 
         {/* Arc curve overlay */}
         <div
-          className="absolute bottom-0 left-0 right-0"
-          style={{ height: "60px", marginBottom: "-1px" }}
+          className="relative"
+          style={{ height: "60px", marginTop: "-1px" }}
         >
           <svg
             viewBox="0 0 1440 60"
@@ -71,14 +67,14 @@ const Community = () => {
           >
             <path
               d="M0 60V20C0 20 360 0 720 0C1080 0 1440 20 1440 20V60H0Z"
-              fill="hsl(0 0% 13%)"
+              fill="hsl(var(--background))"
             />
           </svg>
         </div>
       </div>
 
-      {/* Content area */}
-      <div className="flex-1 px-3 pt-2 pb-6">
+      {/* Scrollable content - padded to clear fixed header */}
+      <div className="px-3 pt-[240px] pb-6">
         {/* Section title */}
         <p className="text-foreground font-bold text-base mb-4 px-1">
           Trouver un partenaire de sport
