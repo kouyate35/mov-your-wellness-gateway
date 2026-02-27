@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Plus, Search } from "lucide-react";
+import { X, Plus } from "lucide-react";
 
-const tags = ["Burgers", "Dance", "Workout", "Music", "Gaming", "Anime"];
+const programs = [
+  { name: "MOVE", description: "Corps & Mobilité" },
+  { name: "FLEX", description: "Souplesse & Articulation" },
+  { name: "BREATH", description: "Respiration & Relaxation" },
+  { name: "FOCUS", description: "Discipline & Intention" },
+];
 
 const mockUsers: Record<string, { id: number; name: string; active: boolean; img: string }[]> = {
-  Burgers: [
+  MOVE: [
     { id: 1, name: "Mjee", active: false, img: "https://i.pravatar.cc/300?img=1" },
     { id: 2, name: "Manon", active: false, img: "https://i.pravatar.cc/300?img=2" },
     { id: 3, name: "M", active: true, img: "https://i.pravatar.cc/300?img=3" },
@@ -13,17 +18,21 @@ const mockUsers: Record<string, { id: number; name: string; active: boolean; img
     { id: 5, name: "Léa", active: true, img: "https://i.pravatar.cc/300?img=5" },
     { id: 6, name: "Rayan", active: false, img: "https://i.pravatar.cc/300?img=6" },
   ],
-  Dance: [
+  FLEX: [
     { id: 7, name: "Sofia", active: true, img: "https://i.pravatar.cc/300?img=7" },
     { id: 8, name: "Nora", active: false, img: "https://i.pravatar.cc/300?img=8" },
     { id: 9, name: "Karim", active: true, img: "https://i.pravatar.cc/300?img=9" },
     { id: 10, name: "Emma", active: false, img: "https://i.pravatar.cc/300?img=10" },
   ],
-  Workout: [
+  BREATH: [
     { id: 11, name: "Alex", active: true, img: "https://i.pravatar.cc/300?img=11" },
     { id: 12, name: "Jordan", active: false, img: "https://i.pravatar.cc/300?img=12" },
     { id: 13, name: "Sam", active: true, img: "https://i.pravatar.cc/300?img=13" },
     { id: 14, name: "Chris", active: false, img: "https://i.pravatar.cc/300?img=14" },
+  ],
+  FOCUS: [
+    { id: 15, name: "Lina", active: true, img: "https://i.pravatar.cc/300?img=15" },
+    { id: 16, name: "Hugo", active: false, img: "https://i.pravatar.cc/300?img=16" },
   ],
 };
 
@@ -57,16 +66,17 @@ const Community = () => {
           <button onClick={() => navigate(-1)} className="absolute top-4 left-4 p-1">
             <X className="w-6 h-6 text-white" />
           </button>
-          <h1 className="text-2xl font-bold text-white text-center mt-6">Explore les tags</h1>
+          <h1 className="text-2xl font-bold text-white text-center mt-6">Explore les programmes</h1>
         </div>
-        <div className="p-4 grid grid-cols-2 gap-3 -mt-4">
-          {tags.map((tag) => (
+        <div className="p-4 grid grid-cols-2 gap-3 mt-4">
+          {programs.map((prog) => (
             <button
-              key={tag}
-              onClick={() => openTag(tag)}
-              className="bg-[#4A90E2] hover:bg-[#357ABD] text-white font-bold py-4 px-3 rounded-2xl shadow-md transition-all active:scale-95"
+              key={prog.name}
+              onClick={() => openTag(prog.name)}
+              className="bg-[#141414] hover:bg-[#222] text-white font-bold py-5 px-3 rounded-2xl shadow-md transition-all active:scale-95 border border-white/10"
             >
-              {tag}
+              <span className="block text-lg">{prog.name}</span>
+              <span className="block text-xs font-normal text-white/60 mt-1">{prog.description}</span>
             </button>
           ))}
         </div>
@@ -88,7 +98,7 @@ const Community = () => {
           <h2 className="text-3xl font-black text-[#141414]">{selectedTag}</h2>
           <button className="mt-3 bg-[#141414] text-white font-semibold px-6 py-2 rounded-full text-sm flex items-center gap-2">
             <Plus className="w-4 h-4" />
-            Ajouter ce tag
+            Ajouter ce programme
           </button>
         </div>
         {/* Arc de cercle : div bleu avec border-radius bottom arrondi qui déborde */}
@@ -109,7 +119,7 @@ const Community = () => {
       {/* ZONE DE SCROLL */}
       <div className="flex-1 overflow-y-auto pt-[220px] pb-[80px] px-3">
         <p className="text-white font-bold text-lg px-1 mb-3">
-          Ils aiment ce tag
+          Ils aiment ce programme
         </p>
 
         {users.length === 0 && (
@@ -161,13 +171,6 @@ const Community = () => {
         </div>
       </div>
 
-      {/* Barre recherche fixe en bas */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-3 bg-[#1a1a1a]">
-        <button className="w-full bg-yellow-400 text-black font-bold py-3 rounded-full flex items-center justify-center gap-2">
-          <Search className="w-5 h-5" />
-          Recherche des tags
-        </button>
-      </div>
     </div>
   );
 };
