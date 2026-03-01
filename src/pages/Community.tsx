@@ -101,13 +101,13 @@ const Community = () => {
             Ajouter ce programme
           </button>
         </div>
-        {/* Arc de cercle : div bleu avec border-radius bottom arrondi qui déborde */}
+        {/* Arc convexe : le bleu gonfle vers le bas comme une colline */}
         <div
           style={{
             position: "relative",
-            left: "-5%",
-            width: "110%",
-            height: "40px",
+            left: "-20%",
+            width: "140%",
+            height: "50px",
             background: "#4A90E2",
             borderBottomLeftRadius: "50%",
             borderBottomRightRadius: "50%",
