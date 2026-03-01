@@ -107,12 +107,12 @@ const Community = () => {
           <div
             style={{
               position: "absolute",
-              bottom: "-30px",
-              left: "-5%",
-              width: "110%",
-              height: "60px",
+              bottom: "-44px",
+              left: "-15%",
+              width: "130%",
+              height: "88px",
               backgroundColor: "#4A90E2",
-              borderRadius: "0 0 50% 50%",
+              borderRadius: "0 0 100% 100%",
               zIndex: 10,
             }}
           />
