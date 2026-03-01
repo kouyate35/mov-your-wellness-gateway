@@ -87,12 +87,9 @@ const Community = () => {
   // TAG DETAIL VIEW — style Yubo
   return (
     <div className="min-h-screen bg-[#1a1a1a] flex flex-col relative">
-      {/* HEADER BLEU FIXE avec bosse convexe vers le bas */}
+      {/* HEADER BLEU FIXE avec effet arc */}
       <div className="fixed top-0 left-0 right-0 z-50">
-        <div
-          className="bg-[#4A90E2] px-6 pt-5 flex flex-col items-center relative"
-          style={{ paddingBottom: "60px" }}
-        >
+        <div className="bg-[#4A90E2] px-6 pt-5 pb-8 flex flex-col items-center relative">
           <div className="w-full flex justify-start mb-2">
             <button onClick={closeTag} className="text-white text-2xl font-light leading-none p-1">
               <X className="w-6 h-6" />
@@ -103,24 +100,24 @@ const Community = () => {
             <Plus className="w-4 h-4" />
             Ajouter ce programme
           </button>
-
-          <div
-            style={{
-              position: "absolute",
-              bottom: "-44px",
-              left: "-15%",
-              width: "130%",
-              height: "88px",
-              backgroundColor: "#4A90E2",
-              borderRadius: "0 0 100% 100%",
-              zIndex: 10,
-            }}
-          />
         </div>
+        {/* Arc de cercle : div bleu avec border-radius bottom arrondi qui déborde */}
+        <div
+          style={{
+            position: "relative",
+            left: "-5%",
+            width: "110%",
+            height: "40px",
+            background: "#4A90E2",
+            borderBottomLeftRadius: "50%",
+            borderBottomRightRadius: "50%",
+            marginTop: "-1px",
+          }}
+        />
       </div>
 
       {/* ZONE DE SCROLL */}
-      <div className="flex-1 overflow-y-auto pt-[220px] pb-[80px] px-3 relative z-[1]">
+      <div className="flex-1 overflow-y-auto pt-[220px] pb-[80px] px-3">
         <p className="text-white font-bold text-lg px-1 mb-3">
           Ils aiment ce programme
         </p>
