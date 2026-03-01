@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Plus } from "lucide-react";
+import { X } from "lucide-react";
 
 const programs = [
   { name: "MOVE", description: "Corps & Mobilité" },
@@ -97,7 +97,7 @@ const Community = () => {
           </div>
           <h2 className="text-3xl font-black text-[#141414]">{selectedTag}</h2>
           <button className="mt-3 bg-[#141414] text-white font-semibold px-6 py-2 rounded-full text-sm flex items-center gap-2">
-            <Plus className="w-4 h-4" />
+            <span className="text-lg">+</span>
             Ajouter ce programme
           </button>
         </div>
@@ -158,12 +158,16 @@ const Community = () => {
               <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-4">
                 <button
                   onClick={() => dismiss(user.id)}
-                  className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+                  className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-90 transition-transform"
                 >
-                  <X className="w-5 h-5 text-red-500" />
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="#EF4444" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
-                <button className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-90 transition-transform">
-                  <Plus className="w-5 h-5 text-green-500" />
+                <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 5v14M5 12h14" stroke="#22C55E" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </button>
               </div>
             </div>
