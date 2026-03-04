@@ -10,6 +10,7 @@ import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
 import BlackHoleLoader from "./BlackHoleLoader";
 import RocketManLoader from "./RocketManLoader";
+import RippleLoader from "./RippleLoader";
 import PauseCountdown from "./PauseCountdown";
 
 const parseDurationToSeconds = (duration: string): number => {
@@ -81,7 +82,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   const isPause = category.id === "pause";
 
   // Get programs for the carousel (4 for pause, 3 for others)
-  const displayPrograms = category.programs.slice(0, isPause ? 8 : 3);
+  const displayPrograms = category.programs.slice(0, isPause ? 9 : 3);
 
   const handleStartProgram = () => {
     if (selectedProgramId) {
@@ -115,6 +116,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "hamster-wheel" && <HamsterLoader />}
         {fullscreenLoader === "black-hole" && <BlackHoleLoader />}
         {fullscreenLoader === "rocket-man" && <RocketManLoader />}
+        {fullscreenLoader === "ripple-wave" && <RippleLoader />}
       </div>
     )}
     <div className="w-full">
@@ -156,6 +158,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isHamsterProgram = isPause && program.id === "hamster-wheel";
           const isBlackHoleProgram = isPause && program.id === "black-hole";
           const isRocketManProgram = isPause && program.id === "rocket-man";
+          const isRippleProgram = isPause && program.id === "ripple-wave";
           
           return (
             <button
@@ -178,6 +181,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("black-hole");
                 } else if (isRocketManProgram) {
                   setFullscreenLoader("rocket-man");
+                } else if (isRippleProgram) {
+                  setFullscreenLoader("ripple-wave");
                 }
               }}
               className={`
@@ -228,6 +233,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               ) : isRocketManProgram ? (
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <RocketManLoader />
+                </div>
+              ) : isRippleProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <RippleLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />

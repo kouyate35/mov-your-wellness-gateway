@@ -190,6 +190,12 @@ export const categories: Category[] = [
         duration: "6 min",
         description: "Un personnage fonce à travers les nuages dans un envol spatial hypnotique",
       },
+      {
+        id: "ripple-wave",
+        name: "Vagues concentriques",
+        duration: "8 min",
+        description: "Des cercles concentriques pulsent en vagues hypnotiques pour te déconnecter",
+      },
     ],
   },
 ];
