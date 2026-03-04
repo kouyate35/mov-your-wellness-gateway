@@ -160,6 +160,12 @@ export const categories: Category[] = [
         duration: "5 min",
         description: "L'écran s'assombrit progressivement pour t'inviter à poser le téléphone",
       },
+      {
+        id: "orbital-spin",
+        name: "Orbite hypnotique",
+        duration: "7 min",
+        description: "Des cercles orbitaux tournent en 3D pour captiver ton attention loin du scroll",
+      },
     ],
   },
 ];

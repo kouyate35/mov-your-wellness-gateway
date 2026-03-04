@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import BouncingLoader from "./BouncingLoader";
 import BalanceLoader from "./BalanceLoader";
 import VortexLoader from "./VortexLoader";
+import OrbitalLoader from "./OrbitalLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -61,18 +62,18 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
-  // Get first 3 programs for the carousel
-  const displayPrograms = category.programs.slice(0, 3);
+  // Check if category has videos (move, flex and breath)
+  const hasVideos = category.id === "move" || category.id === "flex" || category.id === "breath";
+  const isPause = category.id === "pause";
+
+  // Get programs for the carousel (4 for pause, 3 for others)
+  const displayPrograms = category.programs.slice(0, isPause ? 4 : 3);
 
   const handleStartProgram = () => {
     if (selectedProgramId) {
       navigate(`/challenge?program=${selectedProgramId}`);
     }
   };
-
-  // Check if category has videos (move, flex and breath)
-  const hasVideos = category.id === "move" || category.id === "flex" || category.id === "breath";
-  const isPause = category.id === "pause";
 
   return (
     <>
@@ -85,6 +86,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "bouncing-loader" && <BouncingLoader />}
         {fullscreenLoader === "breath-pause" && <BalanceLoader />}
         {fullscreenLoader === "screen-fade" && <VortexLoader />}
+        {fullscreenLoader === "orbital-spin" && <OrbitalLoader />}
       </div>
     )}
     <div className="w-full">
@@ -121,6 +123,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isBouncingProgram = isPause && program.id === "bouncing-loader";
           const isBalanceProgram = isPause && program.id === "breath-pause";
           const isVortexProgram = isPause && program.id === "screen-fade";
+          const isOrbitalProgram = isPause && program.id === "orbital-spin";
           
           return (
             <button
@@ -133,6 +136,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("breath-pause");
                 } else if (isVortexProgram) {
                   setFullscreenLoader("screen-fade");
+                } else if (isOrbitalProgram) {
+                  setFullscreenLoader("orbital-spin");
                 }
               }}
               className={`
@@ -163,6 +168,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               ) : isVortexProgram ? (
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <VortexLoader />
+                </div>
+              ) : isOrbitalProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <OrbitalLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
