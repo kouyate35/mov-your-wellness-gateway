@@ -8,7 +8,7 @@ import VortexLoader from "./VortexLoader";
 import OrbitalLoader from "./OrbitalLoader";
 import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
-import BongoLoader from "./BongoLoader";
+import BlackHoleLoader from "./BlackHoleLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
