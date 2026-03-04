@@ -4,6 +4,7 @@ import { Check, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BouncingLoader from "./BouncingLoader";
 import BalanceLoader from "./BalanceLoader";
+import VortexLoader from "./VortexLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -83,6 +84,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
       >
         {fullscreenLoader === "bouncing-loader" && <BouncingLoader />}
         {fullscreenLoader === "breath-pause" && <BalanceLoader />}
+        {fullscreenLoader === "screen-fade" && <VortexLoader />}
       </div>
     )}
     <div className="w-full">
@@ -118,6 +120,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const hasVideo = hasVideos && videoSrc;
           const isBouncingProgram = isPause && program.id === "bouncing-loader";
           const isBalanceProgram = isPause && program.id === "breath-pause";
+          const isVortexProgram = isPause && program.id === "screen-fade";
           
           return (
             <button
@@ -128,6 +131,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("bouncing-loader");
                 } else if (isBalanceProgram) {
                   setFullscreenLoader("breath-pause");
+                } else if (isVortexProgram) {
+                  setFullscreenLoader("screen-fade");
                 }
               }}
               className={`
@@ -154,6 +159,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               ) : isBalanceProgram ? (
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <BalanceLoader />
+                </div>
+              ) : isVortexProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <VortexLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
