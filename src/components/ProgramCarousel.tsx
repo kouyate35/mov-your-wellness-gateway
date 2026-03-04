@@ -205,6 +205,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <BlackHoleLoader />
                 </div>
+              ) : isRocketManProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <RocketManLoader />
+                </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
               ) : (
