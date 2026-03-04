@@ -16,6 +16,7 @@ import HelpCenter from "./pages/HelpCenter";
 import Terms from "./pages/Terms";
 import UsageStats from "./pages/UsageStats";
 import Community from "./pages/Community";
+import CompletionPreview from "./pages/CompletionPreview";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
