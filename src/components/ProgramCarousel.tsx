@@ -156,6 +156,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("hamster-wheel");
                 } else if (isBlackHoleProgram) {
                   setFullscreenLoader("black-hole");
+                } else if (isRocketManProgram) {
+                  setFullscreenLoader("rocket-man");
                 }
               }}
               className={`
