@@ -119,8 +119,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "ripple-wave" && <RippleLoader />}
       </div>
     )}
-    {!fullscreenLoader && (
-    <div className="w-full">
+    <div className={fullscreenLoader ? "hidden" : "w-full"}>
       {/* Title with Play button */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-3">
