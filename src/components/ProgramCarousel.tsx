@@ -9,6 +9,7 @@ import OrbitalLoader from "./OrbitalLoader";
 import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
 import BlackHoleLoader from "./BlackHoleLoader";
+import RocketManLoader from "./RocketManLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
