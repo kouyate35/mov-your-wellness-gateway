@@ -178,6 +178,12 @@ export const categories: Category[] = [
         duration: "8 min",
         description: "Un hamster court dans sa roue pour t'hypnotiser et te faire décrocher",
       },
+      {
+        id: "bongo-walk",
+        name: "Marche du bongo",
+        duration: "7 min",
+        description: "Un petit oiseau marche sans relâche pour captiver ton regard",
+      },
     ],
   },
 ];
