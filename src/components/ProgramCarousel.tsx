@@ -2,6 +2,7 @@ import { Category } from "@/data/categories";
 import { useRef, useState } from "react";
 import { Check, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import BouncingLoader from "./BouncingLoader";
 import BalanceLoader from "./BalanceLoader";
 import VortexLoader from "./VortexLoader";
@@ -12,6 +13,7 @@ import BlackHoleLoader from "./BlackHoleLoader";
 import RocketManLoader from "./RocketManLoader";
 import RippleLoader from "./RippleLoader";
 import PauseCountdown from "./PauseCountdown";
+import CompletionCelebration from "./CompletionCelebration";
 
 const parseDurationToSeconds = (duration: string): number => {
   const minMatch = duration.match(/(\d+)\s*min/);
