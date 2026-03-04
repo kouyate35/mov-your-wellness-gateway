@@ -4,6 +4,7 @@
   width: 12em;
   height: 12em;
   font-size: 14px;
+  contain: layout style;
 }
 
 .wheel,
@@ -36,6 +37,7 @@
   transform: rotate(4deg) translate(-0.8em, 1.85em);
   transform-origin: 50% 0;
   z-index: 1;
+  will-change: transform;
 }
 
 .hamster__head {
@@ -49,6 +51,7 @@
   width: 2.75em;
   height: 2.5em;
   transform-origin: 100% 50%;
+  will-change: transform;
 }
 
 .hamster__ear {
@@ -61,6 +64,7 @@
   width: 0.75em;
   height: 0.75em;
   transform-origin: 50% 75%;
+  will-change: transform;
 }
 
 .hamster__eye {
@@ -71,6 +75,7 @@
   left: 1.25em;
   width: 0.5em;
   height: 0.5em;
+  will-change: transform;
 }
 
 .hamster__nose {
@@ -94,6 +99,7 @@
   height: 3em;
   transform-origin: 17% 50%;
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .hamster__limb--fr,
@@ -104,6 +110,7 @@
   width: 1em;
   height: 1.5em;
   transform-origin: 50% 0;
+  will-change: transform;
 }
 
 .hamster__limb--fr {
@@ -127,6 +134,7 @@
   width: 1.5em;
   height: 2.5em;
   transform-origin: 50% 30%;
+  will-change: transform;
 }
 
 .hamster__limb--br {
@@ -152,12 +160,14 @@
   height: 0.5em;
   transform: rotate(30deg) translateZ(-1px);
   transform-origin: 0.25em 0.25em;
+  will-change: transform;
 }
 
 .spoke {
   animation: spoke var(--dur) linear infinite;
   background: radial-gradient(100% 100% at center, hsl(0, 0%, 60%) 4.8%, hsla(0, 0%, 60%, 0) 5%),
     linear-gradient(hsla(0, 0%, 55%, 0) 46.9%, hsl(0, 0%, 65%) 47% 52.9%, hsla(0, 0%, 65%, 0) 53%) 50% 50% / 99% 99% no-repeat;
+  will-change: transform;
 }
 
 @keyframes hamster {

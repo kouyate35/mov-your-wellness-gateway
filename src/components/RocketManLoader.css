@@ -3,6 +3,7 @@
   width: 200px;
   height: 200px;
   overflow: hidden;
+  contain: layout style;
 }
 
 .rocketman-wrapper .rm-loader {
@@ -10,6 +11,7 @@
   top: 50%;
   left: 50%;
   margin-left: -50px;
+  will-change: transform;
   animation: rm-speeder 0.4s linear infinite;
 }
 
@@ -33,6 +35,7 @@
   height: 1px;
   background: #fff;
   position: absolute;
+  will-change: transform, opacity;
   animation: rm-lmark 0.4s linear infinite;
 }
 
@@ -133,6 +136,7 @@
   height: 2px;
   width: 30%;
   background: linear-gradient(to right, transparent, #ffffff33, transparent);
+  will-change: transform, opacity;
   animation: rm-lf 0.6s linear infinite;
 }
 
@@ -173,6 +177,7 @@
   position: absolute;
   background: #ffffff11;
   border-radius: 50%;
+  will-change: transform, opacity;
   animation: rm-cloud-move 3s linear infinite;
 }
 
@@ -235,18 +240,18 @@
 }
 
 @keyframes rm-lf {
-  0% { left: 100%; }
-  100% { left: -100%; opacity: 0; }
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-200%); opacity: 0; }
 }
 
 @keyframes rm-lmark {
-  0% { width: 30px; opacity: 1; }
-  100% { width: 0px; opacity: 0; }
+  0% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(0); opacity: 0; }
 }
 
 @keyframes rm-cloud-move {
-  0% { right: -60px; opacity: 0; }
+  0% { transform: translateX(0); opacity: 0; }
   10% { opacity: 0.15; }
   90% { opacity: 0.15; }
-  100% { right: 110%; opacity: 0; }
+  100% { transform: translateX(-300px); opacity: 0; }
 }
