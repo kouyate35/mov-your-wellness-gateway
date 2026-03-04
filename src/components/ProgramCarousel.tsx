@@ -10,6 +10,7 @@ import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
 import BlackHoleLoader from "./BlackHoleLoader";
 import RocketManLoader from "./RocketManLoader";
+import RippleLoader from "./RippleLoader";
 import PauseCountdown from "./PauseCountdown";
 
 const parseDurationToSeconds = (duration: string): number => {
