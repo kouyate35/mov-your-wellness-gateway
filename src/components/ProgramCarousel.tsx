@@ -7,6 +7,7 @@ import BalanceLoader from "./BalanceLoader";
 import VortexLoader from "./VortexLoader";
 import OrbitalLoader from "./OrbitalLoader";
 import StepBounceLoader from "./StepBounceLoader";
+import HamsterLoader from "./HamsterLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -68,7 +69,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   const isPause = category.id === "pause";
 
   // Get programs for the carousel (4 for pause, 3 for others)
-  const displayPrograms = category.programs.slice(0, isPause ? 5 : 3);
+  const displayPrograms = category.programs.slice(0, isPause ? 6 : 3);
 
   const handleStartProgram = () => {
     if (selectedProgramId) {
@@ -89,6 +90,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "screen-fade" && <VortexLoader />}
         {fullscreenLoader === "orbital-spin" && <OrbitalLoader />}
         {fullscreenLoader === "step-bounce" && <StepBounceLoader />}
+        {fullscreenLoader === "hamster-wheel" && <HamsterLoader />}
       </div>
     )}
     <div className="w-full">
@@ -127,6 +129,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isVortexProgram = isPause && program.id === "screen-fade";
           const isOrbitalProgram = isPause && program.id === "orbital-spin";
           const isStepBounceProgram = isPause && program.id === "step-bounce";
+          const isHamsterProgram = isPause && program.id === "hamster-wheel";
           
           return (
             <button
@@ -143,6 +146,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("orbital-spin");
                 } else if (isStepBounceProgram) {
                   setFullscreenLoader("step-bounce");
+                } else if (isHamsterProgram) {
+                  setFullscreenLoader("hamster-wheel");
                 }
               }}
               className={`
@@ -181,6 +186,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               ) : isStepBounceProgram ? (
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <StepBounceLoader />
+                </div>
+              ) : isHamsterProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <HamsterLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
