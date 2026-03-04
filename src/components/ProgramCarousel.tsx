@@ -10,6 +10,16 @@ import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
 import BlackHoleLoader from "./BlackHoleLoader";
 import RocketManLoader from "./RocketManLoader";
+import PauseCountdown from "./PauseCountdown";
+
+const parseDurationToSeconds = (duration: string): number => {
+  const minMatch = duration.match(/(\d+)\s*min/);
+  const secMatch = duration.match(/(\d+)\s*sec/);
+  let total = 0;
+  if (minMatch) total += parseInt(minMatch[1]) * 60;
+  if (secMatch) total += parseInt(secMatch[1]);
+  return total || 300;
+};
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
