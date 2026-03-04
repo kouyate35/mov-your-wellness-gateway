@@ -288,7 +288,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           );
         })}
       </div>
-    </div>
+    )}
     </>
   );
 };
