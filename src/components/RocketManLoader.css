@@ -2,6 +2,7 @@
   position: relative;
   width: 200px;
   height: 200px;
+  overflow: hidden;
 }
 
 .rocketman-wrapper .rm-loader {
@@ -12,6 +13,7 @@
   animation: rm-speeder 0.4s linear infinite;
 }
 
+/* Red cape/scarf on top */
 .rocketman-wrapper .rm-loader > span {
   height: 5px;
   width: 35px;
@@ -22,6 +24,7 @@
   border-radius: 2px 10px 1px 0;
 }
 
+/* Speed lines behind the character */
 .rocketman-wrapper .rm-loader > span > span:nth-child(1),
 .rocketman-wrapper .rm-loader > span > span:nth-child(2),
 .rocketman-wrapper .rm-loader > span > span:nth-child(3),
@@ -56,6 +59,7 @@
   animation-delay: 0.15s;
 }
 
+/* Body - triangle shape pointing left (legs/tail) */
 .rocketman-wrapper .rm-base span {
   position: absolute;
   width: 0;
@@ -65,6 +69,7 @@
   border-bottom: 6px solid transparent;
 }
 
+/* Round head */
 .rocketman-wrapper .rm-base span::before {
   content: "";
   height: 22px;
@@ -76,6 +81,7 @@
   top: -16px;
 }
 
+/* Upper body / torso connection */
 .rocketman-wrapper .rm-base span::after {
   content: "";
   position: absolute;
@@ -88,6 +94,7 @@
   right: -98px;
 }
 
+/* Face - skin color circle inside head */
 .rocketman-wrapper .rm-face {
   position: absolute;
   height: 12px;
@@ -111,11 +118,21 @@
   border-radius: 50%;
 }
 
+/* Long horizontal speed lines across the whole wrapper */
+.rocketman-wrapper .rm-longfazers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .rocketman-wrapper .rm-longfazers span {
   position: absolute;
   height: 2px;
   width: 30%;
-  background: linear-gradient(to right, transparent, #ffffff44, transparent);
+  background: linear-gradient(to right, transparent, #ffffff33, transparent);
   animation: rm-lf 0.6s linear infinite;
 }
 
@@ -142,9 +159,19 @@
   animation-delay: 0.15s;
 }
 
+/* Clouds - subtle, low opacity ellipses */
+.rocketman-wrapper .rm-clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .rocketman-wrapper .rm-clouds .rm-cloud {
   position: absolute;
-  background: #ffffff22;
+  background: #ffffff11;
   border-radius: 50%;
   animation: rm-cloud-move 3s linear infinite;
 }
@@ -219,7 +246,7 @@
 
 @keyframes rm-cloud-move {
   0% { right: -60px; opacity: 0; }
-  10% { opacity: 0.4; }
-  90% { opacity: 0.4; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
   100% { right: 110%; opacity: 0; }
 }
