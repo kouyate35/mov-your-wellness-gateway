@@ -1,0 +1,107 @@
+.blackhole-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+}
+
+.blackhole-wrapper .ring-3 {
+  box-shadow: 0px 0px 10px 15px #fff;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.blackhole-wrapper .ring-2 {
+  box-shadow: 0px 0px 2px 10px #000;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.blackhole-wrapper .ring-1 {
+  box-shadow: 0px 0px 10px 15px #fff;
+  border-radius: 50%;
+  padding: 2px;
+  position: relative;
+}
+
+.blackhole-wrapper .black-hole {
+  height: 128px;
+  aspect-ratio: 1;
+  background-color: black;
+  border-radius: 50%;
+  box-shadow:
+    0px 0px 20px 10px #000,
+    inset 0px 0px 10px #ffffff88;
+}
+
+.blackhole-wrapper .glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2) 5%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.blackhole-wrapper .bh-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(75deg);
+}
+
+.blackhole-wrapper .crescent {
+  filter: drop-shadow(0px 0px 5px #fff) drop-shadow(0px 0px 15px #fff)
+    drop-shadow(0px 0px 25px #fff);
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  transform-origin: center center;
+}
+
+.blackhole-wrapper .crescent-1 {
+  animation: bh-orbit 4s linear infinite;
+}
+
+.blackhole-wrapper .crescent-2 {
+  animation: bh-orbit 4s linear infinite;
+  animation-delay: -0.66s;
+}
+
+.blackhole-wrapper .crescent-3 {
+  animation: bh-orbit 4s linear infinite;
+  animation-delay: -1.33s;
+}
+
+.blackhole-wrapper .crescent-4 {
+  animation: bh-orbit 4s linear infinite reverse;
+}
+
+.blackhole-wrapper .crescent-5 {
+  animation: bh-orbit 4s linear infinite reverse;
+  animation-delay: -0.66s;
+}
+
+.blackhole-wrapper .crescent-6 {
+  animation: bh-orbit 4s linear infinite reverse;
+  animation-delay: -1.33s;
+}
+
+@keyframes bh-orbit {
+  0% {
+    transform: rotate(0deg) translateX(100px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(100px) rotate(-360deg);
+  }
+}

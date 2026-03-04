@@ -179,10 +179,10 @@ export const categories: Category[] = [
         description: "Un hamster court dans sa roue pour t'hypnotiser et te faire décrocher",
       },
       {
-        id: "bongo-walk",
-        name: "Marche du bongo",
+        id: "black-hole",
+        name: "Trou noir",
         duration: "7 min",
-        description: "Un petit oiseau marche sans relâche pour captiver ton regard",
+        description: "Un trou noir hypnotique avec des crescents orbitaux lumineux",
       },
     ],
   },

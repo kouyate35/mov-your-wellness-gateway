@@ -8,7 +8,7 @@ import VortexLoader from "./VortexLoader";
 import OrbitalLoader from "./OrbitalLoader";
 import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
-import BongoLoader from "./BongoLoader";
+import BlackHoleLoader from "./BlackHoleLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -92,7 +92,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "orbital-spin" && <OrbitalLoader />}
         {fullscreenLoader === "step-bounce" && <StepBounceLoader />}
         {fullscreenLoader === "hamster-wheel" && <HamsterLoader />}
-        {fullscreenLoader === "bongo-walk" && <BongoLoader />}
+        {fullscreenLoader === "black-hole" && <BlackHoleLoader />}
       </div>
     )}
     <div className="w-full">
@@ -132,7 +132,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isOrbitalProgram = isPause && program.id === "orbital-spin";
           const isStepBounceProgram = isPause && program.id === "step-bounce";
           const isHamsterProgram = isPause && program.id === "hamster-wheel";
-          const isBongoProgram = isPause && program.id === "bongo-walk";
+          const isBlackHoleProgram = isPause && program.id === "black-hole";
           
           return (
             <button
@@ -151,8 +151,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("step-bounce");
                 } else if (isHamsterProgram) {
                   setFullscreenLoader("hamster-wheel");
-                } else if (isBongoProgram) {
-                  setFullscreenLoader("bongo-walk");
+                } else if (isBlackHoleProgram) {
+                  setFullscreenLoader("black-hole");
                 }
               }}
               className={`
@@ -196,9 +196,9 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <HamsterLoader />
                 </div>
-              ) : isBongoProgram ? (
-                <div className="absolute inset-0 bg-[#e8e8e8] flex items-center justify-center">
-                  <BongoLoader />
+              ) : isBlackHoleProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <BlackHoleLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
