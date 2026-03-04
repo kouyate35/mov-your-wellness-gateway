@@ -2,6 +2,7 @@
   position: relative;
   width: 250px;
   height: 250px;
+  overflow: hidden;
 }
 
 .ripple-wrapper .ripple-box {
