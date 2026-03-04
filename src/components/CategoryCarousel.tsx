@@ -4,6 +4,7 @@ import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryFlexImg from "@/assets/category-flex.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
+import categoryPauseImg from "@/assets/category-pause.jpg";
 import categoryMoveVideo from "@/assets/category-move-video.mp4";
 import categoryFlexVideo from "@/assets/category-flex-video.mp4";
 import categoryBreathVideo from "@/assets/category-breath-video.mp4";
@@ -11,8 +12,8 @@ import categoryFocusVideo from "@/assets/category-focus-video.mp4";
 import { ChevronRight } from "lucide-react";
 
 interface CategoryCarouselProps {
-  selectedCategory: "move" | "flex" | "breath" | "focus";
-  onSelectCategory: React.Dispatch<React.SetStateAction<"move" | "flex" | "breath" | "focus">>;
+  selectedCategory: "move" | "flex" | "breath" | "focus" | "pause";
+  onSelectCategory: React.Dispatch<React.SetStateAction<"move" | "flex" | "breath" | "focus" | "pause">>;
 }
 
 // Fallback images for poster
@@ -21,6 +22,7 @@ const categoryImages: Record<string, string> = {
   flex: categoryFlexImg,
   breath: categoryBreathImg,
   focus: categoryFocusImg,
+  pause: categoryPauseImg,
 };
 
 // Video sources for each category
@@ -49,7 +51,7 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
     // Short delay for fade-out, then switch
     setTimeout(() => {
       setCurrentIndex(nextIndex);
-      onSelectCategory(categories[nextIndex].id as "move" | "flex" | "breath" | "focus");
+      onSelectCategory(categories[nextIndex].id as "move" | "flex" | "breath" | "focus" | "pause");
       // Allow fade-in to complete
       setTimeout(() => setIsTransitioning(false), 300);
     }, 150);
@@ -104,16 +106,24 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
               index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
-            {/* Background video with poster fallback */}
-            <video 
-              src={categoryVideos[category.id]}
-              poster={categoryImages[category.id]}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            {/* Background video or image fallback */}
+            {categoryVideos[category.id] ? (
+              <video 
+                src={categoryVideos[category.id]}
+                poster={categoryImages[category.id]}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <img 
+                src={categoryImages[category.id]} 
+                alt={category.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
             
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

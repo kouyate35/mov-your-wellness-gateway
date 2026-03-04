@@ -6,7 +6,7 @@ export interface Program {
 }
 
 export interface Category {
-  id: "move" | "flex" | "breath" | "focus";
+  id: "move" | "flex" | "breath" | "focus" | "pause";
   name: string;
   tagline: string;
   description: string;
@@ -130,6 +130,35 @@ export const categories: Category[] = [
         name: "Affirmation",
         duration: "10 sec",
         description: "Répète une affirmation positive",
+      },
+    ],
+  },
+  {
+    id: "pause",
+    name: "PAUSE",
+    tagline: "Déconnexion & Récupération",
+    description: "Après 45 min de scroll, un écran de pause s'active pour te rappeler de faire une vraie coupure.",
+    icon: "⏸️",
+    color: "pause",
+    gradient: "from-slate-600 to-gray-800",
+    programs: [
+      {
+        id: "bouncing-loader",
+        name: "Chargement dynamique",
+        duration: "10 min",
+        description: "Animation de chargement fluide qui bloque l'écran pendant ta pause",
+      },
+      {
+        id: "breath-pause",
+        name: "Respiration de pause",
+        duration: "8 min",
+        description: "Respire profondément pendant que l'écran se repose",
+      },
+      {
+        id: "screen-fade",
+        name: "Fondu progressif",
+        duration: "5 min",
+        description: "L'écran s'assombrit progressivement pour t'inviter à poser le téléphone",
       },
     ],
   },
