@@ -166,6 +166,12 @@ export const categories: Category[] = [
         duration: "7 min",
         description: "Des cercles orbitaux tournent en 3D pour captiver ton attention loin du scroll",
       },
+      {
+        id: "step-bounce",
+        name: "Escalier rebondissant",
+        duration: "6 min",
+        description: "Une balle rebondit sur des marches qui apparaissent en boucle",
+      },
     ],
   },
 ];
