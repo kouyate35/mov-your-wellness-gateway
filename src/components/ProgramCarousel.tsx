@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Check, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BouncingLoader from "./BouncingLoader";
+import BalanceLoader from "./BalanceLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -55,7 +56,7 @@ const pauseGradients = [
 ];
 
 const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: ProgramCarouselProps) => {
-  const [fullscreenLoader, setFullscreenLoader] = useState(false);
+  const [fullscreenLoader, setFullscreenLoader] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
@@ -78,9 +79,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
     {fullscreenLoader && (
       <div 
         className="fixed inset-0 z-50 bg-[#1a1a1a] flex items-center justify-center cursor-pointer"
-        onClick={() => setFullscreenLoader(false)}
+        onClick={() => setFullscreenLoader(null)}
       >
-        <BouncingLoader />
+        {fullscreenLoader === "bouncing-loader" && <BouncingLoader />}
+        {fullscreenLoader === "breath-pause" && <BalanceLoader />}
       </div>
     )}
     <div className="w-full">
@@ -115,6 +117,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const videoSrc = programVideos[program.id];
           const hasVideo = hasVideos && videoSrc;
           const isBouncingProgram = isPause && program.id === "bouncing-loader";
+          const isBalanceProgram = isPause && program.id === "breath-pause";
           
           return (
             <button
@@ -122,7 +125,9 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               onClick={() => {
                 onSelectProgram(program.id);
                 if (isBouncingProgram) {
-                  setFullscreenLoader(true);
+                  setFullscreenLoader("bouncing-loader");
+                } else if (isBalanceProgram) {
+                  setFullscreenLoader("breath-pause");
                 }
               }}
               className={`
@@ -145,6 +150,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               ) : isBouncingProgram ? (
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <BouncingLoader />
+                </div>
+              ) : isBalanceProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <BalanceLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
