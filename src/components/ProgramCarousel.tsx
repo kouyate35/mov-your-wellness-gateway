@@ -180,6 +180,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("black-hole");
                 } else if (isRocketManProgram) {
                   setFullscreenLoader("rocket-man");
+                } else if (isRippleProgram) {
+                  setFullscreenLoader("ripple-wave");
                 }
               }}
               className={`
