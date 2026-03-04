@@ -130,7 +130,20 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "ripple-wave" && <RippleLoader />}
       </div>
     )}
-    <div className={fullscreenLoader ? "hidden" : "w-full"}>
+    {/* Celebration overlay */}
+    <AnimatePresence>
+      {showCelebration && completedProgram && (
+        <CompletionCelebration
+          programName={completedProgram.name}
+          duration={completedProgram.duration}
+          onClose={() => {
+            setShowCelebration(false);
+            setCompletedProgram(null);
+          }}
+        />
+      )}
+    </AnimatePresence>
+    <div className={fullscreenLoader || showCelebration ? "hidden" : "w-full"}>
       {/* Title with Play button */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-3">
