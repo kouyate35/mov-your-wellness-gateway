@@ -153,6 +153,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("hamster-wheel");
                 } else if (isBlackHoleProgram) {
                   setFullscreenLoader("black-hole");
+                }
               }}
               className={`
                 relative flex-shrink-0 w-[70%] snap-start rounded-3xl overflow-hidden
