@@ -94,6 +94,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "step-bounce" && <StepBounceLoader />}
         {fullscreenLoader === "hamster-wheel" && <HamsterLoader />}
         {fullscreenLoader === "black-hole" && <BlackHoleLoader />}
+        {fullscreenLoader === "rocket-man" && <RocketManLoader />}
       </div>
     )}
     <div className="w-full">
