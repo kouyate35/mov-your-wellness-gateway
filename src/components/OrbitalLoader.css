@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  contain: layout style;
 }
 
 .svg-frame svg {
@@ -16,6 +17,7 @@
   width: 344px;
   height: 344px;
   fill: none;
+  will-change: transform;
 }
 
 .svg-frame:hover svg,

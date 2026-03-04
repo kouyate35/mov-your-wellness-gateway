@@ -5,6 +5,7 @@
   position: relative;
   width: 200px;
   height: 200px;
+  contain: layout style;
 }
 
 .vortex-hole i {
@@ -14,6 +15,7 @@
   height: 50px;
   border-radius: 140px;
   opacity: 0;
+  will-change: transform, opacity;
   animation-name: vortex-scale;
   animation-duration: 3s;
   animation-iteration-count: infinite;
@@ -45,10 +47,6 @@
   100% {
     transform: scale(5);
     opacity: 0;
-    box-shadow:
-      0 0 5px rgba(255, 255, 255, 0.6),
-      0 0 10px rgba(255, 255, 255, 0.4),
-      0 0 20px rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.5);
   }
 }
