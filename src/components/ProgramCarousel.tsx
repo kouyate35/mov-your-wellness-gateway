@@ -76,6 +76,8 @@ const pauseGradients = [
 
 const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: ProgramCarouselProps) => {
   const [fullscreenLoader, setFullscreenLoader] = useState<string | null>(null);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [completedProgram, setCompletedProgram] = useState<{ name: string; duration: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
