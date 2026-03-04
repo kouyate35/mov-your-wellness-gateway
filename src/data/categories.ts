@@ -172,6 +172,12 @@ export const categories: Category[] = [
         duration: "6 min",
         description: "Une balle rebondit sur des marches qui apparaissent en boucle",
       },
+      {
+        id: "hamster-wheel",
+        name: "Roue du hamster",
+        duration: "8 min",
+        description: "Un hamster court dans sa roue pour t'hypnotiser et te faire décrocher",
+      },
     ],
   },
 ];
