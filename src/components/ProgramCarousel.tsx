@@ -71,7 +71,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   const isPause = category.id === "pause";
 
   // Get programs for the carousel (4 for pause, 3 for others)
-  const displayPrograms = category.programs.slice(0, isPause ? 7 : 3);
+  const displayPrograms = category.programs.slice(0, isPause ? 8 : 3);
 
   const handleStartProgram = () => {
     if (selectedProgramId) {
