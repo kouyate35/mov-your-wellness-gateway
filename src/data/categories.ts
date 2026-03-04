@@ -184,6 +184,12 @@ export const categories: Category[] = [
         duration: "7 min",
         description: "Un trou noir hypnotique avec des crescents orbitaux lumineux",
       },
+      {
+        id: "rocket-man",
+        name: "Envol spatial",
+        duration: "6 min",
+        description: "Un personnage fonce à travers les nuages dans un envol spatial hypnotique",
+      },
     ],
   },
 ];

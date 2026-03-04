@@ -9,6 +9,7 @@ import OrbitalLoader from "./OrbitalLoader";
 import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
 import BlackHoleLoader from "./BlackHoleLoader";
+import RocketManLoader from "./RocketManLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -70,7 +71,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   const isPause = category.id === "pause";
 
   // Get programs for the carousel (4 for pause, 3 for others)
-  const displayPrograms = category.programs.slice(0, isPause ? 7 : 3);
+  const displayPrograms = category.programs.slice(0, isPause ? 8 : 3);
 
   const handleStartProgram = () => {
     if (selectedProgramId) {
@@ -93,6 +94,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "step-bounce" && <StepBounceLoader />}
         {fullscreenLoader === "hamster-wheel" && <HamsterLoader />}
         {fullscreenLoader === "black-hole" && <BlackHoleLoader />}
+        {fullscreenLoader === "rocket-man" && <RocketManLoader />}
       </div>
     )}
     <div className="w-full">
@@ -133,6 +135,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isStepBounceProgram = isPause && program.id === "step-bounce";
           const isHamsterProgram = isPause && program.id === "hamster-wheel";
           const isBlackHoleProgram = isPause && program.id === "black-hole";
+          const isRocketManProgram = isPause && program.id === "rocket-man";
           
           return (
             <button
@@ -153,6 +156,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("hamster-wheel");
                 } else if (isBlackHoleProgram) {
                   setFullscreenLoader("black-hole");
+                } else if (isRocketManProgram) {
+                  setFullscreenLoader("rocket-man");
                 }
               }}
               className={`
@@ -199,6 +204,10 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
               ) : isBlackHoleProgram ? (
                 <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
                   <BlackHoleLoader />
+                </div>
+              ) : isRocketManProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <RocketManLoader />
                 </div>
               ) : isPause ? (
                 <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
