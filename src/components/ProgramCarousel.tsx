@@ -235,7 +235,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   <RocketManLoader />
                 </div>
               ) : isRippleProgram ? (
-                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
                   <RippleLoader />
                 </div>
               ) : isPause ? (
