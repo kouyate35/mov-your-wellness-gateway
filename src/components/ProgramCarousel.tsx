@@ -10,6 +10,16 @@ import StepBounceLoader from "./StepBounceLoader";
 import HamsterLoader from "./HamsterLoader";
 import BlackHoleLoader from "./BlackHoleLoader";
 import RocketManLoader from "./RocketManLoader";
+import PauseCountdown from "./PauseCountdown";
+
+const parseDurationToSeconds = (duration: string): number => {
+  const minMatch = duration.match(/(\d+)\s*min/);
+  const secMatch = duration.match(/(\d+)\s*sec/);
+  let total = 0;
+  if (minMatch) total += parseInt(minMatch[1]) * 60;
+  if (secMatch) total += parseInt(secMatch[1]);
+  return total || 300;
+};
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -87,6 +97,16 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         className="fixed inset-0 z-50 bg-[#1a1a1a] flex items-center justify-center cursor-pointer"
         onClick={() => setFullscreenLoader(null)}
       >
+        {(() => {
+          const program = category.programs.find(p => p.id === fullscreenLoader);
+          const duration = program ? parseDurationToSeconds(program.duration) : 300;
+          return (
+            <PauseCountdown 
+              durationSeconds={duration} 
+              onComplete={() => setFullscreenLoader(null)} 
+            />
+          );
+        })()}
         {fullscreenLoader === "bouncing-loader" && <BouncingLoader />}
         {fullscreenLoader === "breath-pause" && <BalanceLoader />}
         {fullscreenLoader === "screen-fade" && <VortexLoader />}
