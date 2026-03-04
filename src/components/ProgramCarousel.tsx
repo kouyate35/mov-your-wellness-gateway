@@ -2,6 +2,7 @@ import { Category } from "@/data/categories";
 import { useRef, useState } from "react";
 import { Check, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import BouncingLoader from "./BouncingLoader";
 import BalanceLoader from "./BalanceLoader";
 import VortexLoader from "./VortexLoader";
@@ -12,6 +13,7 @@ import BlackHoleLoader from "./BlackHoleLoader";
 import RocketManLoader from "./RocketManLoader";
 import RippleLoader from "./RippleLoader";
 import PauseCountdown from "./PauseCountdown";
+import CompletionCelebration from "./CompletionCelebration";
 
 const parseDurationToSeconds = (duration: string): number => {
   const minMatch = duration.match(/(\d+)\s*min/);
@@ -74,6 +76,8 @@ const pauseGradients = [
 
 const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: ProgramCarouselProps) => {
   const [fullscreenLoader, setFullscreenLoader] = useState<string | null>(null);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [completedProgram, setCompletedProgram] = useState<{ name: string; duration: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
@@ -104,7 +108,14 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           return (
             <PauseCountdown 
               durationSeconds={duration} 
-              onComplete={() => setFullscreenLoader(null)} 
+              onComplete={() => {
+                setCompletedProgram({
+                  name: program?.name || "Pause",
+                  duration: program?.duration || "5 min",
+                });
+                setFullscreenLoader(null);
+                setShowCelebration(true);
+              }} 
             />
           );
         })()}
@@ -119,7 +130,20 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {fullscreenLoader === "ripple-wave" && <RippleLoader />}
       </div>
     )}
-    <div className={fullscreenLoader ? "hidden" : "w-full"}>
+    {/* Celebration overlay */}
+    <AnimatePresence>
+      {showCelebration && completedProgram && (
+        <CompletionCelebration
+          programName={completedProgram.name}
+          duration={completedProgram.duration}
+          onClose={() => {
+            setShowCelebration(false);
+            setCompletedProgram(null);
+          }}
+        />
+      )}
+    </AnimatePresence>
+    <div className={fullscreenLoader || showCelebration ? "hidden" : "w-full"}>
       {/* Title with Play button */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-3">
