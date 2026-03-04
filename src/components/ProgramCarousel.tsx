@@ -157,6 +157,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isHamsterProgram = isPause && program.id === "hamster-wheel";
           const isBlackHoleProgram = isPause && program.id === "black-hole";
           const isRocketManProgram = isPause && program.id === "rocket-man";
+          const isRippleProgram = isPause && program.id === "ripple-wave";
           
           return (
             <button
