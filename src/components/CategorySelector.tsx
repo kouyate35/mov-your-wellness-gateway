@@ -4,6 +4,7 @@ import categoryMoveImg from "@/assets/category-move.jpg";
 import categoryFlexImg from "@/assets/category-flex.jpg";
 import categoryBreathImg from "@/assets/category-breath.jpg";
 import categoryFocusImg from "@/assets/category-focus.jpg";
+import categoryPauseImg from "@/assets/category-pause.jpg";
 import { ChevronRight, Check } from "lucide-react";
 import ProgramCarousel from "./ProgramCarousel";
 
@@ -21,6 +22,7 @@ const categoryImages: Record<string, string> = {
   flex: categoryFlexImg,
   breath: categoryBreathImg,
   focus: categoryFocusImg,
+  pause: categoryPauseImg,
 };
 
 const categoryFeatures: Record<string, string[]> = {
@@ -28,6 +30,7 @@ const categoryFeatures: Record<string, string[]> = {
   flex: ["Étirements doux", "Souplesse", "Articulations"],
   breath: ["Respiration guidée", "Méditation", "Relaxation"],
   focus: ["Intention claire", "Discipline", "Habitudes"],
+  pause: ["Pause après 45 min", "Écran de chargement", "Récupération"],
 };
 
 // Short descriptions for each category (ChatGPT style)
@@ -36,6 +39,7 @@ const categoryDescriptions: Record<string, string> = {
   flex: "Améliore ta souplesse et libère les tensions avec des étirements doux. Prends soin de tes articulations.",
   breath: "Calme ton esprit et réduis l'impulsivité avec des exercices de respiration guidée.",
   focus: "Crée une intention claire avant d'ouvrir l'app. Prends le contrôle de tes habitudes.",
+  pause: "Après 45 minutes de scroll continu, un écran de pause dynamique s'active pour te rappeler de faire une vraie coupure.",
 };
 
 const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramId, onSelectProgram }: CategorySelectorProps) => {
@@ -91,6 +95,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
       case 'flex': return 'bg-amber-500';
       case 'breath': return 'bg-breath';
       case 'focus': return 'bg-focus';
+      case 'pause': return 'bg-slate-400';
       default: return 'bg-white';
     }
   };

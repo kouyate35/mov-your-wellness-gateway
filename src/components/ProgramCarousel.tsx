@@ -1,7 +1,8 @@
 import { Category } from "@/data/categories";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Check, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import BouncingLoader from "./BouncingLoader";
 
 // Import exercise videos - Move
 import exerciseSquats from "@/assets/exercise-squats.mp4";
@@ -40,14 +41,21 @@ const programVideos: Record<string, string> = {
   "pause": exercisePause,
 };
 
-// Fallback gradients for Focus category (no videos yet)
+// Fallback gradients for Focus and Pause categories (no videos)
 const programGradients = [
   "from-purple-400 via-violet-500 to-indigo-600",
   "from-indigo-400 via-purple-500 to-pink-500",
   "from-violet-400 via-fuchsia-500 to-purple-600",
 ];
 
+const pauseGradients = [
+  "from-slate-700 via-gray-800 to-slate-900",
+  "from-gray-700 via-slate-800 to-gray-900",
+  "from-zinc-700 via-neutral-800 to-zinc-900",
+];
+
 const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: ProgramCarouselProps) => {
+  const [fullscreenLoader, setFullscreenLoader] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
@@ -62,8 +70,19 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
 
   // Check if category has videos (move, flex and breath)
   const hasVideos = category.id === "move" || category.id === "flex" || category.id === "breath";
+  const isPause = category.id === "pause";
 
   return (
+    <>
+    {/* Fullscreen bouncing loader overlay */}
+    {fullscreenLoader && (
+      <div 
+        className="fixed inset-0 z-50 bg-[#1a1a1a] flex items-center justify-center cursor-pointer"
+        onClick={() => setFullscreenLoader(false)}
+      >
+        <BouncingLoader />
+      </div>
+    )}
     <div className="w-full">
       {/* Title with Play button */}
       <div className="mb-4">
@@ -95,11 +114,17 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         {displayPrograms.map((program, index) => {
           const videoSrc = programVideos[program.id];
           const hasVideo = hasVideos && videoSrc;
+          const isBouncingProgram = isPause && program.id === "bouncing-loader";
           
           return (
             <button
               key={program.id}
-              onClick={() => onSelectProgram(program.id)}
+              onClick={() => {
+                onSelectProgram(program.id);
+                if (isBouncingProgram) {
+                  setFullscreenLoader(true);
+                }
+              }}
               className={`
                 relative flex-shrink-0 w-[70%] snap-start rounded-3xl overflow-hidden
                 transition-all duration-300
@@ -117,6 +142,12 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   playsInline
                   className="absolute inset-0 w-full h-full object-cover"
                 />
+              ) : isBouncingProgram ? (
+                <div className="absolute inset-0 bg-[#1a1a1a] flex items-center justify-center">
+                  <BouncingLoader />
+                </div>
+              ) : isPause ? (
+                <div className={`absolute inset-0 bg-gradient-to-b ${pauseGradients[index % pauseGradients.length]}`} />
               ) : (
                 <div className={`absolute inset-0 bg-gradient-to-b ${programGradients[index % programGradients.length]}`} />
               )}
@@ -165,6 +196,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         })}
       </div>
     </div>
+    </>
   );
 };
 
