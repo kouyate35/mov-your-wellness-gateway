@@ -108,7 +108,14 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           return (
             <PauseCountdown 
               durationSeconds={duration} 
-              onComplete={() => setFullscreenLoader(null)} 
+              onComplete={() => {
+                setCompletedProgram({
+                  name: program?.name || "Pause",
+                  duration: program?.duration || "5 min",
+                });
+                setFullscreenLoader(null);
+                setShowCelebration(true);
+              }} 
             />
           );
         })()}
