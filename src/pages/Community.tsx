@@ -8,6 +8,10 @@ interface Profile {
   name: string;
   age: number;
   location: string;
+  occupation?: string;
+  description?: string;
+  emojis?: string[];
+  interests?: string[];
   tags: string[];
   photos: string[];
 }
@@ -15,6 +19,10 @@ interface Profile {
 const mockProfiles: Profile[] = [
   {
     id: 1, name: "Léa", age: 24, location: "France, Paris",
+    occupation: "Coach sportive",
+    description: "Passionnée de fitness et de bien-être 🧘‍♀️ Toujours partante pour un bon workout !",
+    emojis: ["💪", "🧘‍♀️", "🌿", "☀️", "🎵"],
+    interests: ["YOGA", "RUNNING", "MEDITATION"],
     tags: ["MOVE", "BREATH"],
     photos: [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1200&fit=crop",
@@ -24,6 +32,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 2, name: "Karim", age: 27, location: "France, Lyon",
+    occupation: "Développeur",
+    description: "Dev le jour, sportif la nuit 🏋️ Fan de calisthenics et de challenges",
+    emojis: ["🏋️", "💻", "🎮", "🍕", "🔥"],
+    interests: ["CALISTHENICS", "MUSCULATION"],
     tags: ["FLEX", "FOCUS"],
     photos: [
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=1200&fit=crop",
@@ -32,6 +44,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 3, name: "Sofia", age: 22, location: "France, Marseille",
+    occupation: "Étudiante",
+    description: "Étudiante en kiné, j'adore le Pilates et la méditation 🌸",
+    emojis: ["🌸", "📚", "🧘", "🌊", "🎨"],
+    interests: ["PILATES", "NATATION", "STRETCHING"],
     tags: ["PAUSE", "BREATH"],
     photos: [
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1200&fit=crop",
@@ -42,6 +58,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 4, name: "Rayan", age: 29, location: "France, Toulouse",
+    occupation: "Préparateur physique",
+    description: "Le sport c'est la vie 💯 Objectif : repousser les limites",
+    emojis: ["💯", "🏃", "🥊", "🎯", "⚡"],
+    interests: ["BOXE", "CROSSFIT", "HIIT"],
     tags: ["MOVE", "FLEX"],
     photos: [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1200&fit=crop",
@@ -50,6 +70,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 5, name: "Emma", age: 25, location: "France, Bordeaux",
+    occupation: "Nutritionniste",
+    description: "Healthy body, healthy mind ✨ Ici pour partager et s'inspirer",
+    emojis: ["✨", "🥑", "🏄‍♀️", "📖", "🌺"],
+    interests: ["SURF", "YOGA", "NUTRITION"],
     tags: ["FOCUS", "PAUSE"],
     photos: [
       "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&h=1200&fit=crop",
@@ -59,6 +83,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 6, name: "Nora", age: 23, location: "France, Nice",
+    occupation: "Prof de danse",
+    description: "Danseuse dans l'âme 💃 La musique guide mes mouvements",
+    emojis: ["💃", "🎶", "🌅", "🌴", "😊"],
+    interests: ["DANSE", "STRETCHING"],
     tags: ["BREATH", "MOVE"],
     photos: [
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&h=1200&fit=crop",
@@ -67,6 +95,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 7, name: "Hugo", age: 26, location: "France, Nantes",
+    occupation: "Kinésithérapeute",
+    description: "Kiné passionné par la mobilité et le mouvement fonctionnel 🦴",
+    emojis: ["🦴", "🏊", "🎸", "🍳", "🐕"],
+    interests: ["MOBILITÉ", "NATATION", "RÉÉDUCATION"],
     tags: ["FLEX", "PAUSE"],
     photos: [
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=1200&fit=crop",
@@ -76,6 +108,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 8, name: "Lina", age: 21, location: "France, Strasbourg",
+    occupation: "Étudiante en STAPS",
+    description: "Future prof de sport 🎓 Fan de tout ce qui bouge !",
+    emojis: ["🎓", "🤸‍♀️", "🎾", "🌟", "🎉"],
+    interests: ["GYMNASTIQUE", "ATHLÉTISME"],
     tags: ["FOCUS", "BREATH"],
     photos: [
       "https://images.unsplash.com/photo-1485875437071-bb711b02ea95?w=800&h=1200&fit=crop",
@@ -143,6 +179,7 @@ const Community = () => {
   };
 
   const noMoreProfiles = currentIndex >= mockProfiles.length;
+  const isLastPhoto = profile ? currentPhoto === profile.photos.length - 1 : false;
 
   return (
     <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
@@ -306,32 +343,91 @@ const Community = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* Profile info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-10 pointer-events-none">
-                    <div className="flex items-baseline gap-2">
-                      <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
-                      <span className="text-2xl text-white/80 font-light">{profile.age}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <span className="text-white/70 text-sm">{profile.location}</span>
-                    </div>
-                    <div className="flex gap-2 mt-3">
-                      {profile.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-3 pointer-events-auto">
-                      <button className="w-full py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
-                        Envoie un message
-                      </button>
+                  {/* Profile info / Last photo = profile view */}
+                  <div className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-all duration-500 ${
+                    isLastPhoto ? "inset-0" : ""
+                  }`}>
+                    {/* Darkened overlay for last photo (profile view) */}
+                    {isLastPhoto && (
+                      <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+                    )}
+
+                    {/* Scrollable profile content on last photo */}
+                    <div className={`relative h-full flex flex-col ${
+                      isLastPhoto ? "justify-start pt-14 px-5 pb-5 overflow-y-auto pointer-events-auto" : "justify-end p-5"
+                    }`}>
+                      {/* Name & age */}
+                      <div className="flex items-baseline gap-2">
+                        <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
+                        <span className="text-2xl text-white/80 font-light">{profile.age}</span>
+                      </div>
+
+                      {/* Location */}
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="text-white/70 text-sm">{profile.location}</span>
+                      </div>
+
+                      {/* Occupation - only on last photo */}
+                      {isLastPhoto && profile.occupation && (
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
+                            <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          <span className="text-white/70 text-sm">{profile.occupation}</span>
+                        </div>
+                      )}
+
+                      {/* Emojis - only on last photo */}
+                      {isLastPhoto && profile.emojis && (
+                        <div className="flex gap-1 mt-3">
+                          {profile.emojis.map((emoji, i) => (
+                            <span key={i} className="text-2xl">{emoji}</span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Interests tags - only on last photo */}
+                      {isLastPhoto && profile.interests && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {profile.interests.map((interest) => (
+                            <span
+                              key={interest}
+                              className="bg-white/10 border border-white/15 text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
+                            >
+                              {interest}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Description - only on last photo */}
+                      {isLastPhoto && profile.description && (
+                        <p className="text-white/80 text-sm mt-3 leading-relaxed">
+                          {profile.description}
+                        </p>
+                      )}
+
+                      {/* Programme tags */}
+                      <div className="flex gap-2 mt-3">
+                        {profile.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Message button - shorter width */}
+                      <div className="mt-3 pointer-events-auto flex justify-center">
+                        <button className="px-10 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
+                          Envoie un message
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
