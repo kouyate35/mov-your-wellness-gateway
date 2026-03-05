@@ -328,6 +328,11 @@ const Community = () => {
                         </span>
                       ))}
                     </div>
+                    <div className="mt-3 pointer-events-auto">
+                      <button className="w-full py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
+                        Envoie un message
+                      </button>
+                    </div>
                   </div>
                 </div>
               </motion.div>
