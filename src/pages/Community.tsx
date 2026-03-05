@@ -19,6 +19,10 @@ interface Profile {
 const mockProfiles: Profile[] = [
   {
     id: 1, name: "Léa", age: 24, location: "France, Paris",
+    occupation: "Coach sportive",
+    description: "Passionnée de fitness et de bien-être 🧘‍♀️ Toujours partante pour un bon workout !",
+    emojis: ["💪", "🧘‍♀️", "🌿", "☀️", "🎵"],
+    interests: ["YOGA", "RUNNING", "MEDITATION"],
     tags: ["MOVE", "BREATH"],
     photos: [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1200&fit=crop",
@@ -28,6 +32,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 2, name: "Karim", age: 27, location: "France, Lyon",
+    occupation: "Développeur",
+    description: "Dev le jour, sportif la nuit 🏋️ Fan de calisthenics et de challenges",
+    emojis: ["🏋️", "💻", "🎮", "🍕", "🔥"],
+    interests: ["CALISTHENICS", "MUSCULATION"],
     tags: ["FLEX", "FOCUS"],
     photos: [
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=1200&fit=crop",
@@ -36,6 +44,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 3, name: "Sofia", age: 22, location: "France, Marseille",
+    occupation: "Étudiante",
+    description: "Étudiante en kiné, j'adore le Pilates et la méditation 🌸",
+    emojis: ["🌸", "📚", "🧘", "🌊", "🎨"],
+    interests: ["PILATES", "NATATION", "STRETCHING"],
     tags: ["PAUSE", "BREATH"],
     photos: [
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1200&fit=crop",
@@ -46,6 +58,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 4, name: "Rayan", age: 29, location: "France, Toulouse",
+    occupation: "Préparateur physique",
+    description: "Le sport c'est la vie 💯 Objectif : repousser les limites",
+    emojis: ["💯", "🏃", "🥊", "🎯", "⚡"],
+    interests: ["BOXE", "CROSSFIT", "HIIT"],
     tags: ["MOVE", "FLEX"],
     photos: [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1200&fit=crop",
@@ -54,6 +70,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 5, name: "Emma", age: 25, location: "France, Bordeaux",
+    occupation: "Nutritionniste",
+    description: "Healthy body, healthy mind ✨ Ici pour partager et s'inspirer",
+    emojis: ["✨", "🥑", "🏄‍♀️", "📖", "🌺"],
+    interests: ["SURF", "YOGA", "NUTRITION"],
     tags: ["FOCUS", "PAUSE"],
     photos: [
       "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&h=1200&fit=crop",
@@ -63,6 +83,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 6, name: "Nora", age: 23, location: "France, Nice",
+    occupation: "Prof de danse",
+    description: "Danseuse dans l'âme 💃 La musique guide mes mouvements",
+    emojis: ["💃", "🎶", "🌅", "🌴", "😊"],
+    interests: ["DANSE", "STRETCHING"],
     tags: ["BREATH", "MOVE"],
     photos: [
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&h=1200&fit=crop",
@@ -71,6 +95,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 7, name: "Hugo", age: 26, location: "France, Nantes",
+    occupation: "Kinésithérapeute",
+    description: "Kiné passionné par la mobilité et le mouvement fonctionnel 🦴",
+    emojis: ["🦴", "🏊", "🎸", "🍳", "🐕"],
+    interests: ["MOBILITÉ", "NATATION", "RÉÉDUCATION"],
     tags: ["FLEX", "PAUSE"],
     photos: [
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=1200&fit=crop",
@@ -80,6 +108,10 @@ const mockProfiles: Profile[] = [
   },
   {
     id: 8, name: "Lina", age: 21, location: "France, Strasbourg",
+    occupation: "Étudiante en STAPS",
+    description: "Future prof de sport 🎓 Fan de tout ce qui bouge !",
+    emojis: ["🎓", "🤸‍♀️", "🎾", "🌟", "🎉"],
+    interests: ["GYMNASTIQUE", "ATHLÉTISME"],
     tags: ["FOCUS", "BREATH"],
     photos: [
       "https://images.unsplash.com/photo-1485875437071-bb711b02ea95?w=800&h=1200&fit=crop",
