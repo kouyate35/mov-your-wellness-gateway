@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, MoreVertical } from "lucide-react";
+import { User, Search, Bell, UserPlus, MoreHorizontal } from "lucide-react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 
 interface Profile {
@@ -146,15 +146,34 @@ const Community = () => {
 
   return (
     <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
-      {/* HEADER */}
-      <div className="relative z-50 px-4 pt-3 pb-2 flex items-center justify-between">
+      {/* HEADER - Snapchat style */}
+      <div className="relative z-50 px-3 pt-3 pb-2 flex items-center gap-2">
+        {/* Left side */}
         <button
-          onClick={() => navigate(-1)}
-          className="w-10 h-10 flex items-center justify-center"
+          onClick={() => navigate("/settings")}
+          className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center"
         >
-          <ChevronLeft className="w-7 h-7 text-white" />
+          <User className="w-5 h-5 text-white/90" />
         </button>
+        <button className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
+          <Search className="w-5 h-5 text-white/90" />
+        </button>
+
         <div className="flex-1" />
+
+        {/* Right side */}
+        <button className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
+          <Bell className="w-5 h-5 text-white/90" />
+        </button>
+        <button className="relative w-11 h-11 rounded-full bg-[hsl(50,100%,50%)] flex items-center justify-center">
+          <UserPlus className="w-5 h-5 text-[hsl(0,0%,8%)]" />
+          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(0,80%,55%)] text-white text-[10px] font-bold flex items-center justify-center">
+            3
+          </span>
+        </button>
+        <button className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
+          <MoreHorizontal className="w-5 h-5 text-white/90" />
+        </button>
       </div>
 
       {/* TABS */}
@@ -249,7 +268,7 @@ const Community = () => {
 
                   {/* Three dots menu */}
                   <button className="absolute top-3 right-3 z-10 p-1">
-                    <MoreVertical className="w-6 h-6 text-white drop-shadow-lg" />
+                    <MoreHorizontal className="w-6 h-6 text-white drop-shadow-lg" />
                   </button>
 
                   {/* Gradient overlay bottom */}
