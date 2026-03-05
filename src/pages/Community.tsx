@@ -8,6 +8,10 @@ interface Profile {
   name: string;
   age: number;
   location: string;
+  occupation?: string;
+  description?: string;
+  emojis?: string[];
+  interests?: string[];
   tags: string[];
   photos: string[];
 }
