@@ -1,180 +1,381 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
+import { ChevronLeft, MoreVertical } from "lucide-react";
+import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 
-const programs = [
-  { name: "MOVE", description: "Corps & Mobilité" },
-  { name: "FLEX", description: "Souplesse & Articulation" },
-  { name: "BREATH", description: "Respiration & Relaxation" },
-  { name: "FOCUS", description: "Discipline & Intention" },
+interface Profile {
+  id: number;
+  name: string;
+  age: number;
+  location: string;
+  tags: string[];
+  photos: string[];
+}
+
+const mockProfiles: Profile[] = [
+  {
+    id: 1, name: "Léa", age: 24, location: "France, Paris",
+    tags: ["MOVE", "BREATH"],
+    photos: [
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 2, name: "Karim", age: 27, location: "France, Lyon",
+    tags: ["FLEX", "FOCUS"],
+    photos: [
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 3, name: "Sofia", age: 22, location: "France, Marseille",
+    tags: ["PAUSE", "BREATH"],
+    photos: [
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 4, name: "Rayan", age: 29, location: "France, Toulouse",
+    tags: ["MOVE", "FLEX"],
+    photos: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 5, name: "Emma", age: 25, location: "France, Bordeaux",
+    tags: ["FOCUS", "PAUSE"],
+    photos: [
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 6, name: "Nora", age: 23, location: "France, Nice",
+    tags: ["BREATH", "MOVE"],
+    photos: [
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 7, name: "Hugo", age: 26, location: "France, Nantes",
+    tags: ["FLEX", "PAUSE"],
+    photos: [
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1463453091185-61582044d556?w=800&h=1200&fit=crop",
+    ],
+  },
+  {
+    id: 8, name: "Lina", age: 21, location: "France, Strasbourg",
+    tags: ["FOCUS", "BREATH"],
+    photos: [
+      "https://images.unsplash.com/photo-1485875437071-bb711b02ea95?w=800&h=1200&fit=crop",
+      "https://images.unsplash.com/photo-1496440737103-cd596325d314?w=800&h=1200&fit=crop",
+    ],
+  },
 ];
 
-const mockUsers: Record<string, { id: number; name: string; active: boolean; img: string }[]> = {
-  MOVE: [
-    { id: 1, name: "Mjee", active: false, img: "https://i.pravatar.cc/300?img=1" },
-    { id: 2, name: "Manon", active: false, img: "https://i.pravatar.cc/300?img=2" },
-    { id: 3, name: "M", active: true, img: "https://i.pravatar.cc/300?img=3" },
-    { id: 4, name: "Taehzen", active: true, img: "https://i.pravatar.cc/300?img=4" },
-    { id: 5, name: "Léa", active: true, img: "https://i.pravatar.cc/300?img=5" },
-    { id: 6, name: "Rayan", active: false, img: "https://i.pravatar.cc/300?img=6" },
-  ],
-  FLEX: [
-    { id: 7, name: "Sofia", active: true, img: "https://i.pravatar.cc/300?img=7" },
-    { id: 8, name: "Nora", active: false, img: "https://i.pravatar.cc/300?img=8" },
-    { id: 9, name: "Karim", active: true, img: "https://i.pravatar.cc/300?img=9" },
-    { id: 10, name: "Emma", active: false, img: "https://i.pravatar.cc/300?img=10" },
-  ],
-  BREATH: [
-    { id: 11, name: "Alex", active: true, img: "https://i.pravatar.cc/300?img=11" },
-    { id: 12, name: "Jordan", active: false, img: "https://i.pravatar.cc/300?img=12" },
-    { id: 13, name: "Sam", active: true, img: "https://i.pravatar.cc/300?img=13" },
-    { id: 14, name: "Chris", active: false, img: "https://i.pravatar.cc/300?img=14" },
-  ],
-  FOCUS: [
-    { id: 15, name: "Lina", active: true, img: "https://i.pravatar.cc/300?img=15" },
-    { id: 16, name: "Hugo", active: false, img: "https://i.pravatar.cc/300?img=16" },
-  ],
-};
-
-const getUsers = (tag: string) =>
-  mockUsers[tag] || [
-    { id: 99, name: "User1", active: true, img: "https://i.pravatar.cc/300?img=20" },
-    { id: 98, name: "User2", active: false, img: "https://i.pravatar.cc/300?img=21" },
-  ];
+const SWIPE_THRESHOLD = 120;
 
 const Community = () => {
   const navigate = useNavigate();
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [dismissed, setDismissed] = useState<Record<number, boolean>>({});
+  const [activeTab, setActiveTab] = useState<"swipe" | "nearby">("swipe");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPhoto, setCurrentPhoto] = useState(0);
+  const [direction, setDirection] = useState<"left" | "right" | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [swipeOverlay, setSwipeOverlay] = useState<"like" | "nope" | null>(null);
+  const [dragX, setDragX] = useState(0);
 
-  const openTag = (tag: string) => {
-    setSelectedTag(tag);
-    setDismissed({});
+  const profile = currentIndex < mockProfiles.length ? mockProfiles[currentIndex] : null;
+
+  const goNext = useCallback((dir: "left" | "right") => {
+    if (isAnimating || !profile) return;
+    setDirection(dir);
+    setIsAnimating(true);
+  }, [isAnimating, profile]);
+
+  const handleDrag = (_: unknown, info: PanInfo) => {
+    setDragX(info.offset.x);
+    if (info.offset.x > 60) {
+      setSwipeOverlay("like");
+    } else if (info.offset.x < -60) {
+      setSwipeOverlay("nope");
+    } else {
+      setSwipeOverlay(null);
+    }
   };
 
-  const closeTag = () => setSelectedTag(null);
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    setDragX(0);
+    setSwipeOverlay(null);
+    if (Math.abs(info.offset.x) > SWIPE_THRESHOLD) {
+      goNext(info.offset.x > 0 ? "right" : "left");
+    }
+  };
 
-  const dismiss = (id: number) => setDismissed((prev) => ({ ...prev, [id]: true }));
+  const handleExitComplete = () => {
+    setCurrentIndex((prev) => prev + 1);
+    setCurrentPhoto(0);
+    setDirection(null);
+    setIsAnimating(false);
+  };
 
-  const users = selectedTag ? getUsers(selectedTag).filter((u) => !dismissed[u.id]) : [];
+  const handlePhotoTap = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!profile) return;
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const clientX = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const x = clientX - rect.left;
+    if (x < rect.width / 3) {
+      setCurrentPhoto((p) => Math.max(0, p - 1));
+    } else if (x > (rect.width * 2) / 3) {
+      setCurrentPhoto((p) => Math.min(profile.photos.length - 1, p + 1));
+    }
+  };
 
-  // TAG LIST VIEW
-  if (!selectedTag) {
-    return (
-      <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
-        <div className="bg-[#4A90E2] p-6 pb-10 relative">
-          <button onClick={() => navigate(-1)} className="absolute top-4 left-4 p-1">
-            <X className="w-6 h-6 text-white" />
-          </button>
-          <h1 className="text-2xl font-bold text-white text-center mt-6">Explore les programmes</h1>
-        </div>
-        <div className="p-4 grid grid-cols-2 gap-3 mt-4">
-          {programs.map((prog) => (
-            <button
-              key={prog.name}
-              onClick={() => openTag(prog.name)}
-              className="bg-[#141414] hover:bg-[#222] text-white font-bold py-5 px-3 rounded-2xl shadow-md transition-all active:scale-95 border border-white/10"
-            >
-              <span className="block text-lg">{prog.name}</span>
-              <span className="block text-xs font-normal text-white/60 mt-1">{prog.description}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const noMoreProfiles = currentIndex >= mockProfiles.length;
 
-  // TAG DETAIL VIEW — style Yubo
   return (
-    <div className="min-h-screen bg-[#1a1a1a] flex flex-col relative">
-      {/* HEADER BLEU FIXE avec effet arc */}
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <div className="bg-[#4A90E2] px-6 pt-5 pb-8 flex flex-col items-center relative">
-          <div className="w-full flex justify-start mb-2">
-            <button onClick={closeTag} className="text-white text-2xl font-light leading-none p-1">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-          <h2 className="text-3xl font-black text-[#141414]">{selectedTag}</h2>
-          <button className="mt-3 bg-[#141414] text-white font-semibold px-6 py-2 rounded-full text-sm flex items-center gap-2">
-            <span className="text-lg">+</span>
-            Ajouter ce programme
-          </button>
-        </div>
-        {/* Arc de cercle : div bleu avec border-radius bottom arrondi qui déborde */}
-        <div
-          style={{
-            position: "relative",
-            left: "-5%",
-            width: "110%",
-            height: "40px",
-            background: "#4A90E2",
-            borderBottomLeftRadius: "50%",
-            borderBottomRightRadius: "50%",
-            marginTop: "-1px",
-          }}
-        />
+    <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
+      {/* HEADER */}
+      <div className="relative z-50 px-4 pt-3 pb-2 flex items-center justify-between">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 flex items-center justify-center"
+        >
+          <ChevronLeft className="w-7 h-7 text-white" />
+        </button>
+        <div className="flex-1" />
       </div>
 
-      {/* ZONE DE SCROLL */}
-      <div className="flex-1 overflow-y-auto pt-[220px] pb-[80px] px-3">
-        <p className="text-white font-bold text-lg px-1 mb-3">
-          Ils aiment ce programme
-        </p>
+      {/* TABS */}
+      <div className="relative z-50 flex mx-4 mb-2 bg-[hsl(0,0%,14%)] rounded-xl p-1">
+        <button
+          onClick={() => setActiveTab("swipe")}
+          className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
+            activeTab === "swipe"
+              ? "bg-[hsl(0,0%,22%)] text-white"
+              : "text-white/50"
+          }`}
+        >
+          Swipe
+        </button>
+        <button
+          onClick={() => setActiveTab("nearby")}
+          className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
+            activeTab === "nearby"
+              ? "bg-[hsl(0,0%,22%)] text-white"
+              : "text-white/50"
+          }`}
+        >
+          À proximité
+          <span className="bg-[hsl(0,85%,60%)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+            +99
+          </span>
+        </button>
+      </div>
 
-        {users.length === 0 && (
-          <div className="text-gray-400 text-center mt-10">
-            Plus personne à voir ! 🎉
+      {/* CARD AREA */}
+      <div className="flex-1 relative mx-2 mb-2 overflow-hidden rounded-2xl">
+        {noMoreProfiles ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white/60">
+            <span className="text-5xl mb-4">🎉</span>
+            <p className="text-lg font-semibold">Plus de profils !</p>
+            <p className="text-sm mt-1">Reviens plus tard</p>
           </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-3">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className="relative rounded-2xl overflow-hidden bg-gray-800"
-              style={{ aspectRatio: "3/4" }}
-            >
-              <img
-                src={user.img}
-                alt={user.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-              <div className="absolute top-3 left-3">
-                <span className="text-white font-bold text-base drop-shadow">
-                  {user.name}
-                </span>
-              </div>
-
-              {user.active && (
-                <div className="absolute top-3 right-3 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
-                  <span className="text-white text-xs">Actif</span>
-                </div>
-              )}
-
-              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-4">
-                <button
-                  onClick={() => dismiss(user.id)}
-                  className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+        ) : (
+          <AnimatePresence onExitComplete={handleExitComplete}>
+            {profile && !direction && (
+              <motion.div
+                key={profile.id}
+                className="absolute inset-0 cursor-grab active:cursor-grabbing"
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.9}
+                onDrag={handleDrag}
+                onDragEnd={handleDragEnd}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ 
+                  scale: 1, 
+                  opacity: 1,
+                  rotate: dragX * 0.03,
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                style={{ willChange: "transform" }}
+              >
+                <div
+                  className="relative w-full h-full rounded-2xl overflow-hidden"
+                  onClick={handlePhotoTap}
                 >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="#EF4444" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-                <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-90 transition-transform">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 5v14M5 12h14" stroke="#22C55E" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+                  {/* Photo */}
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={`${profile.id}-${currentPhoto}`}
+                      src={profile.photos[currentPhoto]}
+                      alt={profile.name}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      draggable={false}
+                    />
+                  </AnimatePresence>
 
+                  {/* Photo indicators */}
+                  <div className="absolute top-3 left-3 right-3 flex gap-1 z-10">
+                    {profile.photos.map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex-1 h-[3px] rounded-full overflow-hidden bg-white/30"
+                      >
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            i === currentPhoto ? "bg-white w-full" : i < currentPhoto ? "bg-white/70 w-full" : "w-0"
+                          }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Three dots menu */}
+                  <button className="absolute top-3 right-3 z-10 p-1">
+                    <MoreVertical className="w-6 h-6 text-white drop-shadow-lg" />
+                  </button>
+
+                  {/* Gradient overlay bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+
+                  {/* Swipe overlays */}
+                  <AnimatePresence>
+                    {swipeOverlay === "like" && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl">
+                          <svg width="40" height="40" viewBox="0 0 24 24" fill="hsl(0,0%,8%)">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                          </svg>
+                        </div>
+                      </motion.div>
+                    )}
+                    {swipeOverlay === "nope" && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl">
+                          <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="hsl(0,0%,8%)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Profile info */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5 z-10 pointer-events-none">
+                    <div className="flex items-baseline gap-2">
+                      <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
+                      <span className="text-2xl text-white/80 font-light">{profile.age}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span className="text-white/70 text-sm">{profile.location}</span>
+                    </div>
+                    <div className="flex gap-2 mt-3">
+                      {profile.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Exiting card */}
+            {profile && direction && (
+              <motion.div
+                key={`exit-${profile.id}`}
+                className="absolute inset-0"
+                initial={{ x: 0, rotate: 0, opacity: 1 }}
+                animate={{
+                  x: direction === "right" ? 500 : -500,
+                  rotate: direction === "right" ? 20 : -20,
+                  opacity: 0,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                style={{ willChange: "transform" }}
+              >
+                <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                  <img
+                    src={profile.photos[currentPhoto]}
+                    alt={profile.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    draggable={false}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                  
+                  {/* Exit overlay icon */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl">
+                      {direction === "right" ? (
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="hsl(0,0%,8%)">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                      ) : (
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                          <path d="M18 6L6 18M6 6l12 12" stroke="hsl(0,0%,8%)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Profile info on exit */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <div className="flex items-baseline gap-2">
+                      <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
+                      <span className="text-2xl text-white/80 font-light">{profile.age}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span className="text-white/70 text-sm">{profile.location}</span>
+                    </div>
+                    <div className="flex gap-2 mt-3">
+                      {profile.tags.map((tag) => (
+                        <span key={tag} className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+      </div>
     </div>
   );
 };
