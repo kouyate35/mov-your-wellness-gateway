@@ -177,27 +177,27 @@ const Community = () => {
       </div>
 
       {/* TABS */}
-      <div className="relative z-50 flex mx-4 mb-2 bg-[hsl(0,0%,14%)] rounded-xl p-1">
+      <div className="relative z-50 flex mx-4 mb-1.5 bg-[hsl(0,0%,12%)] rounded-[14px] p-[3px]">
         <button
           onClick={() => setActiveTab("swipe")}
-          className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
+          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${
             activeTab === "swipe"
-              ? "bg-[hsl(0,0%,22%)] text-white"
-              : "text-white/50"
+              ? "bg-[hsl(0,0%,20%)] text-white"
+              : "text-white/45"
           }`}
         >
           Swipe
         </button>
         <button
           onClick={() => setActiveTab("nearby")}
-          className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
+          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all flex items-center justify-center gap-1.5 ${
             activeTab === "nearby"
-              ? "bg-[hsl(0,0%,22%)] text-white"
-              : "text-white/50"
+              ? "bg-[hsl(0,0%,20%)] text-white"
+              : "text-white/45"
           }`}
         >
           À proximité
-          <span className="bg-[hsl(0,85%,60%)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+          <span className="bg-[hsl(0,85%,58%)] text-white text-[9px] font-bold px-1.5 py-[2px] rounded-full leading-none">
             +99
           </span>
         </button>
