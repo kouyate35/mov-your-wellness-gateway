@@ -268,7 +268,7 @@ const Community = () => {
 
                   {/* Three dots menu */}
                   <button className="absolute top-3 right-3 z-10 p-1">
-                    <MoreVertical className="w-6 h-6 text-white drop-shadow-lg" />
+                    <MoreHorizontal className="w-6 h-6 text-white drop-shadow-lg" />
                   </button>
 
                   {/* Gradient overlay bottom */}
