@@ -343,32 +343,91 @@ const Community = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* Profile info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-10 pointer-events-none">
-                    <div className="flex items-baseline gap-2">
-                      <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
-                      <span className="text-2xl text-white/80 font-light">{profile.age}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <span className="text-white/70 text-sm">{profile.location}</span>
-                    </div>
-                    <div className="flex gap-2 mt-3">
-                      {profile.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-3 pointer-events-auto">
-                      <button className="w-full py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
-                        Envoie un message
-                      </button>
+                  {/* Profile info / Last photo = profile view */}
+                  <div className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-all duration-500 ${
+                    isLastPhoto ? "inset-0" : ""
+                  }`}>
+                    {/* Darkened overlay for last photo (profile view) */}
+                    {isLastPhoto && (
+                      <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+                    )}
+
+                    {/* Scrollable profile content on last photo */}
+                    <div className={`relative h-full flex flex-col ${
+                      isLastPhoto ? "justify-start pt-14 px-5 pb-5 overflow-y-auto pointer-events-auto" : "justify-end p-5"
+                    }`}>
+                      {/* Name & age */}
+                      <div className="flex items-baseline gap-2">
+                        <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
+                        <span className="text-2xl text-white/80 font-light">{profile.age}</span>
+                      </div>
+
+                      {/* Location */}
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="text-white/70 text-sm">{profile.location}</span>
+                      </div>
+
+                      {/* Occupation - only on last photo */}
+                      {isLastPhoto && profile.occupation && (
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70">
+                            <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          <span className="text-white/70 text-sm">{profile.occupation}</span>
+                        </div>
+                      )}
+
+                      {/* Emojis - only on last photo */}
+                      {isLastPhoto && profile.emojis && (
+                        <div className="flex gap-1 mt-3">
+                          {profile.emojis.map((emoji, i) => (
+                            <span key={i} className="text-2xl">{emoji}</span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Interests tags - only on last photo */}
+                      {isLastPhoto && profile.interests && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {profile.interests.map((interest) => (
+                            <span
+                              key={interest}
+                              className="bg-white/10 border border-white/15 text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
+                            >
+                              {interest}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Description - only on last photo */}
+                      {isLastPhoto && profile.description && (
+                        <p className="text-white/80 text-sm mt-3 leading-relaxed">
+                          {profile.description}
+                        </p>
+                      )}
+
+                      {/* Programme tags */}
+                      <div className="flex gap-2 mt-3">
+                        {profile.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Message button - shorter width */}
+                      <div className="mt-3 pointer-events-auto flex justify-center">
+                        <button className="px-10 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
+                          Envoie un message
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
