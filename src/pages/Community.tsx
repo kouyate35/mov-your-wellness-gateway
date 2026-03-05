@@ -179,6 +179,7 @@ const Community = () => {
   };
 
   const noMoreProfiles = currentIndex >= mockProfiles.length;
+  const isLastPhoto = profile ? currentPhoto === profile.photos.length - 1 : false;
 
   return (
     <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
