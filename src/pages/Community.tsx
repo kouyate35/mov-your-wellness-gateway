@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Search, Bell, UserPlus, MoreHorizontal } from "lucide-react";
+import { User, Search, Bell, UserPlus, MoreHorizontal, X, Plus, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 
 interface Profile {
@@ -120,6 +120,25 @@ const mockProfiles: Profile[] = [
   },
 ];
 
+// Mock notifications data
+const mockMessages = [
+  { id: 1, name: "Amira", message: "Hey salut 😊", time: "8h", color: "hsl(280,30%,35%)" },
+  { id: 2, name: "Lucas", message: "Ça te dit un run ?", time: "9h", color: "hsl(0,40%,45%)" },
+  { id: 3, name: "Jade", message: "Heyy 🥰🥰🥰", time: "14h", color: "hsl(35,30%,40%)" },
+  { id: 4, name: "Théo", message: "Ça roule ?", time: "19h", color: "hsl(270,50%,45%)" },
+  { id: 5, name: "Inès", message: "Coucouuuu", time: "1j", color: "hsl(30,25%,35%)" },
+  { id: 6, name: "Maxime", message: "comment ce passe l...", time: "1j", color: "hsl(80,20%,35%)" },
+];
+
+const mockAddRequests = [
+  { id: 1, name: "Sara", color: "hsl(200,40%,50%)", active: true },
+  { id: 2, name: "Youssef", color: "hsl(30,50%,45%)", active: true },
+  { id: 3, name: "Chloé", color: "hsl(150,30%,40%)", active: false },
+  { id: 4, name: "Amine", color: "hsl(280,40%,50%)", active: true },
+  { id: 5, name: "Lola", color: "hsl(340,40%,45%)", active: true },
+  { id: 6, name: "Noah", color: "hsl(60,20%,40%)", active: false },
+];
+
 const SWIPE_THRESHOLD = 120;
 
 const Community = () => {
@@ -131,6 +150,8 @@ const Community = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [swipeOverlay, setSwipeOverlay] = useState<"like" | "nope" | null>(null);
   const [dragX, setDragX] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifTab, setNotifTab] = useState<"messages" | "added">("messages");
 
   const profile = currentIndex < mockProfiles.length ? mockProfiles[currentIndex] : null;
 
@@ -171,10 +192,16 @@ const Community = () => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const clientX = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
     const x = clientX - rect.left;
+    const isLast = currentPhoto === profile.photos.length - 1;
     if (x < rect.width / 3) {
       setCurrentPhoto((p) => Math.max(0, p - 1));
     } else if (x > (rect.width * 2) / 3) {
-      setCurrentPhoto((p) => Math.min(profile.photos.length - 1, p + 1));
+      if (isLast) {
+        // Loop back to first photo on last photo
+        setCurrentPhoto(0);
+      } else {
+        setCurrentPhoto((p) => Math.min(profile.photos.length - 1, p + 1));
+      }
     }
   };
 
@@ -202,7 +229,10 @@ const Community = () => {
         <button className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
           <Bell className="w-5 h-5 text-white/90" />
         </button>
-        <button className="relative w-11 h-11 rounded-full bg-[hsl(50,100%,50%)] flex items-center justify-center">
+        <button 
+          onClick={() => setShowNotifications(true)}
+          className="relative w-11 h-11 rounded-full bg-[hsl(50,100%,50%)] flex items-center justify-center"
+        >
           <UserPlus className="w-5 h-5 text-[hsl(0,0%,8%)]" />
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(0,80%,55%)] text-white text-[10px] font-bold flex items-center justify-center">
             3
@@ -422,12 +452,14 @@ const Community = () => {
                         ))}
                       </div>
 
-                      {/* Message button - shorter width */}
-                      <div className="mt-3 pointer-events-auto flex justify-center">
-                        <button className="px-10 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
-                          Envoie un message
-                        </button>
-                      </div>
+                      {/* Message button - left aligned, hidden on last photo */}
+                      {!isLastPhoto && (
+                        <div className="mt-3 pointer-events-auto">
+                          <button className="px-8 py-3 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
+                            Envoie un message
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -496,6 +528,118 @@ const Community = () => {
           </AnimatePresence>
         )}
       </div>
+
+      {/* NOTIFICATIONS OVERLAY */}
+      <AnimatePresence>
+        {showNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: "100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            className="fixed inset-0 z-[100] bg-[hsl(0,0%,8%)] flex flex-col"
+          >
+            {/* Notif header */}
+            <div className="px-4 pt-4 pb-2 flex items-center">
+              <button 
+                onClick={() => setShowNotifications(false)}
+                className="w-10 h-10 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center"
+              >
+                <ChevronLeft className="w-5 h-5 text-white/90" />
+              </button>
+              <div className="flex-1" />
+            </div>
+
+            {/* Notif tabs */}
+            <div className="flex mx-4 mb-4 bg-[hsl(0,0%,12%)] rounded-[14px] p-[3px]">
+              <button
+                onClick={() => setNotifTab("messages")}
+                className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${
+                  notifTab === "messages"
+                    ? "bg-[hsl(0,0%,20%)] text-white"
+                    : "text-white/45"
+                }`}
+              >
+                Messages reçus
+              </button>
+              <button
+                onClick={() => setNotifTab("added")}
+                className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                  notifTab === "added"
+                    ? "bg-[hsl(0,0%,20%)] text-white"
+                    : "text-white/45"
+                }`}
+              >
+                T'ont ajouté
+                <span className="bg-[hsl(0,85%,58%)] text-white text-[9px] font-bold px-1.5 py-[2px] rounded-full leading-none">
+                  +99
+                </span>
+              </button>
+            </div>
+
+            {/* Notif content */}
+            <div className="flex-1 overflow-y-auto px-4">
+              {notifTab === "messages" ? (
+                <div className="space-y-1">
+                  {mockMessages.map((msg) => (
+                    <div key={msg.id} className="flex items-center gap-3 py-3 border-b border-white/5">
+                      {/* Blurred profile circle */}
+                      <div 
+                        className="w-14 h-14 rounded-full flex-shrink-0"
+                        style={{ background: msg.color, filter: "blur(3px)" }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="w-24 h-3 rounded bg-white/15 mb-1.5" />
+                        <p className="text-white/70 text-sm truncate">
+                          Dit "{msg.message}" · {msg.time}
+                        </p>
+                      </div>
+                      {/* Profile icon */}
+                      <div className="w-11 h-11 rounded-lg bg-[hsl(0,0%,16%)] flex items-center justify-center flex-shrink-0">
+                        <User className="w-5 h-5 text-white/40" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-white/80 text-center text-[15px] font-medium mb-5">
+                    133 personnes veulent faire du sport avec toi.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {mockAddRequests.map((req) => (
+                      <div key={req.id} className="rounded-2xl overflow-hidden bg-[hsl(0,0%,12%)]">
+                        {/* Blurred profile image */}
+                        <div 
+                          className="w-full aspect-[4/5] relative"
+                          style={{ background: `linear-gradient(135deg, ${req.color}, hsl(0,0%,20%))`, filter: "blur(8px)" }}
+                        />
+                        <div className="px-3 pt-2 pb-3 -mt-12 relative z-10">
+                          {req.active && (
+                            <div className="flex items-center gap-1 mb-1">
+                              <div className="w-2 h-2 rounded-full bg-[hsl(120,70%,50%)]" />
+                              <span className="text-white/70 text-[11px]">Actif récemment</span>
+                            </div>
+                          )}
+                          <div className="w-20 h-3 rounded bg-white/15 mb-2.5" />
+                          <div className="flex gap-1.5">
+                            <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
+                              <X className="w-4 h-4 text-white" strokeWidth={3} />
+                            </button>
+                            <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
+                              <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
