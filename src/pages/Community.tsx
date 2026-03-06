@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Search, Bell, UserPlus, MoreHorizontal } from "lucide-react";
+import { User, Search, Bell, UserPlus, MoreHorizontal, X, Plus, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 
 interface Profile {
