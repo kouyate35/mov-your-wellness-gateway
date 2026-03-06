@@ -229,7 +229,10 @@ const Community = () => {
         <button className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
           <Bell className="w-5 h-5 text-white/90" />
         </button>
-        <button className="relative w-11 h-11 rounded-full bg-[hsl(50,100%,50%)] flex items-center justify-center">
+        <button 
+          onClick={() => setShowNotifications(true)}
+          className="relative w-11 h-11 rounded-full bg-[hsl(50,100%,50%)] flex items-center justify-center"
+        >
           <UserPlus className="w-5 h-5 text-[hsl(0,0%,8%)]" />
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(0,80%,55%)] text-white text-[10px] font-bold flex items-center justify-center">
             3
