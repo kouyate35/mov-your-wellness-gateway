@@ -120,6 +120,25 @@ const mockProfiles: Profile[] = [
   },
 ];
 
+// Mock notifications data
+const mockMessages = [
+  { id: 1, name: "Amira", message: "Hey salut 😊", time: "8h", color: "hsl(280,30%,35%)" },
+  { id: 2, name: "Lucas", message: "Ça te dit un run ?", time: "9h", color: "hsl(0,40%,45%)" },
+  { id: 3, name: "Jade", message: "Heyy 🥰🥰🥰", time: "14h", color: "hsl(35,30%,40%)" },
+  { id: 4, name: "Théo", message: "Ça roule ?", time: "19h", color: "hsl(270,50%,45%)" },
+  { id: 5, name: "Inès", message: "Coucouuuu", time: "1j", color: "hsl(30,25%,35%)" },
+  { id: 6, name: "Maxime", message: "comment ce passe l...", time: "1j", color: "hsl(80,20%,35%)" },
+];
+
+const mockAddRequests = [
+  { id: 1, name: "Sara", color: "hsl(200,40%,50%)", active: true },
+  { id: 2, name: "Youssef", color: "hsl(30,50%,45%)", active: true },
+  { id: 3, name: "Chloé", color: "hsl(150,30%,40%)", active: false },
+  { id: 4, name: "Amine", color: "hsl(280,40%,50%)", active: true },
+  { id: 5, name: "Lola", color: "hsl(340,40%,45%)", active: true },
+  { id: 6, name: "Noah", color: "hsl(60,20%,40%)", active: false },
+];
+
 const SWIPE_THRESHOLD = 120;
 
 const Community = () => {
@@ -131,6 +150,8 @@ const Community = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [swipeOverlay, setSwipeOverlay] = useState<"like" | "nope" | null>(null);
   const [dragX, setDragX] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifTab, setNotifTab] = useState<"messages" | "added">("messages");
 
   const profile = currentIndex < mockProfiles.length ? mockProfiles[currentIndex] : null;
 
