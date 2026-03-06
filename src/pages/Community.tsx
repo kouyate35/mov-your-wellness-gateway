@@ -192,10 +192,16 @@ const Community = () => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const clientX = "touches" in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
     const x = clientX - rect.left;
+    const isLast = currentPhoto === profile.photos.length - 1;
     if (x < rect.width / 3) {
       setCurrentPhoto((p) => Math.max(0, p - 1));
     } else if (x > (rect.width * 2) / 3) {
-      setCurrentPhoto((p) => Math.min(profile.photos.length - 1, p + 1));
+      if (isLast) {
+        // Loop back to first photo on last photo
+        setCurrentPhoto(0);
+      } else {
+        setCurrentPhoto((p) => Math.min(profile.photos.length - 1, p + 1));
+      }
     }
   };
 
