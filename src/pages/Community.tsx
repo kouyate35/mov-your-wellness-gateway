@@ -528,6 +528,118 @@ const Community = () => {
           </AnimatePresence>
         )}
       </div>
+
+      {/* NOTIFICATIONS OVERLAY */}
+      <AnimatePresence>
+        {showNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: "100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "100%" }}
+            transition={{ type: "spring", damping: 28, stiffness: 300 }}
+            className="fixed inset-0 z-[100] bg-[hsl(0,0%,8%)] flex flex-col"
+          >
+            {/* Notif header */}
+            <div className="px-4 pt-4 pb-2 flex items-center">
+              <button 
+                onClick={() => setShowNotifications(false)}
+                className="w-10 h-10 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center"
+              >
+                <ChevronLeft className="w-5 h-5 text-white/90" />
+              </button>
+              <div className="flex-1" />
+            </div>
+
+            {/* Notif tabs */}
+            <div className="flex mx-4 mb-4 bg-[hsl(0,0%,12%)] rounded-[14px] p-[3px]">
+              <button
+                onClick={() => setNotifTab("messages")}
+                className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${
+                  notifTab === "messages"
+                    ? "bg-[hsl(0,0%,20%)] text-white"
+                    : "text-white/45"
+                }`}
+              >
+                Messages reçus
+              </button>
+              <button
+                onClick={() => setNotifTab("added")}
+                className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                  notifTab === "added"
+                    ? "bg-[hsl(0,0%,20%)] text-white"
+                    : "text-white/45"
+                }`}
+              >
+                T'ont ajouté
+                <span className="bg-[hsl(0,85%,58%)] text-white text-[9px] font-bold px-1.5 py-[2px] rounded-full leading-none">
+                  +99
+                </span>
+              </button>
+            </div>
+
+            {/* Notif content */}
+            <div className="flex-1 overflow-y-auto px-4">
+              {notifTab === "messages" ? (
+                <div className="space-y-1">
+                  {mockMessages.map((msg) => (
+                    <div key={msg.id} className="flex items-center gap-3 py-3 border-b border-white/5">
+                      {/* Blurred profile circle */}
+                      <div 
+                        className="w-14 h-14 rounded-full flex-shrink-0"
+                        style={{ background: msg.color, filter: "blur(3px)" }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="w-24 h-3 rounded bg-white/15 mb-1.5" />
+                        <p className="text-white/70 text-sm truncate">
+                          Dit "{msg.message}" · {msg.time}
+                        </p>
+                      </div>
+                      {/* Profile icon */}
+                      <div className="w-11 h-11 rounded-lg bg-[hsl(0,0%,16%)] flex items-center justify-center flex-shrink-0">
+                        <User className="w-5 h-5 text-white/40" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-white/80 text-center text-[15px] font-medium mb-5">
+                    133 personnes veulent faire du sport avec toi.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {mockAddRequests.map((req) => (
+                      <div key={req.id} className="rounded-2xl overflow-hidden bg-[hsl(0,0%,12%)]">
+                        {/* Blurred profile image */}
+                        <div 
+                          className="w-full aspect-[4/5] relative"
+                          style={{ background: `linear-gradient(135deg, ${req.color}, hsl(0,0%,20%))`, filter: "blur(8px)" }}
+                        />
+                        <div className="px-3 pt-2 pb-3 -mt-12 relative z-10">
+                          {req.active && (
+                            <div className="flex items-center gap-1 mb-1">
+                              <div className="w-2 h-2 rounded-full bg-[hsl(120,70%,50%)]" />
+                              <span className="text-white/70 text-[11px]">Actif récemment</span>
+                            </div>
+                          )}
+                          <div className="w-20 h-3 rounded bg-white/15 mb-2.5" />
+                          <div className="flex gap-1.5">
+                            <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
+                              <X className="w-4 h-4 text-white" strokeWidth={3} />
+                            </button>
+                            <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
+                              <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
