@@ -452,12 +452,14 @@ const Community = () => {
                         ))}
                       </div>
 
-                      {/* Message button - shorter width */}
-                      <div className="mt-3 pointer-events-auto flex justify-center">
-                        <button className="px-10 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
-                          Envoie un message
-                        </button>
-                      </div>
+                      {/* Message button - left aligned, hidden on last photo */}
+                      {!isLastPhoto && (
+                        <div className="mt-3 pointer-events-auto">
+                          <button className="px-8 py-3 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
+                            Envoie un message
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
