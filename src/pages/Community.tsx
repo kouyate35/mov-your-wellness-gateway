@@ -539,7 +539,7 @@ const Community = () => {
     <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
       {/* HEADER */}
       <div className="relative z-50 px-3 pt-3 pb-2 flex items-center gap-2">
-        <button onClick={() => navigate("/settings")} className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
+        <button onClick={() => setViewState("profile")} className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
           <User className="w-5 h-5 text-white/90" />
         </button>
         <button onClick={() => setViewState("search")} className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
