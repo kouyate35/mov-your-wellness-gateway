@@ -526,7 +526,7 @@ const Community = () => {
                 <AlertTriangle className="w-7 h-7 text-white/40" />
               </div>
               <p className="text-white font-semibold text-base">Aucune demande</p>
-              <p className="text-white/50 text-sm mt-1 text-center px-8">Vos demandes de support apparaîtront ici.</p>
+              <p className="text-white/50 text-sm mt-1 text-center px-8">Vos demandes d'ami apparaîtront ici.</p>
             </div>
           )}
         </div>
