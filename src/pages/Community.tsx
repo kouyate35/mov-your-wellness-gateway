@@ -484,7 +484,7 @@ const Community = () => {
                   : "text-white/50"
               }`}
             >
-              {tab === "tout" ? "Tout" : tab === "messages" ? "Messages reçus" : "Demandes de support"}
+              {tab === "tout" ? "Tout" : tab === "messages" ? "Messages reçus" : "Demandes d'ami"}
             </button>
           ))}
         </div>
