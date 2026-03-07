@@ -147,7 +147,7 @@ const mockChatMessages = [
 
 const SWIPE_THRESHOLD = 120;
 
-type ViewState = "main" | "notifications" | "search" | "chat" | "chatProfile";
+type ViewState = "main" | "notifications" | "search" | "chat" | "chatProfile" | "profile";
 
 const Community = () => {
   const navigate = useNavigate();
