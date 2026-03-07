@@ -618,23 +618,52 @@ const Community = () => {
             </div>
           </div>
 
+          {/* Biographie */}
+          <h3 className="text-white text-lg font-bold mb-3">Biographie</h3>
+          <div className="bg-[hsl(0,0%,14%)] rounded-2xl px-5 py-4 mb-8">
+            {editingBio ? (
+              <div>
+                <textarea
+                  value={tempBio}
+                  onChange={(e) => setTempBio(e.target.value)}
+                  className="w-full bg-transparent text-white text-[15px] leading-relaxed focus:outline-none resize-none min-h-[80px]"
+                  autoFocus
+                  placeholder="Écris une petite description..."
+                />
+                <div className="flex gap-2 mt-3 justify-end">
+                  <button onClick={() => setEditingBio(false)} className="px-4 py-1.5 rounded-full text-white/50 text-sm">Annuler</button>
+                  <button onClick={() => { setUserBio(tempBio); setEditingBio(false); }} className="px-4 py-1.5 rounded-full bg-white text-[hsl(0,0%,8%)] text-sm font-semibold">Enregistrer</button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => { setTempBio(userBio); setEditingBio(true); }} className="w-full text-left">
+                <p className="text-white/70 text-[15px] leading-relaxed">{userBio || "Écris une petite description..."}</p>
+              </button>
+            )}
+          </div>
+
           {/* Mon compte */}
-          <h3 className="text-white text-lg font-bold mb-3">Mon compte</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white text-lg font-bold">Mon compte</h3>
+            <button onClick={() => setShowEditAccount(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
+              <Pencil className="w-4 h-4 text-white" />
+            </button>
+          </div>
           <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
             <div className="flex items-center px-5 py-4">
               <User className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Nom d'utilisateur</span>
-              <span className="ml-auto text-white/50 text-[15px]">killian-7d8ht7</span>
+              <span className="ml-auto text-white/50 text-[15px]">{editAccountData.username}</span>
             </div>
             <div className="flex items-center px-5 py-4">
               <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">21 (09 mars 2004) <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editAccountData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 Paris <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 {editAccountData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <Ban className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
@@ -644,22 +673,27 @@ const Community = () => {
           </div>
 
           {/* Préférences de recherche d'amis */}
-          <h3 className="text-white text-lg font-bold mb-3">Préférences de recherche d'amis</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white text-lg font-bold">Préférences de recherche d'amis</h3>
+            <button onClick={() => setShowEditPrefs(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
+              <Pencil className="w-4 h-4 text-white" />
+            </button>
+          </div>
           <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
             <div className="flex items-center px-5 py-4">
               <Users className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Genre</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Peu m'importe <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.genre} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Mon âge environ (18-34) <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Mon pays <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
           </div>
 
