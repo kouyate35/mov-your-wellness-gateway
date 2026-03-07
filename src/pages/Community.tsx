@@ -167,6 +167,13 @@ const Community = () => {
   const [chatContact, setChatContact] = useState<typeof mockMessages[0] | null>(null);
   const [chatMessage, setChatMessage] = useState("");
   const [chatProfilePhoto, setChatProfilePhoto] = useState(0);
+  const [userBio, setUserBio] = useState("Passionné de fitness et de bien-être. Toujours partant pour un bon workout ! 💪🔥");
+  const [editingBio, setEditingBio] = useState(false);
+  const [tempBio, setTempBio] = useState("");
+  const [showEditAccount, setShowEditAccount] = useState(false);
+  const [showEditPrefs, setShowEditPrefs] = useState(false);
+  const [editAccountData, setEditAccountData] = useState({ username: "killian-7d8ht7", age: "21 (09 mars 2004)", lieu: "Paris" });
+  const [editPrefsData, setEditPrefsData] = useState({ genre: "Peu m'importe", age: "Mon âge environ (18-34)", lieu: "Mon pays" });
 
   const profile = currentIndex < mockProfiles.length ? mockProfiles[currentIndex] : null;
 
