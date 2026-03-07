@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Search, Bell, UserPlus, MoreHorizontal, X, Plus, ChevronLeft, Ban, AlertTriangle, Camera, ArrowLeft, Send, MapPin, Cake, Eye, UserSearch, Users, ChevronRight } from "lucide-react";
+import { User, Search, Bell, UserPlus, MoreHorizontal, X, Plus, ChevronLeft, Ban, AlertTriangle, Camera, ArrowLeft, Send, MapPin, Cake, Eye, UserSearch, Users, ChevronRight, Pencil, Save } from "lucide-react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 
 interface Profile {
@@ -167,6 +167,13 @@ const Community = () => {
   const [chatContact, setChatContact] = useState<typeof mockMessages[0] | null>(null);
   const [chatMessage, setChatMessage] = useState("");
   const [chatProfilePhoto, setChatProfilePhoto] = useState(0);
+  const [userBio, setUserBio] = useState("Passionné de fitness et de bien-être. Toujours partant pour un bon workout ! 💪🔥");
+  const [editingBio, setEditingBio] = useState(false);
+  const [tempBio, setTempBio] = useState("");
+  const [showEditAccount, setShowEditAccount] = useState(false);
+  const [showEditPrefs, setShowEditPrefs] = useState(false);
+  const [editAccountData, setEditAccountData] = useState({ username: "killian-7d8ht7", age: "21 (09 mars 2004)", lieu: "Paris" });
+  const [editPrefsData, setEditPrefsData] = useState({ genre: "Peu m'importe", age: "Mon âge environ (18-34)", lieu: "Mon pays" });
 
   const profile = currentIndex < mockProfiles.length ? mockProfiles[currentIndex] : null;
 
@@ -611,23 +618,52 @@ const Community = () => {
             </div>
           </div>
 
+          {/* Biographie */}
+          <h3 className="text-white text-lg font-bold mb-3">Biographie</h3>
+          <div className="bg-[hsl(0,0%,14%)] rounded-2xl px-5 py-4 mb-8">
+            {editingBio ? (
+              <div>
+                <textarea
+                  value={tempBio}
+                  onChange={(e) => setTempBio(e.target.value)}
+                  className="w-full bg-transparent text-white text-[15px] leading-relaxed focus:outline-none resize-none min-h-[80px]"
+                  autoFocus
+                  placeholder="Écris une petite description..."
+                />
+                <div className="flex gap-2 mt-3 justify-end">
+                  <button onClick={() => setEditingBio(false)} className="px-4 py-1.5 rounded-full text-white/50 text-sm">Annuler</button>
+                  <button onClick={() => { setUserBio(tempBio); setEditingBio(false); }} className="px-4 py-1.5 rounded-full bg-white text-[hsl(0,0%,8%)] text-sm font-semibold">Enregistrer</button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => { setTempBio(userBio); setEditingBio(true); }} className="w-full text-left">
+                <p className="text-white/70 text-[15px] leading-relaxed">{userBio || "Écris une petite description..."}</p>
+              </button>
+            )}
+          </div>
+
           {/* Mon compte */}
-          <h3 className="text-white text-lg font-bold mb-3">Mon compte</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white text-lg font-bold">Mon compte</h3>
+            <button onClick={() => setShowEditAccount(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
+              <Pencil className="w-4 h-4 text-white" />
+            </button>
+          </div>
           <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
             <div className="flex items-center px-5 py-4">
               <User className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Nom d'utilisateur</span>
-              <span className="ml-auto text-white/50 text-[15px]">killian-7d8ht7</span>
+              <span className="ml-auto text-white/50 text-[15px]">{editAccountData.username}</span>
             </div>
             <div className="flex items-center px-5 py-4">
               <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">21 (09 mars 2004) <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editAccountData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 Paris <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 {editAccountData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <Ban className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
@@ -637,22 +673,27 @@ const Community = () => {
           </div>
 
           {/* Préférences de recherche d'amis */}
-          <h3 className="text-white text-lg font-bold mb-3">Préférences de recherche d'amis</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white text-lg font-bold">Préférences de recherche d'amis</h3>
+            <button onClick={() => setShowEditPrefs(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
+              <Pencil className="w-4 h-4 text-white" />
+            </button>
+          </div>
           <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
             <div className="flex items-center px-5 py-4">
               <Users className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Genre</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Peu m'importe <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.genre} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Mon âge environ (18-34) <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
             <div className="flex items-center px-5 py-4">
               <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Mon pays <ChevronRight className="w-4 h-4 text-white/30" /></span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
             </div>
           </div>
 
@@ -675,6 +716,70 @@ const Community = () => {
             </div>
           </div>
         </div>
+
+        {/* Edit Account Modal */}
+        <AnimatePresence>
+          {showEditAccount && (
+            <>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-[200]" onClick={() => setShowEditAccount(false)} />
+              <motion.div
+                initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }}
+                transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 z-[201] bg-[hsl(0,0%,14%)] rounded-t-3xl pb-8 max-h-[70vh] overflow-y-auto"
+              >
+                <div className="w-10 h-1 rounded-full bg-white/20 mx-auto mt-3 mb-4" />
+                <h3 className="text-white text-lg font-bold text-center mb-5">Modifier mon compte</h3>
+                <div className="px-6 space-y-4">
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Nom d'utilisateur</label>
+                    <input value={editAccountData.username} onChange={e => setEditAccountData(d => ({ ...d, username: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Lieu</label>
+                    <input value={editAccountData.lieu} onChange={e => setEditAccountData(d => ({ ...d, lieu: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <button onClick={() => setShowEditAccount(false)} className="w-full py-3 rounded-full bg-white text-[hsl(0,0%,8%)] text-[15px] font-semibold mt-4 active:bg-white/90 transition-colors">
+                    Enregistrer
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Edit Prefs Modal */}
+        <AnimatePresence>
+          {showEditPrefs && (
+            <>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-[200]" onClick={() => setShowEditPrefs(false)} />
+              <motion.div
+                initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }}
+                transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 z-[201] bg-[hsl(0,0%,14%)] rounded-t-3xl pb-8 max-h-[70vh] overflow-y-auto"
+              >
+                <div className="w-10 h-1 rounded-full bg-white/20 mx-auto mt-3 mb-4" />
+                <h3 className="text-white text-lg font-bold text-center mb-5">Préférences de recherche</h3>
+                <div className="px-6 space-y-4">
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Genre</label>
+                    <input value={editPrefsData.genre} onChange={e => setEditPrefsData(d => ({ ...d, genre: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Âge</label>
+                    <input value={editPrefsData.age} onChange={e => setEditPrefsData(d => ({ ...d, age: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Lieu</label>
+                    <input value={editPrefsData.lieu} onChange={e => setEditPrefsData(d => ({ ...d, lieu: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <button onClick={() => setShowEditPrefs(false)} className="w-full py-3 rounded-full bg-white text-[hsl(0,0%,8%)] text-[15px] font-semibold mt-4 active:bg-white/90 transition-colors">
+                    Enregistrer
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     );
   }
@@ -700,9 +805,6 @@ const Community = () => {
         >
           <UserPlus className="w-5 h-5 text-[hsl(0,0%,8%)]" />
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(0,80%,55%)] text-white text-[10px] font-bold flex items-center justify-center">3</span>
-        </button>
-        <button className="w-11 h-11 rounded-full bg-[hsl(0,0%,16%)] flex items-center justify-center">
-          <MoreHorizontal className="w-5 h-5 text-white/90" />
         </button>
       </div>
 
