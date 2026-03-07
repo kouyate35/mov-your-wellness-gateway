@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Search, Bell, UserPlus, MoreHorizontal, X, Plus, ChevronLeft, Ban, AlertTriangle, Camera, ArrowLeft, Send, MapPin, Cake, Eye, UserSearch, Users, ChevronRight } from "lucide-react";
+import { User, Search, Bell, UserPlus, MoreHorizontal, X, Plus, ChevronLeft, Ban, AlertTriangle, Camera, ArrowLeft, Send, MapPin, Cake, Eye, UserSearch, Users, ChevronRight, Pencil, Save } from "lucide-react";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 
 interface Profile {
