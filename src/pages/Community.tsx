@@ -716,6 +716,70 @@ const Community = () => {
             </div>
           </div>
         </div>
+
+        {/* Edit Account Modal */}
+        <AnimatePresence>
+          {showEditAccount && (
+            <>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-[200]" onClick={() => setShowEditAccount(false)} />
+              <motion.div
+                initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }}
+                transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 z-[201] bg-[hsl(0,0%,14%)] rounded-t-3xl pb-8 max-h-[70vh] overflow-y-auto"
+              >
+                <div className="w-10 h-1 rounded-full bg-white/20 mx-auto mt-3 mb-4" />
+                <h3 className="text-white text-lg font-bold text-center mb-5">Modifier mon compte</h3>
+                <div className="px-6 space-y-4">
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Nom d'utilisateur</label>
+                    <input value={editAccountData.username} onChange={e => setEditAccountData(d => ({ ...d, username: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Lieu</label>
+                    <input value={editAccountData.lieu} onChange={e => setEditAccountData(d => ({ ...d, lieu: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <button onClick={() => setShowEditAccount(false)} className="w-full py-3 rounded-full bg-white text-[hsl(0,0%,8%)] text-[15px] font-semibold mt-4 active:bg-white/90 transition-colors">
+                    Enregistrer
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Edit Prefs Modal */}
+        <AnimatePresence>
+          {showEditPrefs && (
+            <>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-[200]" onClick={() => setShowEditPrefs(false)} />
+              <motion.div
+                initial={{ y: "100%", opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: "100%", opacity: 0 }}
+                transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 z-[201] bg-[hsl(0,0%,14%)] rounded-t-3xl pb-8 max-h-[70vh] overflow-y-auto"
+              >
+                <div className="w-10 h-1 rounded-full bg-white/20 mx-auto mt-3 mb-4" />
+                <h3 className="text-white text-lg font-bold text-center mb-5">Préférences de recherche</h3>
+                <div className="px-6 space-y-4">
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Genre</label>
+                    <input value={editPrefsData.genre} onChange={e => setEditPrefsData(d => ({ ...d, genre: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Âge</label>
+                    <input value={editPrefsData.age} onChange={e => setEditPrefsData(d => ({ ...d, age: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <div>
+                    <label className="text-white/50 text-xs font-medium mb-1.5 block">Lieu</label>
+                    <input value={editPrefsData.lieu} onChange={e => setEditPrefsData(d => ({ ...d, lieu: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
+                  </div>
+                  <button onClick={() => setShowEditPrefs(false)} className="w-full py-3 rounded-full bg-white text-[hsl(0,0%,8%)] text-[15px] font-semibold mt-4 active:bg-white/90 transition-colors">
+                    Enregistrer
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     );
   }
