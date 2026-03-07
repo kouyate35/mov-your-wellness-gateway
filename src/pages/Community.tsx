@@ -534,6 +534,151 @@ const Community = () => {
     );
   }
 
+  // ─── PROFILE VIEW ───
+  if (viewState === "profile") {
+    const userPhotos = [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop",
+    ];
+    const hasPhotos = userPhotos.length > 0;
+
+    return (
+      <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
+        {/* Header */}
+        <div className="px-5 pt-5 pb-3 flex items-center">
+          <button onClick={() => setViewState("main")} className="p-1">
+            <ArrowLeft className="w-6 h-6 text-white/90" />
+          </button>
+          <h1 className="flex-1 text-center text-white text-xl font-bold -ml-7">Profil</h1>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-5 pb-8">
+          {/* User info row */}
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-[hsl(0,0%,16%)]">
+              {hasPhotos ? (
+                <img src={userPhotos[0]} className="w-full h-full object-cover" alt="avatar" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <User className="w-7 h-7 text-white/40" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h2 className="text-white text-lg font-bold">Killian</h2>
+              </div>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-white/60 text-sm">21</span>
+                <span className="text-white/30">·</span>
+                <span className="text-white/60 text-sm">🇫🇷 Paris</span>
+                <span className="text-white/30">·</span>
+                <span className="text-lg">💪</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Photo grid */}
+          <div className="mb-8">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide" style={{ scrollbarWidth: "none" }}>
+              {hasPhotos ? (
+                <>
+                  {userPhotos.map((photo, i) => (
+                    <div key={i} className="w-40 h-56 rounded-2xl overflow-hidden flex-shrink-0 relative">
+                      <img src={photo} className="w-full h-full object-cover" alt={`photo-${i}`} />
+                    </div>
+                  ))}
+                  {/* Add more photo slot */}
+                  <div className="w-40 h-56 rounded-2xl bg-[hsl(0,0%,14%)] flex-shrink-0 flex flex-col items-center justify-center gap-2">
+                    <div className="w-12 h-12 rounded-full bg-[hsl(0,0%,20%)] flex items-center justify-center">
+                      <User className="w-6 h-6 text-white/30" />
+                    </div>
+                    <span className="text-white text-xs font-medium bg-white/15 px-4 py-1.5 rounded-full">Ajouter</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {[0, 1, 2].map(i => (
+                    <div key={i} className="w-40 h-56 rounded-2xl bg-[hsl(0,0%,14%)] flex-shrink-0 flex flex-col items-center justify-center gap-2">
+                      <div className="w-12 h-12 rounded-full bg-[hsl(0,0%,20%)] flex items-center justify-center">
+                        <User className="w-6 h-6 text-white/30" />
+                      </div>
+                      <span className="text-white text-xs font-medium bg-white/15 px-4 py-1.5 rounded-full">Ajouter</span>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Mon compte */}
+          <h3 className="text-white text-lg font-bold mb-3">Mon compte</h3>
+          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
+            <div className="flex items-center px-5 py-4">
+              <User className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Nom d'utilisateur</span>
+              <span className="ml-auto text-white/50 text-[15px]">killian-7d8ht7</span>
+            </div>
+            <div className="flex items-center px-5 py-4">
+              <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Âge</span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">21 (09 mars 2004) <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            </div>
+            <div className="flex items-center px-5 py-4">
+              <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Lieu</span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 Paris <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            </div>
+            <div className="flex items-center px-5 py-4">
+              <Ban className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Utilisateurs bloqués</span>
+              <ChevronRight className="ml-auto w-4 h-4 text-white/30" />
+            </div>
+          </div>
+
+          {/* Préférences de recherche d'amis */}
+          <h3 className="text-white text-lg font-bold mb-3">Préférences de recherche d'amis</h3>
+          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
+            <div className="flex items-center px-5 py-4">
+              <Users className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Genre</span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Peu m'importe <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            </div>
+            <div className="flex items-center px-5 py-4">
+              <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Âge</span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Mon âge environ (18-34) <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            </div>
+            <div className="flex items-center px-5 py-4">
+              <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Lieu</span>
+              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">Mon pays <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            </div>
+          </div>
+
+          {/* Visibilité */}
+          <h3 className="text-white text-lg font-bold mb-3">Visibilité</h3>
+          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8">
+            <div className="flex items-center px-5 py-4">
+              <Eye className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Montrer ma région</span>
+              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+              </div>
+            </div>
+            <div className="flex items-center px-5 py-4">
+              <UserSearch className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
+              <span className="text-white text-[15px]">Visible dans la recherche</span>
+              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ─── MAIN VIEW ───
   return (
     <div className="fixed inset-0 bg-[hsl(0,0%,8%)] flex flex-col overflow-hidden">
