@@ -21,7 +21,7 @@ const SectionTabs = ({ activeTab, onTabChange, onAddApp }: SectionTabsProps) => 
             className={`
               px-3 py-2 rounded-full whitespace-nowrap text-xs font-medium transition-all duration-200
               ${activeTab === index 
-                ? "bg-secondary text-foreground" 
+                ? "bg-orange/15 text-orange border border-orange/25" 
                 : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }
             `}
@@ -32,9 +32,9 @@ const SectionTabs = ({ activeTab, onTabChange, onAddApp }: SectionTabsProps) => 
       </div>
       <button
         onClick={onAddApp}
-        className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0"
+        className="w-10 h-10 rounded-full bg-orange flex items-center justify-center flex-shrink-0 shadow-lg shadow-orange/20"
       >
-        <Plus size={20} className="text-black" />
+        <Plus size={20} className="text-orange-foreground" />
       </button>
     </div>
   );

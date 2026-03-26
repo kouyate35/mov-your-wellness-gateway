@@ -116,18 +116,18 @@ const Index = () => {
           </button>
           
           {/* Globe icon - circular with background matching interface */}
-          <button 
+           <button 
             onClick={() => navigate("/community")}
-            className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted transition-colors">
-            <Globe className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+            className="w-10 h-10 rounded-full bg-background border border-orange/30 flex items-center justify-center hover:bg-orange/10 transition-colors">
+            <Globe className="w-5 h-5 text-orange" strokeWidth={1.5} />
           </button>
         </div>
         
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
-            Work<span className="font-normal">out</span>
+            <span className="text-orange">Work</span><span className="font-normal">out</span>
           </h1>
-          <span className="px-3 py-1.5 text-[11px] font-medium bg-secondary/80 rounded-full text-muted-foreground border border-border/50">
+          <span className="px-3 py-1.5 text-[11px] font-medium bg-orange/10 rounded-full text-orange border border-orange/20">
             Work avant de scroll
           </span>
         </div>
