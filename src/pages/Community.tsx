@@ -386,7 +386,7 @@ const Community = () => {
             <div key={msg.id} className={`flex ${msg.fromMe ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm ${
                 msg.fromMe
-                  ? "bg-[hsl(260,60%,55%)] text-white rounded-br-md"
+                  ? "bg-orange text-orange-foreground rounded-br-md"
                   : "bg-[hsl(0,0%,16%)] text-white/90 rounded-bl-md"
               }`}>
                 {msg.text}
@@ -409,8 +409,8 @@ const Community = () => {
               className="flex-1 bg-transparent text-white text-sm placeholder:text-white/30 focus:outline-none"
             />
           </div>
-          <button className="w-9 h-9 rounded-full bg-[hsl(260,60%,55%)] flex items-center justify-center flex-shrink-0">
-            <Send className="w-4 h-4 text-white" />
+          <button className="w-9 h-9 rounded-full bg-orange flex items-center justify-center flex-shrink-0">
+            <Send className="w-4 h-4 text-orange-foreground" />
           </button>
         </div>
 
@@ -487,7 +487,7 @@ const Community = () => {
               onClick={() => setNotifPageTab(tab)}
               className={`px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all ${
                 notifPageTab === tab
-                  ? "bg-white text-[hsl(0,0%,8%)]"
+                  ? "bg-orange text-orange-foreground"
                   : "text-white/50"
               }`}
             >
@@ -632,7 +632,7 @@ const Community = () => {
                 />
                 <div className="flex gap-2 mt-3 justify-end">
                   <button onClick={() => setEditingBio(false)} className="px-4 py-1.5 rounded-full text-white/50 text-sm">Annuler</button>
-                  <button onClick={() => { setUserBio(tempBio); setEditingBio(false); }} className="px-4 py-1.5 rounded-full bg-white text-[hsl(0,0%,8%)] text-sm font-semibold">Enregistrer</button>
+                  <button onClick={() => { setUserBio(tempBio); setEditingBio(false); }} className="px-4 py-1.5 rounded-full bg-orange text-orange-foreground text-sm font-semibold">Enregistrer</button>
                 </div>
               </div>
             ) : (
@@ -703,15 +703,15 @@ const Community = () => {
             <div className="flex items-center px-5 py-4">
               <Eye className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Montrer ma région</span>
-              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
-                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+              <div className="ml-auto w-12 h-7 rounded-full bg-orange relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-orange-foreground transition-all" />
               </div>
             </div>
             <div className="flex items-center px-5 py-4">
               <UserSearch className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
               <span className="text-white text-[15px]">Visible dans la recherche</span>
-              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
-                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+              <div className="ml-auto w-12 h-7 rounded-full bg-orange relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-orange-foreground transition-all" />
               </div>
             </div>
           </div>
@@ -738,7 +738,7 @@ const Community = () => {
                     <label className="text-white/50 text-xs font-medium mb-1.5 block">Lieu</label>
                     <input value={editAccountData.lieu} onChange={e => setEditAccountData(d => ({ ...d, lieu: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
                   </div>
-                  <button onClick={() => setShowEditAccount(false)} className="w-full py-3 rounded-full bg-white text-[hsl(0,0%,8%)] text-[15px] font-semibold mt-4 active:bg-white/90 transition-colors">
+                  <button onClick={() => setShowEditAccount(false)} className="w-full py-3 rounded-full bg-orange text-orange-foreground text-[15px] font-semibold mt-4 active:bg-orange-muted transition-colors">
                     Enregistrer
                   </button>
                 </div>
@@ -772,7 +772,7 @@ const Community = () => {
                     <label className="text-white/50 text-xs font-medium mb-1.5 block">Lieu</label>
                     <input value={editPrefsData.lieu} onChange={e => setEditPrefsData(d => ({ ...d, lieu: e.target.value }))} className="w-full bg-[hsl(0,0%,20%)] rounded-xl px-4 py-3 text-white text-[15px] focus:outline-none focus:ring-1 focus:ring-white/20" />
                   </div>
-                  <button onClick={() => setShowEditPrefs(false)} className="w-full py-3 rounded-full bg-white text-[hsl(0,0%,8%)] text-[15px] font-semibold mt-4 active:bg-white/90 transition-colors">
+                  <button onClick={() => setShowEditPrefs(false)} className="w-full py-3 rounded-full bg-orange text-orange-foreground text-[15px] font-semibold mt-4 active:bg-orange-muted transition-colors">
                     Enregistrer
                   </button>
                 </div>
@@ -801,9 +801,9 @@ const Community = () => {
         </button>
         <button
           onClick={() => setShowNotifications(true)}
-          className="relative w-11 h-11 rounded-full bg-[hsl(50,100%,50%)] flex items-center justify-center"
+          className="relative w-11 h-11 rounded-full bg-orange flex items-center justify-center"
         >
-          <UserPlus className="w-5 h-5 text-[hsl(0,0%,8%)]" />
+          <UserPlus className="w-5 h-5 text-orange-foreground" />
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[hsl(0,80%,55%)] text-white text-[10px] font-bold flex items-center justify-center">3</span>
         </button>
       </div>
@@ -812,13 +812,13 @@ const Community = () => {
       <div className="relative z-50 flex mx-4 mb-1.5 bg-[hsl(0,0%,12%)] rounded-[14px] p-[3px]">
         <button
           onClick={() => setActiveTab("swipe")}
-          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${activeTab === "swipe" ? "bg-[hsl(0,0%,20%)] text-white" : "text-white/45"}`}
+          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${activeTab === "swipe" ? "bg-orange/20 text-orange" : "text-white/45"}`}
         >
           Swipe
         </button>
         <button
           onClick={() => setActiveTab("nearby")}
-          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all flex items-center justify-center gap-1.5 ${activeTab === "nearby" ? "bg-[hsl(0,0%,20%)] text-white" : "text-white/45"}`}
+          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all flex items-center justify-center gap-1.5 ${activeTab === "nearby" ? "bg-orange/20 text-orange" : "text-white/45"}`}
         >
           À proximité
           <span className="bg-[hsl(0,85%,58%)] text-white text-[9px] font-bold px-1.5 py-[2px] rounded-full leading-none">+99</span>
@@ -1088,8 +1088,8 @@ const Community = () => {
                             <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
                               <X className="w-4 h-4 text-white" strokeWidth={3} />
                             </button>
-                            <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
-                              <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                            <button className="flex-1 py-2 rounded-full bg-orange flex items-center justify-center active:bg-orange-muted transition-colors">
+                              <Plus className="w-4 h-4 text-orange-foreground" strokeWidth={3} />
                             </button>
                           </div>
                         </div>
