@@ -51,6 +51,12 @@
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
 
+    /* Orange accent - brand identity */
+    --orange: 30 100% 50%;
+    --orange-foreground: 0 0% 5%;
+    --orange-muted: 30 80% 40%;
+    --orange-glow: 25 100% 55%;
+
     /* Sidebar (not used but required) */
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 95%;
