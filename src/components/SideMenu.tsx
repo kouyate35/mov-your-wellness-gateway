@@ -170,8 +170,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                       <div className="relative w-8 h-8 shrink-0">
                         {getAppIcon(app.id, "sm", true)}
                         {/* Connection badge - white circle with checkmark */}
-                        <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
-                          <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-orange rounded-full flex items-center justify-center shadow-sm">
+                          <svg className="w-2.5 h-2.5 text-orange-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
