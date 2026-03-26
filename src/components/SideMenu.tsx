@@ -195,8 +195,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-3 hover:opacity-80 transition-opacity"
               >
-                <div className="w-9 h-9 rounded-full bg-info flex items-center justify-center">
-                  <span className="text-info-foreground font-semibold text-sm">
+                <div className="w-9 h-9 rounded-full bg-orange flex items-center justify-center">
+                  <span className="text-orange-foreground font-semibold text-sm">
                     {userInitial}
                   </span>
                 </div>
@@ -209,7 +209,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
               {/* Upgrade Button */}
               <button
                 onClick={() => { navigate("/subscription"); onClose(); }}
-                className="px-3 py-1.5 bg-secondary rounded-full text-foreground text-xs font-medium hover:bg-secondary/80 transition-colors"
+                className="px-3 py-1.5 bg-orange rounded-full text-orange-foreground text-xs font-medium hover:bg-orange-muted transition-colors"
               >
                 Mettre à niveau
               </button>
@@ -226,8 +226,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
               {/* Profile Header */}
               <div className="p-4 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-info flex items-center justify-center">
-                    <span className="text-info-foreground font-semibold text-sm">
+                  <div className="w-9 h-9 rounded-full bg-orange flex items-center justify-center">
+                    <span className="text-orange-foreground font-semibold text-sm">
                       {userInitial}
                     </span>
                   </div>
