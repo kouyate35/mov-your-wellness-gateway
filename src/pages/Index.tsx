@@ -7,13 +7,14 @@ import SectionTabs from "@/components/SectionTabs";
 import InsightsSection from "@/components/InsightsSection";
 import ProgramsSection from "@/components/ProgramsSection";
 import SideMenu from "@/components/SideMenu";
+import movIcon from "@/assets/mov-icon.png";
 import AppAccessModal from "@/components/AppAccessModal";
 import AppScanAnimation from "@/components/AppScanAnimation";
 import ProgressionSection from "@/components/ProgressionSection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
-import { Menu } from "lucide-react";
+import { User } from "lucide-react";
 import BottomNavBar from "@/components/BottomNavBar";
 
 const Index = () => {
@@ -108,11 +109,16 @@ const Index = () => {
       {/* Header */}
       <header className="pt-3 pb-4 px-4">
         <div className="flex items-center justify-between mb-4">
+          <img 
+            src={movIcon} 
+            alt="Workout" 
+            className="w-8 h-8 rounded-lg"
+          />
           <button 
-            className="p-1 -ml-1"
+            className="w-9 h-9 rounded-full bg-secondary/60 flex items-center justify-center"
             onClick={() => setIsMenuOpen(true)}
           >
-            <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
+            <User className="w-[18px] h-[18px] text-foreground" strokeWidth={1.8} />
           </button>
         </div>
         
