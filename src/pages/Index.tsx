@@ -6,22 +6,18 @@ import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
 import InsightsSection from "@/components/InsightsSection";
 import ProgramsSection from "@/components/ProgramsSection";
-import SideMenu from "@/components/SideMenu";
-import movIcon from "@/assets/mov-icon.png";
 import AppAccessModal from "@/components/AppAccessModal";
 import AppScanAnimation from "@/components/AppScanAnimation";
 import ProgressionSection from "@/components/ProgressionSection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
-import { User } from "lucide-react";
 import BottomNavBar from "@/components/BottomNavBar";
 
 const Index = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [showScanAnimation, setShowScanAnimation] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
@@ -103,25 +99,8 @@ const Index = () => {
         onOpenSettings={openPermissionSettings}
       />
 
-      {/* Side Menu */}
-      <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-
       {/* Header */}
       <header className="pt-3 pb-4 px-4">
-        <div className="flex items-center justify-between mb-4">
-          <img 
-            src={movIcon} 
-            alt="Workout" 
-            className="w-8 h-8 rounded-lg"
-          />
-          <button 
-            className="w-9 h-9 rounded-full bg-secondary/60 flex items-center justify-center"
-            onClick={() => setIsMenuOpen(true)}
-          >
-            <User className="w-[18px] h-[18px] text-foreground" strokeWidth={1.8} />
-          </button>
-        </div>
-        
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-semibold text-foreground tracking-tight">
             Work<span className="font-normal">out</span>
