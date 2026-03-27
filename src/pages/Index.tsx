@@ -12,14 +12,12 @@ import ProgressionSection from "@/components/ProgressionSection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
-import { User } from "lucide-react";
 import BottomNavBar from "@/components/BottomNavBar";
 
 const Index = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [showScanAnimation, setShowScanAnimation] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
