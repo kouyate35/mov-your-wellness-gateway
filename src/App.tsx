@@ -16,6 +16,7 @@ import HelpCenter from "./pages/HelpCenter";
 import Terms from "./pages/Terms";
 import UsageStats from "./pages/UsageStats";
 import Community from "./pages/Community";
+import ConnectedApps from "./pages/ConnectedApps";
 import CompletionPreview from "./pages/CompletionPreview";
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/usage-stats" element={<UsageStats />} />
           <Route path="/community" element={<Community />} />
+          <Route path="/connected-apps" element={<ConnectedApps />} />
           <Route path="/completion-preview" element={<CompletionPreview />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
