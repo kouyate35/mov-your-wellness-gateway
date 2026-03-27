@@ -6,8 +6,6 @@ import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
 import InsightsSection from "@/components/InsightsSection";
 import ProgramsSection from "@/components/ProgramsSection";
-import SideMenu from "@/components/SideMenu";
-import movIcon from "@/assets/mov-icon.png";
 import AppAccessModal from "@/components/AppAccessModal";
 import AppScanAnimation from "@/components/AppScanAnimation";
 import ProgressionSection from "@/components/ProgressionSection";
