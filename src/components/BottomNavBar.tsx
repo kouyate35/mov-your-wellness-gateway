@@ -1,10 +1,11 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Compass, Map, BarChart3 } from "lucide-react";
+import { Compass, Map, BarChart3, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { id: "explore", label: "Explorer", icon: Compass, path: "/explore" },
   { id: "community", label: "Communauté", icon: Map, path: "/community" },
+  { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" },
   { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" },
 ];
 
