@@ -146,6 +146,9 @@ const Index = () => {
       <section>
         {renderTabContent()}
       </section>
+
+      {/* Bottom Navigation */}
+      <BottomNavBar />
     </div>
   );
 };
