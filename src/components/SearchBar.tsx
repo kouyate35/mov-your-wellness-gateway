@@ -9,7 +9,7 @@ interface SearchBarProps {
 const SearchBar = ({ value, onChange, placeholder = "Rechercher une application..." }: SearchBarProps) => {
   return (
     <div className="px-6">
-      <div className="relative border border-border rounded-full bg-secondary/30 focus-within:border-orange/40 transition-colors">
+      <div className="relative border border-border rounded-full bg-secondary/30">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <input
           type="text"

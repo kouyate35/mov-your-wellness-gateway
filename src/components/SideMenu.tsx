@@ -170,8 +170,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                       <div className="relative w-8 h-8 shrink-0">
                         {getAppIcon(app.id, "sm", true)}
                         {/* Connection badge - white circle with checkmark */}
-                        <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-orange rounded-full flex items-center justify-center shadow-sm">
-                          <svg className="w-2.5 h-2.5 text-orange-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                          <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
@@ -195,8 +195,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-3 hover:opacity-80 transition-opacity"
               >
-                <div className="w-9 h-9 rounded-full bg-orange flex items-center justify-center">
-                  <span className="text-orange-foreground font-semibold text-sm">
+                <div className="w-9 h-9 rounded-full bg-info flex items-center justify-center">
+                  <span className="text-info-foreground font-semibold text-sm">
                     {userInitial}
                   </span>
                 </div>
@@ -209,7 +209,7 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
               {/* Upgrade Button */}
               <button
                 onClick={() => { navigate("/subscription"); onClose(); }}
-                className="px-3 py-1.5 bg-orange rounded-full text-orange-foreground text-xs font-medium hover:bg-orange-muted transition-colors"
+                className="px-3 py-1.5 bg-secondary rounded-full text-foreground text-xs font-medium hover:bg-secondary/80 transition-colors"
               >
                 Mettre à niveau
               </button>
@@ -226,8 +226,8 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
               {/* Profile Header */}
               <div className="p-4 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-orange flex items-center justify-center">
-                    <span className="text-orange-foreground font-semibold text-sm">
+                  <div className="w-9 h-9 rounded-full bg-info flex items-center justify-center">
+                    <span className="text-info-foreground font-semibold text-sm">
                       {userInitial}
                     </span>
                   </div>

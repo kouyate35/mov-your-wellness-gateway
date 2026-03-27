@@ -126,7 +126,7 @@ const CategoryCarousel = ({ selectedCategory, onSelectCategory }: CategoryCarous
             )}
             
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" style={{ borderBottom: '2px solid hsl(30 100% 50% / 0.4)' }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             
             {/* Content - only title */}
             <div className="absolute bottom-4 left-4 right-4">

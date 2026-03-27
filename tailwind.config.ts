@@ -74,12 +74,6 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
-        orange: {
-          DEFAULT: "hsl(var(--orange))",
-          foreground: "hsl(var(--orange-foreground))",
-          muted: "hsl(var(--orange-muted))",
-          glow: "hsl(var(--orange-glow))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",

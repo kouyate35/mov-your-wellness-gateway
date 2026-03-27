@@ -57,8 +57,8 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
         {/* Connection badge - ChatGPT style (small check circle at bottom-left) */}
         {isActive && (
           <div className="absolute -bottom-0.5 -left-0.5 w-5 h-5 bg-background rounded-full flex items-center justify-center border-2 border-background">
-            <div className="w-4 h-4 bg-orange rounded-full flex items-center justify-center">
-              <Check className="w-2.5 h-2.5 text-orange-foreground" strokeWidth={3} />
+            <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+              <Check className="w-2.5 h-2.5 text-gray-800" strokeWidth={3} />
             </div>
           </div>
         )}
