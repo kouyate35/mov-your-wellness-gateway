@@ -13,7 +13,8 @@ import ProgressionSection from "@/components/ProgressionSection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
-import { Menu, Globe } from "lucide-react";
+import { Menu } from "lucide-react";
+import BottomNavBar from "@/components/BottomNavBar";
 
 const Index = () => {
   const navigate = useNavigate();
