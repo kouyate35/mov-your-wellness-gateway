@@ -85,7 +85,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-24">
       {/* Scan Animation */}
       <AppScanAnimation 
         isScanning={showScanAnimation} 
@@ -107,20 +107,12 @@ const Index = () => {
 
       {/* Header */}
       <header className="pt-3 pb-4 px-4">
-        {/* Top bar with hamburger and globe icon */}
         <div className="flex items-center justify-between mb-4">
           <button 
             className="p-1 -ml-1"
             onClick={() => setIsMenuOpen(true)}
           >
             <Menu className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
-          </button>
-          
-          {/* Globe icon - circular with background matching interface */}
-          <button 
-            onClick={() => navigate("/community")}
-            className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted transition-colors">
-            <Globe className="w-5 h-5 text-foreground" strokeWidth={1.5} />
           </button>
         </div>
         
