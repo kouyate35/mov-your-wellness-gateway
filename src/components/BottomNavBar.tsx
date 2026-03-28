@@ -9,8 +9,8 @@ import HelpModal from "@/components/HelpModal";
 
 const navItems = [
   { id: "explore", label: "Explorer", icon: Compass, path: "/explore" },
-  { id: "community", label: "Communauté", icon: Map, path: "/community" },
   { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" },
+  { id: "community", label: "Communauté", icon: Map, path: "/community" },
   { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" },
 ];
 
