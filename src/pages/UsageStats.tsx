@@ -429,12 +429,9 @@ const UsageStats = () => {
         {/* ── Hero Header ───────────────────── */}
         <section className="px-5 pt-[env(safe-area-inset-top,16px)] pb-2">
           <p className="text-muted-foreground text-xs mt-2">{dateStr}</p>
-          <div className="flex items-start justify-between mt-1">
-            <h1 className="text-foreground text-2xl font-bold tracking-tight leading-tight">
-              {greeting},<br />Bakar
-            </h1>
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mt-1" style={{ background: "hsl(0,0%,22%)", color: "hsl(0,0%,70%)" }}>B</div>
-          </div>
+          <h1 className="text-foreground text-2xl font-bold tracking-tight leading-tight mt-1">
+            {greeting},<br />Bakar
+          </h1>
         </section>
 
         {/* ── Streak Card ───────────────────── */}
