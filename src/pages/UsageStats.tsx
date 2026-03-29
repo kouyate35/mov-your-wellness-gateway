@@ -429,12 +429,9 @@ const UsageStats = () => {
         {/* ── Hero Header ───────────────────── */}
         <section className="px-5 pt-[env(safe-area-inset-top,16px)] pb-2">
           <p className="text-muted-foreground text-xs mt-2">{dateStr}</p>
-          <div className="flex items-start justify-between mt-1">
-            <h1 className="text-foreground text-2xl font-bold tracking-tight leading-tight">
-              {greeting},<br />Bakar
-            </h1>
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mt-1" style={{ background: "hsl(0,0%,22%)", color: "hsl(0,0%,70%)" }}>B</div>
-          </div>
+          <h1 className="text-foreground text-2xl font-bold tracking-tight leading-tight mt-1">
+            {greeting},<br />Bakar
+          </h1>
         </section>
 
         {/* ── Streak Card ───────────────────── */}
@@ -529,61 +526,25 @@ const UsageStats = () => {
           </button>
         </section>
 
-        {/* ── Creative Category Grid (Bento-style) ── */}
+        {/* ── Category List (Premium) ── */}
         <section className="px-5 py-4">
-          <p className="text-muted-foreground text-[10px] uppercase tracking-[0.2em] font-medium mb-4">Explorer tes données</p>
-          
-          {/* Row 1: 2 large cards */}
-          <div className="grid grid-cols-2 gap-3 mb-3">
-            {categories.slice(0, 2).map((cat) => (
+          <div className="rounded-2xl border border-border/20 bg-secondary/20 overflow-hidden">
+            {categories.map((cat, i) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className="rounded-2xl border border-border/20 bg-secondary/30 p-4 flex flex-col items-start gap-3 text-left transition-all active:scale-[0.97] hover:border-border/40"
-                style={{ minHeight: 120 }}
+                className={`w-full flex items-center justify-between px-5 py-4 text-left transition-colors active:bg-secondary/40 ${i < categories.length - 1 ? "border-b border-border/10" : ""}`}
               >
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${cat.color}18` }}>
-                  <cat.icon className="w-4.5 h-4.5" style={{ color: cat.color }} />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${cat.color}15` }}>
+                    <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
+                  </div>
+                  <div>
+                    <span className="text-foreground text-sm font-medium">{cat.label}</span>
+                    <p className="text-muted-foreground text-[11px] mt-0.5">{cat.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-foreground text-sm font-semibold">{cat.label}</p>
-                  <p className="text-muted-foreground text-[11px] mt-0.5">{cat.desc}</p>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* Row 2: 3 compact cards */}
-          <div className="grid grid-cols-3 gap-3 mb-3">
-            {categories.slice(2, 5).map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className="rounded-2xl border border-border/20 bg-secondary/30 p-3.5 flex flex-col items-center gap-2.5 text-center transition-all active:scale-[0.97] hover:border-border/40"
-              >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${cat.color}18` }}>
-                  <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
-                </div>
-                <p className="text-foreground text-[11px] font-medium leading-tight">{cat.label}</p>
-              </button>
-            ))}
-          </div>
-
-          {/* Row 3: 2 horizontal cards */}
-          <div className="grid grid-cols-2 gap-3">
-            {categories.slice(5).map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className="rounded-2xl border border-border/20 bg-secondary/30 px-4 py-3.5 flex items-center gap-3 text-left transition-all active:scale-[0.97] hover:border-border/40"
-              >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${cat.color}18` }}>
-                  <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
-                </div>
-                <div>
-                  <p className="text-foreground text-[11px] font-medium">{cat.label}</p>
-                  <p className="text-muted-foreground text-[10px]">{cat.desc}</p>
-                </div>
+                <ChevronRight className="w-4 h-4 text-muted-foreground/50 shrink-0" />
               </button>
             ))}
           </div>
