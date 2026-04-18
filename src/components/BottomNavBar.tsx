@@ -135,27 +135,6 @@ const BottomNavBar = () => {
               </button>
             );
           })}
-          {/* Profile button */}
-          <button
-            onClick={() => setShowProfilePopup(!showProfilePopup)}
-            className="flex flex-col items-center gap-0.5 flex-1"
-          >
-            <User
-              className={cn(
-                "w-5 h-5",
-                showProfilePopup ? "text-foreground" : "text-muted-foreground/60"
-              )}
-              strokeWidth={showProfilePopup ? 2 : 1.5}
-            />
-            <span
-              className={cn(
-                "text-[9px]",
-                showProfilePopup ? "text-foreground font-medium" : "text-muted-foreground/60"
-              )}
-            >
-              Profil
-            </span>
-          </button>
         </div>
         <div className="h-[env(safe-area-inset-bottom,0px)]" />
       </nav>

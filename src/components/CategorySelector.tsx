@@ -121,7 +121,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
             <button
               key={category.id}
               onClick={() => scrollToCard(index)}
-              className="relative flex-shrink-0 w-full aspect-[3/4] snap-start overflow-hidden"
+              className="relative flex-shrink-0 w-full aspect-[4/5] snap-start overflow-hidden"
             >
               {/* Background image */}
               <img 
@@ -156,18 +156,6 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
                 <p className="text-white/80 text-sm font-medium uppercase tracking-wider mt-2">
                   {category.tagline}
                 </p>
-              </div>
-
-              {/* Content - Bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <ul className="space-y-2 mb-4">
-                  {(categoryFeatures[category.id] || []).map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-white/90 text-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
               </div>
             </button>
           ))}
@@ -204,11 +192,6 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
           ))}
         </div>
       </div>
-
-      {/* Dynamic description text - ChatGPT style */}
-      <p className="text-white text-base leading-relaxed mt-6 px-1">
-        {categoryDescriptions[currentCategory.id]}
-      </p>
 
       {/* Program Carousel - below description */}
       <div className="mt-8">
