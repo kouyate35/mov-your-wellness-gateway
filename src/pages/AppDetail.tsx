@@ -116,11 +116,11 @@ const AppDetail = () => {
   const selectedProgram = currentCategory?.programs.find(p => p.id === selectedProgramId);
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-4">
       <FireEmojiAnimation isActive={showFireAnimation} onComplete={handleFireComplete} />
 
       {/* Header */}
-      <header className="pt-6 pb-4 px-4">
+      <header className="pt-4 pb-2 px-4">
         <div className="flex items-center gap-3">
           <button className="relative p-1">
             <Menu className="w-5 h-5 text-muted-foreground" />
@@ -151,30 +151,30 @@ const AppDetail = () => {
       </header>
 
       {/* App Card */}
-      <section className="px-4 pt-4">
-        <div className="flex items-start gap-4">
-          {getAppIcon(app.id, "xl", true)}
+      <section className="px-4 pt-2">
+        <div className="flex items-center gap-3">
+          {getAppIcon(app.id, "lg", true)}
           
-          <div className="flex flex-col gap-2 pt-1">
-            <h1 className="text-2xl font-bold text-foreground">{app.name}</h1>
+          <div className="flex flex-col gap-1.5">
+            <h1 className="text-xl font-bold text-foreground leading-tight">{app.name}</h1>
             
             <div className="flex items-center gap-2">
               {isConnected ? (
                 <>
-                  <button className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full cursor-default w-fit">
+                  <button className="px-4 py-1.5 bg-white text-black text-xs font-medium rounded-full cursor-default w-fit">
                     Appli connectée
                   </button>
                   <button
                     onClick={() => setShowSettingsModal(true)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full border border-muted-foreground/30 hover:bg-muted/50 transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-full border border-muted-foreground/30 hover:bg-muted/50 transition-colors"
                   >
-                    <Settings className="w-5 h-5 text-muted-foreground" />
+                    <Settings className="w-4 h-4 text-muted-foreground" />
                   </button>
                 </>
               ) : (
                 <button
                   onClick={() => setShowConnectModal(true)}
-                  className="px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-colors w-fit"
+                  className="px-4 py-1.5 bg-white text-black text-xs font-medium rounded-full hover:bg-white/90 transition-colors w-fit"
                 >
                   Connecter
                 </button>
@@ -185,8 +185,8 @@ const AppDetail = () => {
       </section>
 
       {/* Category Selection */}
-      <section className="px-4 pt-8">
-        <h2 className="text-white text-lg font-normal mb-6">
+      <section className="px-4 pt-4">
+        <h2 className="text-white text-sm font-medium mb-3 text-muted-foreground">
           Choisissez le plan qui vous convient
         </h2>
         
