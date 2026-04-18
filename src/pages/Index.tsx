@@ -12,6 +12,7 @@ import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
 import BottomNavBar from "@/components/BottomNavBar";
+import ProfileButton from "@/components/ProfileButton";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -107,6 +108,9 @@ const Index = () => {
           <span className="px-3 py-1.5 text-[11px] font-medium bg-secondary/80 rounded-full text-muted-foreground border border-border/50">
             Work avant de scroll
           </span>
+          <div className="ml-auto">
+            <ProfileButton />
+          </div>
         </div>
       </header>
 

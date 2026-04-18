@@ -121,55 +121,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
             <button
               key={category.id}
               onClick={() => scrollToCard(index)}
-              className="relative flex-shrink-0 w-full aspect-[3/4] snap-start overflow-hidden"
-            >
-              {/* Background image */}
-              <img 
-                src={categoryImages[category.id]} 
-                alt={category.name}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-              
-              {/* Selection indicator - top right circle */}
-              <div className="absolute top-4 right-4">
-                <div 
-                  className={`
-                    w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all duration-200
-                    ${currentIndex === index 
-                      ? 'bg-white border-white' 
-                      : 'bg-transparent border-white/50'
-                    }
-                  `}
-                >
-                  {currentIndex === index && (
-                    <Check className="w-4 h-4 text-black" />
-                  )}
-                </div>
-              </div>
-              
-              {/* Content - Top */}
-              <div className="absolute top-0 left-0 right-0 p-6 pr-14">
-                <h3 className="text-3xl font-bold text-white tracking-tight">{category.name}</h3>
-                <p className="text-white/80 text-sm font-medium uppercase tracking-wider mt-2">
-                  {category.tagline}
-                </p>
-              </div>
-
-              {/* Content - Bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <ul className="space-y-2 mb-4">
-                  {(categoryFeatures[category.id] || []).map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-white/90 text-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </button>
+              className="relative flex-shrink-0 w-full aspect-[4/5] snap-start overflow-hidden"
           ))}
         </div>
 
