@@ -18,6 +18,7 @@ import UsageStats from "./pages/UsageStats";
 import Community from "./pages/Community";
 import ConnectedApps from "./pages/ConnectedApps";
 import CompletionPreview from "./pages/CompletionPreview";
+import ChallengeComplete from "./pages/ChallengeComplete";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/connected-apps" element={<ConnectedApps />} />
           <Route path="/completion-preview" element={<CompletionPreview />} />
+          <Route path="/challenge-complete" element={<ChallengeComplete />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

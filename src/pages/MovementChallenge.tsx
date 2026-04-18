@@ -94,15 +94,15 @@ const MovementChallenge = () => {
     }
   }, [count, isComplete, config.required]);
 
-  // Auto-redirect when complete
+  // Auto-redirect to completion screen when complete
   useEffect(() => {
     if (isComplete) {
       const timer = setTimeout(() => {
-        navigate("/");
-      }, 2000);
+        navigate(`/challenge-complete?app=${appId}&minutes=15`);
+      }, 1200);
       return () => clearTimeout(timer);
     }
-  }, [isComplete, navigate]);
+  }, [isComplete, navigate, appId]);
 
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">

@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import CategoryCarousel from "@/components/CategoryCarousel";
-import SearchBar from "@/components/SearchBar";
 import AppList from "@/components/AppList";
 import SectionTabs from "@/components/SectionTabs";
 import InsightsSection from "@/components/InsightsSection";
@@ -110,11 +109,6 @@ const Index = () => {
           </span>
         </div>
       </header>
-
-      {/* Search Bar - right after header */}
-      <section className="mb-6">
-        <SearchBar value={searchQuery} onChange={setSearchQuery} />
-      </section>
 
       {/* Category Carousel */}
       <section className="mb-6">
