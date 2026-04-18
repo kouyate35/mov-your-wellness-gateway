@@ -302,9 +302,6 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   <span className="inline-block px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-sm text-white/90 text-xs font-medium">
                     {program.duration}
                   </span>
-                  <p className="text-white/80 text-sm leading-relaxed mt-2">
-                    {program.description}
-                  </p>
                 </div>
               </div>
             </button>
