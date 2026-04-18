@@ -1,73 +1,89 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LayoutGrid, Link2 } from "lucide-react";
+import { useState } from "react";
+import { Link2 } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { getAppIcon } from "@/components/AppIcons";
 import BottomNavBar from "@/components/BottomNavBar";
+import DisconnectAppModal from "@/components/DisconnectAppModal";
+import { Switch } from "@/components/ui/switch";
 
 const ConnectedApps = () => {
   const navigate = useNavigate();
-  const { settings } = useAppSettings();
+  const { settings, toggleApp } = useAppSettings();
   const connectedApps = apps.filter(app => settings[app.id]?.isActive);
+  const [pendingDisconnect, setPendingDisconnect] = useState<{ id: string; name: string } | null>(null);
+
+  const handleToggle = (appId: string, appName: string) => {
+    if (settings[appId]?.isActive) {
+      setPendingDisconnect({ id: appId, name: appName });
+    } else {
+      toggleApp(appId);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <header className="flex items-center gap-3 px-4 pt-4 pb-3">
-        <button onClick={() => navigate(-1)} className="p-1">
-          <ArrowLeft className="w-5 h-5 text-foreground" />
-        </button>
-        <h1 className="text-lg font-semibold text-foreground">Mes applications</h1>
+      <header className="px-4 pt-6 pb-5">
+        <div className="flex items-center gap-3">
+          <Link2 className="w-5 h-5 text-muted-foreground" />
+          <h1 className="text-xl font-semibold text-foreground">Applications connectées</h1>
+        </div>
       </header>
 
-      <div className="px-4 space-y-6 mt-2">
-        {/* Programmes */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <LayoutGrid className="w-5 h-5 text-muted-foreground" />
-            <span className="text-[15px] font-medium text-foreground">Programmes</span>
-          </div>
-        </section>
-
-        {/* Séparateur */}
-        <div className="h-px bg-border" />
-
-        {/* Applications connectées */}
-        <section>
-          <div className="flex items-center gap-3 mb-4">
-            <Link2 className="w-5 h-5 text-muted-foreground" />
-            <span className="text-[15px] font-medium text-foreground">Applications connectées</span>
-          </div>
-
-          {connectedApps.length > 0 ? (
-            <div className="space-y-1">
-              {connectedApps.map((app) => (
+      <div className="px-4 space-y-3">
+        {connectedApps.length > 0 ? (
+          connectedApps.map((app) => (
+            <div
+              key={app.id}
+              className="bg-secondary/40 backdrop-blur-sm rounded-3xl border border-border/30 overflow-hidden"
+            >
+              <div className="flex items-center gap-4 p-4">
+                {/* App icon (square rounded, like clock app) */}
                 <button
-                  key={app.id}
                   onClick={() => navigate(`/app/${app.id}`)}
-                  className="w-full flex items-center gap-3 px-2 py-3 text-foreground hover:bg-muted/50 rounded-xl transition-colors text-left"
+                  className="shrink-0"
                 >
-                  <div className="relative w-10 h-10 shrink-0">
-                    {getAppIcon(app.id, "sm", true)}
-                    {/* Badge de connexion */}
-                    <div className="absolute -bottom-0.5 -left-0.5 w-4.5 h-4.5 bg-white rounded-full flex items-center justify-center shadow-sm">
-                      <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">{app.name}</p>
-                    <p className="text-xs text-muted-foreground truncate">{app.description}</p>
-                  </div>
+                  {getAppIcon(app.id, "md", true)}
                 </button>
-              ))}
+
+                {/* App name */}
+                <button
+                  onClick={() => navigate(`/app/${app.id}`)}
+                  className="flex-1 text-left min-w-0"
+                >
+                  <p className="text-2xl font-light text-foreground truncate tracking-tight">
+                    {app.name}
+                  </p>
+                </button>
+
+                {/* Toggle */}
+                <Switch
+                  checked={settings[app.id]?.isActive ?? false}
+                  onCheckedChange={() => handleToggle(app.id, app.name)}
+                />
+              </div>
             </div>
-          ) : (
-            <p className="text-sm text-muted-foreground px-2">Aucune application connectée</p>
-          )}
-        </section>
+          ))
+        ) : (
+          <p className="text-sm text-muted-foreground px-2 py-8 text-center">
+            Aucune application connectée
+          </p>
+        )}
       </div>
+
+      <DisconnectAppModal
+        isOpen={!!pendingDisconnect}
+        appName={pendingDisconnect?.name ?? ""}
+        onClose={() => setPendingDisconnect(null)}
+        onConfirm={() => {
+          if (pendingDisconnect) {
+            toggleApp(pendingDisconnect.id);
+            setPendingDisconnect(null);
+          }
+        }}
+      />
 
       <BottomNavBar />
     </div>
