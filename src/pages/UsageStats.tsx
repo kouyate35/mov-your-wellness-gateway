@@ -1,348 +1,340 @@
-import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Flame, ChevronLeft, Trophy, ArrowRight, Check,
-} from "lucide-react";
-import {
-  BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip,
-  PieChart, Pie, Cell as PieCell,
-} from "recharts";
+import { ChevronLeft, Calendar, Settings, Timer, Target, Flame, Star, Trophy, ArrowRight } from "lucide-react";
 import BottomNavBar from "@/components/BottomNavBar";
 
-// ── Apple-style Green palette ──────────────────────────────
-const GREEN = "hsl(150, 55%, 60%)";
-const GREEN_SOFT = "hsl(150, 30%, 25%)";
-const GREEN_DARK_BG = "hsl(155, 35%, 14%)";
-
-// ── Mock data ──────────────────────────────────────────────
-const weeklyData = [
-  { day: "Lun", value: 62 },
-  { day: "Mar", value: 48 },
-  { day: "Mer", value: 84 },
-  { day: "Jeu", value: 45 },
-  { day: "Ven", value: 75 },
-  { day: "Sam", value: 28 },
-  { day: "Dim", value: 52 },
-];
-const monthlyData = [
-  { day: "S1", value: 210 },
-  { day: "S2", value: 285 },
-  { day: "S3", value: 190 },
-  { day: "S4", value: 320 },
-];
-const yearlyData = [
-  { day: "Jan", value: 620 }, { day: "Fév", value: 780 }, { day: "Mar", value: 540 },
-  { day: "Avr", value: 910 }, { day: "Mai", value: 670 }, { day: "Jun", value: 850 },
-  { day: "Jul", value: 720 }, { day: "Aoû", value: 690 }, { day: "Sep", value: 880 },
-  { day: "Oct", value: 760 }, { day: "Nov", value: 940 }, { day: "Déc", value: 820 },
-];
-
-const repartition = [
-  { name: "Pompes", value: 35, color: "hsl(150, 55%, 60%)" },
-  { name: "Squats", value: 28, color: "hsl(150, 50%, 50%)" },
-  { name: "Étirements", value: 19, color: "hsl(150, 45%, 40%)" },
-  { name: "Gainage", value: 18, color: "hsl(150, 40%, 32%)" },
-];
-
-// ── Tooltip ────────────────────────────────────────────────
-const ChartTooltip = ({ active, payload }: any) => {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="bg-popover/95 backdrop-blur border border-border/40 rounded-lg px-3 py-1.5 shadow-xl">
-      <span className="text-foreground text-xs font-medium">{payload[0].value} min</span>
-    </div>
-  );
+// ── Premium palette (exact spec) ───────────────────────────
+const COLORS = {
+  info: "#3b82f6",
+  success: "#10b981",
+  warning: "#f59e0b",
+  fire: "#FF6B6B",
+  successText: "#6ee7b7",
 };
 
-// ── Detail Page (Statistiques) ─────────────────────────────
-type Period = "Semaine" | "Mois" | "Année";
+// ── Weekly chart data (exact spec heights) ─────────────────
+const weekBars = [
+  { day: "Lun", height: 120, type: "low" as const },
+  { day: "Mar", height: 85, type: "low" as const },
+  { day: "Mer", height: 170, type: "peak-mid" as const },
+  { day: "Jeu", height: 95, type: "low" as const },
+  { day: "Ven", height: 150, type: "peak-fire" as const },
+  { day: "Sam", height: 110, type: "low-soft" as const },
+  { day: "Dim", height: 135, type: "soft" as const },
+];
 
-const StatsDetail = ({ onClose }: { onClose: () => void }) => {
-  const [period, setPeriod] = useState<Period>("Semaine");
-
-  const data = period === "Semaine" ? weeklyData : period === "Mois" ? monthlyData : yearlyData;
-  const total = useMemo(() => data.reduce((a, b) => a + b.value, 0), [data]);
-  const totalLabel = period === "Semaine"
-    ? `${Math.floor(total / 60)}h ${total % 60}m`
-    : `${Math.floor(total / 60)}h`;
-  const maxValue = Math.max(...data.map(d => d.value));
-
-  return (
-    <div className="fixed inset-0 z-[90] bg-background flex flex-col animate-fade-in">
-      {/* Header */}
-      <div className="px-5 pt-[max(env(safe-area-inset-top),16px)] pb-3 flex items-center gap-3">
-        <button
-          onClick={onClose}
-          className="w-9 h-9 rounded-full bg-secondary/60 flex items-center justify-center active:scale-95 transition-transform"
-        >
-          <ChevronLeft className="w-5 h-5 text-foreground" />
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-5 pb-28">
-        {/* Title */}
-        <h1 className="text-foreground text-[34px] font-bold tracking-tight leading-tight mb-5">
-          Statistiques
-        </h1>
-
-        {/* Segmented control */}
-        <div className="flex items-center gap-1 p-1 rounded-full bg-secondary/50 mb-6">
-          {(["Semaine", "Mois", "Année"] as Period[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={`flex-1 py-2.5 rounded-full text-[13px] font-semibold transition-all ${
-                period === p
-                  ? "bg-foreground text-background shadow-sm"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
-
-        {/* Temps libéré card */}
-        <div className="rounded-3xl bg-card border border-border/30 p-5 mb-4">
-          <p className="text-muted-foreground text-[13px] font-medium mb-2">Temps libéré</p>
-          <div className="flex items-end justify-between mb-5">
-            <span className="text-foreground text-[44px] leading-none font-bold tracking-tight">
-              {totalLabel}
-            </span>
-            <span className="text-[15px] font-semibold mb-1.5" style={{ color: GREEN }}>
-              +12%
-            </span>
-          </div>
-
-          <div className="h-[160px] -mx-1">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} barCategoryGap="28%">
-                <XAxis
-                  dataKey="day"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "hsl(0,0%,55%)", fontSize: 11, fontWeight: 500 }}
-                  dy={8}
-                />
-                <YAxis hide domain={[0, maxValue * 1.15]} />
-                <Tooltip content={<ChartTooltip />} cursor={false} />
-                <Bar dataKey="value" radius={[8, 8, 8, 8]}>
-                  {data.map((_, i) => (
-                    <Cell key={i} fill={GREEN} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Two-column row */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="rounded-3xl bg-card border border-border/30 p-5">
-            <p className="text-muted-foreground text-[13px] font-medium mb-3">Défis réalisés</p>
-            <span className="text-foreground text-[34px] font-bold tracking-tight leading-none">28</span>
-            <p className="text-muted-foreground text-[12px] mt-3">+7 cette semaine</p>
-          </div>
-          <div className="rounded-3xl bg-card border border-border/30 p-5">
-            <p className="text-muted-foreground text-[13px] font-medium mb-3">Calories brûlées</p>
-            <span className="text-foreground text-[26px] font-bold tracking-tight leading-none">1 842 <span className="text-base font-semibold text-muted-foreground">kcal</span></span>
-            <p className="text-muted-foreground text-[12px] mt-3">≈ 2 repas</p>
-          </div>
-        </div>
-
-        {/* Répartition */}
-        <div className="rounded-3xl bg-card border border-border/30 p-5">
-          <p className="text-foreground text-[15px] font-semibold mb-4">Répartition</p>
-          <div className="flex items-center gap-4">
-            <div className="flex-1 space-y-2.5">
-              {repartition.map((r) => (
-                <div key={r.name} className="flex items-center justify-between text-[13px]">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full" style={{ background: r.color }} />
-                    <span className="text-foreground">{r.name}</span>
-                  </div>
-                  <span className="text-muted-foreground font-medium tabular-nums">{r.value}%</span>
-                </div>
-              ))}
-            </div>
-            <div className="w-[110px] h-[110px] shrink-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={repartition}
-                    innerRadius={32}
-                    outerRadius={52}
-                    paddingAngle={2}
-                    dataKey="value"
-                    stroke="none"
-                  >
-                    {repartition.map((r, i) => (
-                      <PieCell key={i} fill={r.color} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ── Main "Aujourd'hui" Dashboard ───────────────────────────
 const UsageStats = () => {
   const navigate = useNavigate();
-  const [showDetail, setShowDetail] = useState(false);
-
-  // Donut for "Temps libéré" (24:58 of let's say 60min daily goal => ~83%)
-  const tempsLibereMinutes = 24 + 58 / 60;
-  const tempsGoal = 60;
-  const tempsPercent = Math.min(100, (tempsLibereMinutes / tempsGoal) * 100);
-  // SVG ring math
-  const radius = 78;
-  const circumference = 2 * Math.PI * radius;
-  const dash = (tempsPercent / 100) * circumference;
-
-  const weekProgressData = weeklyData;
-  const maxWeekly = Math.max(...weekProgressData.map(d => d.value));
 
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto overscroll-y-contain pb-24">
-        {/* ── Top bar ───────────────────────── */}
-        <div className="px-5 pt-[max(env(safe-area-inset-top),16px)] pb-2 flex justify-end">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/60">
-            <span className="text-[13px]">🔥</span>
-            <span className="text-foreground text-[13px] font-semibold tabular-nums">12</span>
+      {/* ── Header sticky ───────────────────────── */}
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-md border-b border-border/40">
+        <div className="px-5 pt-[max(env(safe-area-inset-top),12px)] pb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-9 h-9 -ml-2 rounded-full flex items-center justify-center active:scale-95 transition-transform"
+              aria-label="Retour"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground" />
+            </button>
+            <h1 className="text-foreground text-[22px] font-medium tracking-tight">
+              Statistiques
+            </h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="h-9 px-3 rounded-lg border border-border/60 text-muted-foreground text-[13px] flex items-center gap-1.5 active:scale-95 transition-transform">
+              <Calendar className="w-4 h-4" />
+            </button>
+            <button className="h-9 px-3 rounded-lg border border-border/60 text-muted-foreground text-[13px] flex items-center gap-1.5 active:scale-95 transition-transform">
+              <Settings className="w-4 h-4" />
+            </button>
           </div>
         </div>
+      </header>
 
-        {/* ── Greeting ──────────────────────── */}
-        <section className="px-5 pt-2 pb-5">
-          <h1 className="text-foreground text-[32px] font-bold tracking-tight leading-tight">
-            Aujourd'hui
-          </h1>
-        </section>
+      <div className="flex-1 overflow-y-auto overscroll-y-contain pb-32">
+        <div className="px-5 pt-6 sm:px-8 sm:pt-10">
 
-        {/* ── Hero row : Donut + Defis ─────── */}
-        <section className="px-5">
-          <div className="grid grid-cols-2 gap-3">
-            {/* Donut card */}
+          {/* ── HERO SECTION ───────────────────── */}
+          <section className="mb-10">
             <div
-              className="rounded-3xl p-4 aspect-square flex items-center justify-center relative overflow-hidden"
-              style={{ background: GREEN_DARK_BG }}
+              className="relative overflow-hidden rounded-xl p-6 sm:p-8 min-h-[240px] flex flex-col justify-end"
+              style={{
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              }}
             >
-              <svg viewBox="0 0 200 200" className="w-full h-full">
-                <circle
-                  cx="100" cy="100" r={radius}
-                  fill="none"
-                  stroke={GREEN_SOFT}
-                  strokeWidth="14"
-                />
-                <circle
-                  cx="100" cy="100" r={radius}
-                  fill="none"
-                  stroke={GREEN}
-                  strokeWidth="14"
-                  strokeLinecap="round"
-                  strokeDasharray={`${dash} ${circumference}`}
-                  transform="rotate(-90 100 100)"
-                  style={{ transition: "stroke-dasharray 0.8s ease" }}
-                />
-                <text x="100" y="98" textAnchor="middle" fill="hsl(0,0%,98%)" fontSize="32" fontWeight="700" letterSpacing="-1">
-                  24:58
-                </text>
-                <text x="100" y="122" textAnchor="middle" fill="hsl(0,0%,75%)" fontSize="14" fontWeight="500">
-                  Temps libéré
-                </text>
-              </svg>
-            </div>
+              {/* Decorative circles */}
+              <div
+                className="absolute -top-10 -right-10 w-[200px] h-[200px] rounded-full pointer-events-none"
+                style={{ background: "rgba(255,255,255,0.05)" }}
+              />
+              <div
+                className="absolute -bottom-20 -left-16 w-[280px] h-[280px] rounded-full pointer-events-none"
+                style={{ background: "rgba(255,255,255,0.03)" }}
+              />
 
-            {/* Défis card */}
-            <div className="rounded-3xl bg-card border border-border/30 p-5 flex flex-col">
-              <span className="text-foreground text-[44px] font-bold leading-none tracking-tight">5</span>
-              <p className="text-muted-foreground text-[14px] mt-1.5">Défis réalisés</p>
-              <div className="flex-1 flex items-end justify-end">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ background: GREEN_DARK_BG }}
+              <div className="relative z-10">
+                <p
+                  className="text-[11px] font-semibold uppercase tracking-[1px] mb-3"
+                  style={{ color: "rgba(255,255,255,0.8)" }}
                 >
-                  <Check className="w-5 h-5" style={{ color: GREEN }} strokeWidth={2.5} />
+                  Votre performance
+                </p>
+                <h2 className="text-white text-[48px] font-semibold leading-[1.1] mb-2 tracking-tight">
+                  +23%
+                </h2>
+                <p
+                  className="text-[15px] leading-relaxed max-w-[260px]"
+                  style={{ color: "rgba(255,255,255,0.95)" }}
+                >
+                  Vous surpassez vos objectifs. C'est votre meilleure performance en 6 mois 🔥
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* ── PILLAR METRICS ─────────────────── */}
+          <section className="mb-10 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            {/* Pillar 1 — Focus time */}
+            <article className="rounded-xl bg-card border border-border/40 overflow-hidden">
+              <div
+                className="px-5 pt-5 pb-4 border-b border-border/40 flex gap-3 items-start"
+                style={{
+                  background: `linear-gradient(to right, ${COLORS.info}, hsl(var(--secondary)))`,
+                }}
+              >
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style={{ background: "rgba(255,255,255,0.2)" }}>
+                  <Timer className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.5px] text-white/85 mb-1">
+                    Temps de focus
+                  </p>
+                  <p className="text-white text-[28px] font-semibold leading-none">
+                    6h 34m
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Progression ───────────────────── */}
-        <section className="px-5 mt-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-foreground text-[20px] font-bold tracking-tight">Progression</h2>
-            <span className="text-[13px] font-medium" style={{ color: GREEN }}>Cette semaine</span>
-          </div>
-
-          <div className="h-[180px] -mx-1">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weekProgressData} barCategoryGap="32%">
-                <XAxis
-                  dataKey="day"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "hsl(0,0%,55%)", fontSize: 11, fontWeight: 500 }}
-                  dy={8}
-                />
-                <YAxis hide domain={[0, maxWeekly * 1.15]} />
-                <Tooltip content={<ChartTooltip />} cursor={false} />
-                <Bar dataKey="value" radius={[8, 8, 8, 8]}>
-                  {weekProgressData.map((_, i) => (
-                    <Cell key={i} fill={GREEN} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
-        {/* ── 3 Stat tiles ──────────────────── */}
-        <section className="px-5 mt-5">
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-2xl bg-card border border-border/30 p-4">
-              <p className="text-muted-foreground text-[12px] font-medium">Série</p>
-              <div className="flex items-center gap-1.5 mt-2">
-                <span className="text-base">🔥</span>
-                <span className="text-foreground text-[22px] font-bold leading-none">8</span>
+              <div className="px-5 py-4">
+                <div className="flex items-center justify-between text-[13px] mb-3">
+                  <span className="text-muted-foreground">Progression</span>
+                  <span className="font-semibold" style={{ color: COLORS.successText }}>+12%</span>
+                </div>
+                <div className="h-1.5 rounded-full overflow-hidden bg-secondary mb-3">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: "78%",
+                      background: `linear-gradient(to right, ${COLORS.info}, ${COLORS.success})`,
+                    }}
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground">Cible atteinte ✓</p>
               </div>
-              <p className="text-muted-foreground text-[12px] mt-2">7 jours</p>
-            </div>
-            <div className="rounded-2xl bg-card border border-border/30 p-4">
-              <p className="text-muted-foreground text-[12px] font-medium">Meilleur temps</p>
-              <Trophy className="w-5 h-5 mt-2" style={{ color: "hsl(45, 90%, 55%)" }} />
-              <p className="text-foreground text-[15px] font-bold mt-2">1h 32m</p>
-            </div>
-            <div className="rounded-2xl bg-card border border-border/30 p-4">
-              <p className="text-muted-foreground text-[12px] font-medium">Calories</p>
-              <span className="text-base mt-2 inline-block">🔥</span>
-              <p className="text-foreground text-[15px] font-bold mt-2">463 <span className="text-[12px] font-semibold text-muted-foreground">kcal</span></p>
-            </div>
-          </div>
-        </section>
+            </article>
 
-        {/* ── CTA "Voir mes statistiques" ─── */}
-        <section className="px-5 mt-5">
-          <button
-            onClick={() => setShowDetail(true)}
-            className="w-full rounded-2xl bg-card border border-border/30 px-5 py-4 flex items-center justify-between active:scale-[0.99] transition-transform"
+            {/* Pillar 2 — Défis */}
+            <article className="rounded-xl bg-card border border-border/40 overflow-hidden">
+              <div
+                className="px-5 pt-5 pb-4 border-b border-border/40 flex gap-3 items-start"
+                style={{
+                  background: `linear-gradient(to right, ${COLORS.warning}, hsl(var(--secondary)))`,
+                }}
+              >
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style={{ background: "rgba(255,255,255,0.2)" }}>
+                  <Target className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.5px] text-white/85 mb-1">
+                    Défis réussis
+                  </p>
+                  <p className="text-white text-[28px] font-semibold leading-none">
+                    28
+                  </p>
+                </div>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-[12px] text-muted-foreground">+7 cette semaine</p>
+              </div>
+            </article>
+
+            {/* Pillar 3 — Calories */}
+            <article className="rounded-xl bg-card border border-border/40 overflow-hidden">
+              <div
+                className="px-5 pt-5 pb-4 border-b border-border/40 flex gap-3 items-start"
+                style={{
+                  background: `linear-gradient(to right, ${COLORS.success}, hsl(var(--secondary)))`,
+                }}
+              >
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style={{ background: "rgba(255,255,255,0.2)" }}>
+                  <Flame className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.5px] text-white/85 mb-1">
+                    Calories brûlées
+                  </p>
+                  <p className="text-white text-[28px] font-semibold leading-none">
+                    1842
+                  </p>
+                </div>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-[12px] text-muted-foreground">kcal • ≈ 2 repas</p>
+              </div>
+            </article>
+          </section>
+
+          {/* ── VISUAL CHART ───────────────────── */}
+          <section className="mb-10 rounded-xl bg-card border border-border/40 px-6 py-8">
+            <div className="mb-8">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.5px] text-muted-foreground mb-1.5">
+                Progression hebdomadaire
+              </p>
+              <h3 className="text-foreground text-[18px] font-semibold">
+                Votre semaine jour par jour
+              </h3>
+            </div>
+
+            <div className="flex items-end justify-around gap-2 h-[220px] mb-8 px-1 sm:px-0">
+              {weekBars.map((b, i) => {
+                let bg = COLORS.info;
+                let opacity = 1;
+                let shadow = "";
+                if (b.type === "peak-mid") {
+                  bg = `linear-gradient(to top, ${COLORS.success}, ${COLORS.info})`;
+                  shadow = "0 8px 16px rgba(0,0,0,0.25)";
+                } else if (b.type === "peak-fire") {
+                  bg = `linear-gradient(to top, ${COLORS.fire}, ${COLORS.warning})`;
+                  shadow = "0 8px 20px rgba(255,107,107,0.25)";
+                } else if (b.type === "low") {
+                  opacity = 0.6;
+                } else if (b.type === "low-soft") {
+                  opacity = 0.7;
+                } else if (b.type === "soft") {
+                  opacity = 0.7;
+                }
+
+                return (
+                  <div key={b.day} className="flex flex-col items-center flex-1">
+                    <div
+                      className="w-full max-w-[36px] rounded-lg mb-3 animate-fade-in-up"
+                      style={{
+                        height: `${b.height}px`,
+                        background: bg.includes("gradient") ? bg : COLORS.info,
+                        opacity,
+                        boxShadow: shadow,
+                        animationDelay: `${i * 60}ms`,
+                      }}
+                    />
+                    <p className="text-[12px] font-semibold text-foreground">{b.day}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 pt-6 border-t border-border/40">
+              <div className="text-center">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.5px] text-muted-foreground mb-1.5">
+                  Moyenne
+                </p>
+                <p className="text-foreground text-[20px] font-semibold">56m</p>
+              </div>
+              <div className="text-center">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.5px] text-muted-foreground mb-1.5">
+                  Peak
+                </p>
+                <p className="text-foreground text-[20px] font-semibold">1h 45m</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ── ACHIEVEMENTS ───────────────────── */}
+          <section className="mb-10">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.5px] text-muted-foreground mb-3">
+              Vos accomplissements
+            </p>
+            <div className="flex flex-col gap-3">
+              {[
+                {
+                  icon: <Star className="w-7 h-7" fill="white" />,
+                  title: "Série de 5 jours",
+                  desc: "Vous avez travaillé 5 jours consécutifs",
+                  gradient: "linear-gradient(135deg, #667eea, #764ba2)",
+                },
+                {
+                  icon: <Trophy className="w-7 h-7" />,
+                  title: "Record personnel",
+                  desc: "Meilleure session: 1h 45m",
+                  gradient: "linear-gradient(135deg, #f093fb, #f5576c)",
+                },
+                {
+                  icon: <Flame className="w-7 h-7" fill="white" />,
+                  title: "Peak performance",
+                  desc: "Vendredi: +150% vs votre moyenne",
+                  gradient: "linear-gradient(135deg, #fa709a, #fee140)",
+                },
+              ].map((a, i) => (
+                <article
+                  key={a.title}
+                  className="rounded-xl bg-card border border-border/40 p-5 flex gap-4 items-center transition-transform active:scale-[0.99] animate-fade-in-up"
+                  style={{ animationDelay: `${i * 100}ms` }}
+                >
+                  <div
+                    className="w-14 h-14 rounded-lg flex items-center justify-center shrink-0 text-white"
+                    style={{ background: a.gradient }}
+                  >
+                    {a.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-foreground text-[14px] font-semibold mb-1">{a.title}</h4>
+                    <p className="text-muted-foreground text-[12px]">{a.desc}</p>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-muted-foreground shrink-0" />
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* ── INSIGHTS ───────────────────────── */}
+          <section
+            className="mb-8 rounded-xl border border-border/40 px-6 py-8"
+            style={{
+              background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--card)))",
+            }}
           >
-            <span className="text-foreground text-[15px] font-semibold">Voir mes statistiques</span>
-            <ArrowRight className="w-5 h-5 text-foreground" />
-          </button>
-        </section>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.5px] text-muted-foreground mb-3">
+              Prochaines étapes
+            </p>
+            <h2 className="text-foreground text-[20px] font-semibold mb-6">
+              Maintenez cette dynamique
+            </h2>
+
+            <div className="flex flex-col gap-4">
+              {[
+                { n: 1, color: COLORS.info, title: "Continuez le rythme du vendredi", desc: "Vous êtes 3x plus productif en fin de semaine" },
+                { n: 2, color: COLORS.success, title: "Stabilisez les lundis", desc: "C'est votre jour le plus faible: -40% vs moyenne" },
+                { n: 3, color: COLORS.warning, title: "Visez 8 semaines de suite", desc: "Au rythme actuel, vous atteindrez votre meilleur record" },
+              ].map((s) => (
+                <div key={s.n} className="flex gap-3">
+                  <div
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-semibold shrink-0"
+                    style={{ background: s.color }}
+                  >
+                    {s.n}
+                  </div>
+                  <div>
+                    <h4 className="text-foreground text-[13px] font-semibold mb-0.5">{s.title}</h4>
+                    <p className="text-muted-foreground text-[12px]">{s.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
 
       <BottomNavBar />
-
-      {showDetail && <StatsDetail onClose={() => setShowDetail(false)} />}
     </div>
   );
 };
