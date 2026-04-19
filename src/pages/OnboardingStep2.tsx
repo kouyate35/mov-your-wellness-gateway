@@ -7,13 +7,20 @@ const OnboardingStep2 = () => {
   const navigate = useNavigate();
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [completed, setCompleted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef(0);
-  
-  const maxDrag = 200; // Maximum drag distance
-  const threshold = 150; // Threshold to trigger navigation
+  const maxDragRef = useRef(0);
+
+  const getMaxDrag = () => {
+    const w = containerRef.current?.offsetWidth ?? 0;
+    // 56px = button (h-14 minus padding) → ensure handle reaches the right edge
+    return Math.max(0, w - 56);
+  };
 
   const handleStart = (clientX: number) => {
+    if (completed) return;
+    maxDragRef.current = getMaxDrag();
     setIsDragging(true);
     startXRef.current = clientX;
   };
@@ -21,17 +28,23 @@ const OnboardingStep2 = () => {
   const handleMove = (clientX: number) => {
     if (!isDragging) return;
     const diff = clientX - startXRef.current;
-    const newX = Math.max(0, Math.min(diff, maxDrag));
+    const newX = Math.max(0, Math.min(diff, maxDragRef.current));
     setDragX(newX);
   };
 
   const handleEnd = () => {
-    if (dragX >= threshold) {
-      navigate("/auth");
+    const threshold = maxDragRef.current * 0.85;
+    if (dragX >= threshold && maxDragRef.current > 0) {
+      setDragX(maxDragRef.current);
+      setCompleted(true);
+      setTimeout(() => navigate("/auth"), 250);
+    } else {
+      setDragX(0);
     }
-    setDragX(0);
     setIsDragging(false);
   };
+
+  const progress = maxDragRef.current > 0 ? dragX / maxDragRef.current : 0;
 
   const handleTouchStart = (e: React.TouchEvent) => handleStart(e.touches[0].clientX);
   const handleTouchMove = (e: React.TouchEvent) => handleMove(e.touches[0].clientX);
@@ -78,8 +91,20 @@ const OnboardingStep2 = () => {
             ref={containerRef}
             className="relative h-14 bg-card/50 backdrop-blur-sm rounded-full border border-border overflow-hidden"
           >
-            {/* Slider Track */}
-            <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-center">
+            {/* White progressive fill — anchored to handle, grows as user drags */}
+            <div
+              className="absolute inset-y-0 left-0 bg-foreground rounded-full pointer-events-none"
+              style={{
+                width: `${dragX + 56}px`,
+                transition: isDragging ? "none" : "width 250ms cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            />
+
+            {/* Label — fades out as fill covers it */}
+            <div
+              className="absolute inset-y-0 left-0 right-0 flex items-center justify-center pointer-events-none"
+              style={{ opacity: 1 - Math.min(1, progress * 1.2) }}
+            >
               <span className="text-muted-foreground text-sm ml-12">
                 Créer mon compte <ChevronRight className="inline h-4 w-4" />
               </span>
@@ -88,7 +113,10 @@ const OnboardingStep2 = () => {
             {/* Draggable Button */}
             <div
               className="absolute top-1 left-1 bottom-1 touch-none select-none"
-              style={{ transform: `translateX(${dragX}px)` }}
+              style={{
+                transform: `translateX(${dragX}px)`,
+                transition: isDragging ? "none" : "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleEnd}
@@ -97,8 +125,8 @@ const OnboardingStep2 = () => {
               onMouseUp={handleEnd}
               onMouseLeave={() => isDragging && handleEnd()}
             >
-              <div className="h-full aspect-square rounded-full bg-foreground flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing">
-                <ChevronRight className="h-5 w-5 text-background" />
+              <div className="h-full aspect-square rounded-full bg-background flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing border border-border">
+                <ChevronRight className="h-5 w-5 text-foreground" />
               </div>
             </div>
           </div>
