@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Calendar, Settings, Timer, Target, Flame, Star, Trophy, ArrowRight } from "lucide-react";
 import BottomNavBar from "@/components/BottomNavBar";
+import HeroFigureAnimation from "@/components/HeroFigureAnimation";
 
 // ── Premium palette (exact spec) ───────────────────────────
 const COLORS = {
@@ -74,22 +75,27 @@ const UsageStats = () => {
                 style={{ background: "rgba(255,255,255,0.03)" }}
               />
 
-              <div className="relative z-10">
-                <p
-                  className="text-[11px] font-semibold uppercase tracking-[1px] mb-3"
-                  style={{ color: "rgba(255,255,255,0.8)" }}
-                >
-                  Votre performance
-                </p>
-                <h2 className="text-white text-[48px] font-semibold leading-[1.1] mb-2 tracking-tight">
-                  +23%
-                </h2>
-                <p
-                  className="text-[15px] leading-relaxed max-w-[260px]"
-                  style={{ color: "rgba(255,255,255,0.95)" }}
-                >
-                  Vous surpassez vos objectifs. C'est votre meilleure performance en 6 mois 🔥
-                </p>
+              <div className="relative z-10 flex items-end gap-3">
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="text-[11px] font-semibold uppercase tracking-[1px] mb-3"
+                    style={{ color: "rgba(255,255,255,0.8)" }}
+                  >
+                    Votre performance
+                  </p>
+                  <h2 className="text-white text-[48px] font-semibold leading-[1.1] mb-2 tracking-tight">
+                    +23%
+                  </h2>
+                  <p
+                    className="text-[15px] leading-relaxed max-w-[220px]"
+                    style={{ color: "rgba(255,255,255,0.95)" }}
+                  >
+                    Vous surpassez vos objectifs. C'est votre meilleure performance en 6 mois 🔥
+                  </p>
+                </div>
+                <div className="relative shrink-0 w-[110px] h-[170px] sm:w-[140px] sm:h-[200px] -mb-2">
+                  <HeroFigureAnimation />
+                </div>
               </div>
             </div>
           </section>
