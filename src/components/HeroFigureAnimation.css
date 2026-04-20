@@ -112,7 +112,7 @@
 
 /* Right arm */
 .hero-anim-right-arm {
-  transform-origin: 118px 65px;
+  transform-origin: 118px 66px;
   animation: heroRightArm 12s cubic-bezier(0.4, 0.1, 0.2, 0.9) infinite;
 }
 
