@@ -132,7 +132,7 @@
 
 /* Legs (squat compress) */
 .hero-anim-legs {
-  transform-origin: 100px 100px;
+  transform-origin: 100px 132px;
   animation: heroLegsSquat 12s cubic-bezier(0.4, 0.1, 0.2, 0.9) infinite;
 }
 
