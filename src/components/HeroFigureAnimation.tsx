@@ -1,5 +1,9 @@
 import "./HeroFigureAnimation.css";
 
+/**
+ * Athletic silhouette — clean, anatomically proportioned figure performing
+ * a smooth idle → squat → stretch → meditation cycle (12s loop).
+ */
 const HeroFigureAnimation = () => {
   return (
     <div className="hero-anim-stage">
@@ -11,104 +15,68 @@ const HeroFigureAnimation = () => {
       <div className="hero-anim-figure-container">
         <svg
           className="hero-anim-svg"
-          viewBox="0 0 200 300"
+          viewBox="0 0 200 320"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
+          <defs>
+            <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
+            </linearGradient>
+          </defs>
+
           {/* Head */}
-          <circle cx="100" cy="40" r="16" fill="#ffffff" />
-          {/* Hair outline */}
+          <circle cx="100" cy="42" r="14" fill="url(#bodyGrad)" />
+          {/* Neck */}
+          <rect x="96" y="54" width="8" height="8" rx="3" fill="url(#bodyGrad)" />
+
+          {/* Torso (athletic V-shape) */}
           <path
-            d="M 84 40 Q 84 20 100 18 Q 116 20 116 40"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="2"
+            d="M 78 64 Q 78 60 84 60 L 116 60 Q 122 60 122 64 L 118 110 Q 116 118 100 118 Q 84 118 82 110 Z"
+            fill="url(#bodyGrad)"
           />
-          {/* Torso */}
-          <ellipse
-            cx="100"
-            cy="75"
-            rx="18"
-            ry="25"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="2.5"
-          />
-          {/* Waist */}
-          <line x1="82" y1="95" x2="118" y2="95" stroke="#ffffff" strokeWidth="2" />
 
           {/* Left arm */}
           <g className="hero-anim-left-arm">
-            <line
-              x1="82"
-              y1="65"
-              x2="60"
-              y2="40"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
+            <path
+              d="M 80 66 Q 70 70 64 88 Q 60 102 62 118 Q 64 122 68 122 Q 72 120 72 116 Q 72 102 76 92 Q 80 80 84 72 Z"
+              fill="url(#bodyGrad)"
             />
-            <circle cx="60" cy="35" r="5" fill="#ffffff" />
+            {/* Hand */}
+            <circle cx="65" cy="120" r="4.5" fill="url(#bodyGrad)" />
           </g>
 
           {/* Right arm */}
           <g className="hero-anim-right-arm">
-            <line
-              x1="118"
-              y1="65"
-              x2="140"
-              y2="40"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
+            <path
+              d="M 120 66 Q 130 70 136 88 Q 140 102 138 118 Q 136 122 132 122 Q 128 120 128 116 Q 128 102 124 92 Q 120 80 116 72 Z"
+              fill="url(#bodyGrad)"
             />
-            <circle cx="140" cy="35" r="5" fill="#ffffff" />
+            <circle cx="135" cy="120" r="4.5" fill="url(#bodyGrad)" />
           </g>
 
           {/* Hip */}
-          <line x1="85" y1="100" x2="115" y2="100" stroke="#ffffff" strokeWidth="2.5" />
+          <path
+            d="M 84 116 L 116 116 L 118 132 Q 100 138 82 132 Z"
+            fill="url(#bodyGrad)"
+          />
 
           {/* Legs */}
           <g className="hero-anim-legs">
-            <line
-              x1="90"
-              y1="100"
-              x2="80"
-              y2="180"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
+            {/* Left leg */}
+            <path
+              d="M 86 132 Q 84 170 88 210 Q 90 240 92 260 Q 92 264 88 264 Q 84 264 82 260 Q 78 230 78 200 Q 78 170 82 134 Z"
+              fill="url(#bodyGrad)"
             />
-            <line
-              x1="80"
-              y1="180"
-              x2="78"
-              y2="240"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-            <line
-              x1="110"
-              y1="100"
-              x2="120"
-              y2="180"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-            <line
-              x1="120"
-              y1="180"
-              x2="122"
-              y2="240"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
+            {/* Right leg */}
+            <path
+              d="M 114 132 Q 116 170 112 210 Q 110 240 108 260 Q 108 264 112 264 Q 116 264 118 260 Q 122 230 122 200 Q 122 170 118 134 Z"
+              fill="url(#bodyGrad)"
             />
             {/* Feet */}
-            <ellipse cx="78" cy="245" rx="8" ry="3" fill="#ffffff" />
-            <ellipse cx="122" cy="245" rx="8" ry="3" fill="#ffffff" />
+            <ellipse cx="85" cy="266" rx="9" ry="3.5" fill="url(#bodyGrad)" />
+            <ellipse cx="115" cy="266" rx="9" ry="3.5" fill="url(#bodyGrad)" />
           </g>
         </svg>
       </div>
