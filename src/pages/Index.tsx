@@ -7,10 +7,13 @@ import InsightsSection from "@/components/InsightsSection";
 import ProgramsSection from "@/components/ProgramsSection";
 import AppAccessModal from "@/components/AppAccessModal";
 import AppScanAnimation from "@/components/AppScanAnimation";
+import AddAppModal from "@/components/AddAppModal";
 import ProgressionSection from "@/components/ProgressionSection";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useInstalledApps } from "@/hooks/useInstalledApps";
+import { useManuallyAddedApps } from "@/hooks/useManuallyAddedApps";
+import { toast } from "sonner";
 import BottomNavBar from "@/components/BottomNavBar";
 import ProfileButton from "@/components/ProfileButton";
 
@@ -20,7 +23,9 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [showScanAnimation, setShowScanAnimation] = useState(false);
+  const [showAddAppModal, setShowAddAppModal] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
+  const { addedIds, addApp, getAddedApps } = useManuallyAddedApps();
   const { 
     hasAccessGranted, 
     hasAccessDenied, 
@@ -42,7 +47,13 @@ const Index = () => {
   }, [hasAccessGranted, hasAccessDenied]);
 
   // Utiliser les apps détectées si disponibles, sinon toutes les apps
-  const availableApps = hasAccessGranted && detectedApps.length > 0 ? detectedApps : apps;
+  // + fusionner les apps ajoutées manuellement (sans doublon)
+  const availableApps = useMemo(() => {
+    const base = hasAccessGranted && detectedApps.length > 0 ? detectedApps : apps;
+    const baseIds = new Set(base.map((a) => a.id));
+    const extras = getAddedApps().filter((a) => !baseIds.has(a.id));
+    return [...base, ...extras];
+  }, [hasAccessGranted, detectedApps, getAddedApps, addedIds]);
 
   const filteredApps = useMemo(() => {
     if (!searchQuery.trim()) return availableApps;
@@ -123,7 +134,23 @@ const Index = () => {
       </section>
 
       {/* Section Tabs */}
-      <SectionTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <SectionTabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onAddApp={() => setShowAddAppModal(true)}
+      />
+
+      {/* Add App Modal */}
+      <AddAppModal
+        isOpen={showAddAppModal}
+        onClose={() => setShowAddAppModal(false)}
+        connectedAppIds={availableApps.map((a) => a.id)}
+        onAddApp={(appId) => {
+          const app = apps.find((a) => a.id === appId);
+          addApp(appId);
+          toast.success(`${app?.name ?? "Application"} ajoutée à ta liste`);
+        }}
+      />
 
       {/* Tab Content */}
       <section>
