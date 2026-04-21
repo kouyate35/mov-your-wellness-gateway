@@ -80,6 +80,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
   const [showCelebration, setShowCelebration] = useState(false);
   const [completedProgram, setCompletedProgram] = useState<{ name: string; duration: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const longPressedRef = useRef(false);
   const navigate = useNavigate();
   
   // Check if category has videos (move, flex and breath)
@@ -208,10 +210,6 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isRocketManProgram = isPause && program.id === "rocket-man";
           const isRippleProgram = isPause && program.id === "ripple-wave";
           
-          // Long-press handler refs
-          const pressTimer = { current: null as ReturnType<typeof setTimeout> | null };
-          const longPressed = { current: false };
-
           const triggerSelectOrLoader = () => {
             onSelectProgram(program.id);
             if (isBouncingProgram) setFullscreenLoader("bouncing-loader");
@@ -226,23 +224,26 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           };
 
           const startPress = () => {
-            longPressed.current = false;
+            longPressedRef.current = false;
             if (!hasVideo) return;
-            pressTimer.current = setTimeout(() => {
-              longPressed.current = true;
+            pressTimerRef.current = setTimeout(() => {
+              longPressedRef.current = true;
               setFullscreenVideo({ src: videoSrc!, name: program.name, duration: program.duration });
             }, 500);
           };
           const cancelPress = () => {
-            if (pressTimer.current) clearTimeout(pressTimer.current);
-            pressTimer.current = null;
+            if (pressTimerRef.current) clearTimeout(pressTimerRef.current);
+            pressTimerRef.current = null;
           };
 
           return (
             <button
               key={program.id}
               onClick={() => {
-                if (longPressed.current) return;
+                if (longPressedRef.current) {
+                  longPressedRef.current = false;
+                  return;
+                }
                 triggerSelectOrLoader();
               }}
               onPointerDown={startPress}
