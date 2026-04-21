@@ -144,51 +144,26 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
         />
       )}
     </AnimatePresence>
-    {/* Fullscreen video preview — premium immersive view */}
+    {/* Long-press preview — floating bubble, video only, no HUD */}
     {fullscreenVideo && (
-      <div className="fixed inset-0 z-[60] bg-black flex items-center justify-center animate-fade-in">
-        <video
-          src={fullscreenVideo.src}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        {/* Subtle vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none" />
-
-        {/* Close button — top right, glassmorphism */}
-        <button
-          onClick={() => setFullscreenVideo(null)}
-          className="absolute top-[max(1rem,env(safe-area-inset-top))] right-4 w-10 h-10 rounded-full bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white active:scale-95 transition-transform"
-          aria-label="Fermer"
+      <div
+        className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center animate-fade-in p-6"
+        onClick={() => setFullscreenVideo(null)}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        <div
+          className="relative w-[85%] max-w-sm rounded-[2rem] overflow-hidden shadow-2xl bg-black"
+          style={{ aspectRatio: "3/4" }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <X className="w-5 h-5" strokeWidth={2.2} />
-        </button>
-
-        {/* Header — exercise name */}
-        <div className="absolute top-[max(1rem,env(safe-area-inset-top))] left-4">
-          <span className="inline-block px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-xl border border-white/20 text-white text-sm font-semibold">
-            {fullscreenVideo.name}
-          </span>
-        </div>
-
-        {/* Footer — duration + Commencer CTA */}
-        <div className="absolute bottom-[max(2rem,env(safe-area-inset-bottom))] left-0 right-0 px-6 flex items-center justify-between gap-3">
-          <span className="px-4 py-2 rounded-full bg-black/50 backdrop-blur-md text-white/95 text-sm font-medium border border-white/10">
-            {fullscreenVideo.duration}
-          </span>
-          <button
-            onClick={() => {
-              setFullscreenVideo(null);
-              handleStartProgram();
-            }}
-            className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-semibold text-sm active:scale-95 transition-transform shadow-lg"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            Commencer
-          </button>
+          <video
+            src={fullscreenVideo.src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
       </div>
     )}
