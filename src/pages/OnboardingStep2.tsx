@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import onboardingHero from "@/assets/onboarding-hero.jpg";
+import boxBreathingVideo from "@/assets/exercise-box-breathing.mp4";
 
 const OnboardingStep2 = () => {
   const navigate = useNavigate();
