@@ -208,33 +208,48 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
           const isRocketManProgram = isPause && program.id === "rocket-man";
           const isRippleProgram = isPause && program.id === "ripple-wave";
           
+          // Long-press handler refs
+          const pressTimer = { current: null as ReturnType<typeof setTimeout> | null };
+          const longPressed = { current: false };
+
+          const triggerSelectOrLoader = () => {
+            onSelectProgram(program.id);
+            if (isBouncingProgram) setFullscreenLoader("bouncing-loader");
+            else if (isBalanceProgram) setFullscreenLoader("breath-pause");
+            else if (isVortexProgram) setFullscreenLoader("screen-fade");
+            else if (isOrbitalProgram) setFullscreenLoader("orbital-spin");
+            else if (isStepBounceProgram) setFullscreenLoader("step-bounce");
+            else if (isHamsterProgram) setFullscreenLoader("hamster-wheel");
+            else if (isBlackHoleProgram) setFullscreenLoader("black-hole");
+            else if (isRocketManProgram) setFullscreenLoader("rocket-man");
+            else if (isRippleProgram) setFullscreenLoader("ripple-wave");
+          };
+
+          const startPress = () => {
+            longPressed.current = false;
+            if (!hasVideo) return;
+            pressTimer.current = setTimeout(() => {
+              longPressed.current = true;
+              setFullscreenVideo({ src: videoSrc!, name: program.name, duration: program.duration });
+            }, 500);
+          };
+          const cancelPress = () => {
+            if (pressTimer.current) clearTimeout(pressTimer.current);
+            pressTimer.current = null;
+          };
+
           return (
             <button
               key={program.id}
               onClick={() => {
-                onSelectProgram(program.id);
-                if (isBouncingProgram) {
-                  setFullscreenLoader("bouncing-loader");
-                } else if (isBalanceProgram) {
-                  setFullscreenLoader("breath-pause");
-                } else if (isVortexProgram) {
-                  setFullscreenLoader("screen-fade");
-                } else if (isOrbitalProgram) {
-                  setFullscreenLoader("orbital-spin");
-                } else if (isStepBounceProgram) {
-                  setFullscreenLoader("step-bounce");
-                } else if (isHamsterProgram) {
-                  setFullscreenLoader("hamster-wheel");
-                } else if (isBlackHoleProgram) {
-                  setFullscreenLoader("black-hole");
-                } else if (isRocketManProgram) {
-                  setFullscreenLoader("rocket-man");
-                } else if (isRippleProgram) {
-                  setFullscreenLoader("ripple-wave");
-                } else if (hasVideo) {
-                  setFullscreenVideo({ src: videoSrc!, name: program.name, duration: program.duration });
-                }
+                if (longPressed.current) return;
+                triggerSelectOrLoader();
               }}
+              onPointerDown={startPress}
+              onPointerUp={cancelPress}
+              onPointerLeave={cancelPress}
+              onPointerCancel={cancelPress}
+              onContextMenu={(e) => e.preventDefault()}
               className={`
                 relative flex-shrink-0 w-[70%] snap-start rounded-3xl overflow-hidden
                 transition-all duration-300
