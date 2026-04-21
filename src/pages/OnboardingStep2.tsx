@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import onboardingHero from "@/assets/onboarding-hero.jpg";
+import boxBreathingVideo from "@/assets/exercise-box-breathing.mp4";
 
 const OnboardingStep2 = () => {
   const navigate = useNavigate();
@@ -52,40 +53,37 @@ const OnboardingStep2 = () => {
   const handleMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-background">
-      {/* Background Image with blur effect */}
+    <div className="fixed inset-0 overflow-hidden bg-black">
+      {/* Soft blurred background — barely visible for atmosphere */}
       <div className="absolute inset-0">
         <img
           src={onboardingHero}
-          alt="Workout Onboarding"
-          className="h-full w-full object-cover blur-sm scale-105"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover blur-2xl scale-110 opacity-25"
         />
-        {/* Darker overlay for readability */}
-        <div className="absolute inset-0 bg-background/70" />
+        <div className="absolute inset-0 bg-black/75" />
       </div>
 
-      {/* Content */}
+      {/* Content — centered breathing bubble */}
       <div className="absolute inset-0 flex flex-col justify-center items-center px-6">
-        {/* Main Message */}
-        <div className="space-y-6 max-w-sm text-center mb-16">
-          <p className="text-lg leading-relaxed text-muted-foreground animate-fade-in" style={{ animationDelay: "0.1s", animationFillMode: "both" }}>
-            Certaines apps demandent
-            <br />
-            <span className="text-foreground font-medium">votre attention.</span>
-          </p>
-          
-          <div className="w-12 h-px bg-border mx-auto animate-fade-in" style={{ animationDelay: "0.25s", animationFillMode: "both" }} />
-          
-          <p className="text-xl font-semibold leading-relaxed text-foreground animate-fade-in" style={{ animationDelay: "0.4s", animationFillMode: "both" }}>
-            WORKOUT vous demande
-            <br />
-            <span className="inline-block rounded-lg bg-primary/20 px-3 py-1 text-primary">
-              votre mouvement.
-            </span>
-          </p>
+        {/* Box Breathing animated bubble */}
+        <div
+          className="relative w-[78%] max-w-sm aspect-square rounded-[2.5rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10 animate-fade-in"
+          style={{ animationDelay: "0.1s", animationFillMode: "both" }}
+        >
+          <video
+            src={boxBreathingVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 pointer-events-none" />
         </div>
 
-        {/* Slider Container - Bottom */}
+        {/* Slider Container - Bottom (unchanged behavior) */}
         <div className="absolute bottom-8 left-6 right-6 animate-fade-in" style={{ animationDelay: "0.6s", animationFillMode: "both" }}>
           <div
             ref={containerRef}
