@@ -47,14 +47,13 @@ const BottomNavBar = () => {
 
   return (
     <>
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/20">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
         {/* Profile Popup */}
         {showProfilePopup && (
           <div
             ref={popupRef}
-            className="absolute bottom-full right-2 mb-2 w-[260px] bg-popover rounded-2xl shadow-xl border border-border overflow-hidden"
+            className="pointer-events-auto absolute bottom-full right-4 mb-3 w-[260px] bg-popover rounded-2xl shadow-xl border border-border overflow-hidden"
           >
-            {/* Profile Header */}
             <div className="p-4 pb-3">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-info flex items-center justify-center">
@@ -87,7 +86,6 @@ const BottomNavBar = () => {
               ))}
             </div>
 
-            {/* Footer */}
             <div className="border-t border-border p-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-full bg-info flex items-center justify-center">
@@ -108,33 +106,44 @@ const BottomNavBar = () => {
           </div>
         )}
 
-        <div className="flex items-center justify-around h-12 max-w-md mx-auto">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <button
-                key={item.id}
-                onClick={() => navigate(item.path)}
-                className="flex flex-col items-center gap-0.5 flex-1"
-              >
-                <item.icon
-                  className={cn(
-                    "w-5 h-5",
-                    isActive ? "text-foreground" : "text-muted-foreground/60"
-                  )}
-                  strokeWidth={isActive ? 2 : 1.5}
-                />
-                <span
-                  className={cn(
-                    "text-[9px]",
-                    isActive ? "text-foreground font-medium" : "text-muted-foreground/60"
-                  )}
+        {/* Floating pill nav */}
+        <div className="pointer-events-auto px-4 pb-3">
+          <div className="mx-auto max-w-md flex items-center justify-around h-16 px-2 rounded-full bg-card/85 backdrop-blur-xl border border-border/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)]">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => navigate(item.path)}
+                  className="relative flex items-center justify-center flex-1 h-12"
                 >
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
+                  <div
+                    className={cn(
+                      "absolute inset-y-1 left-1 right-1 rounded-full transition-all duration-300 ease-out",
+                      isActive ? "bg-foreground/10 scale-100 opacity-100" : "scale-90 opacity-0"
+                    )}
+                  />
+                  <div className="relative flex flex-col items-center gap-0.5">
+                    <item.icon
+                      className={cn(
+                        "w-5 h-5 transition-colors",
+                        isActive ? "text-foreground" : "text-muted-foreground/70"
+                      )}
+                      strokeWidth={isActive ? 2.2 : 1.6}
+                    />
+                    <span
+                      className={cn(
+                        "text-[9px] transition-colors",
+                        isActive ? "text-foreground font-semibold" : "text-muted-foreground/70"
+                      )}
+                    >
+                      {item.label}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
         <div className="h-[env(safe-area-inset-bottom,0px)]" />
       </nav>
