@@ -1,6 +1,6 @@
 import { Category } from "@/data/categories";
 import { useRef, useState } from "react";
-import { Check, Play } from "lucide-react";
+import { Check, Play, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import BouncingLoader from "./BouncingLoader";
@@ -76,6 +76,7 @@ const pauseGradients = [
 
 const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: ProgramCarouselProps) => {
   const [fullscreenLoader, setFullscreenLoader] = useState<string | null>(null);
+  const [fullscreenVideo, setFullscreenVideo] = useState<{ src: string; name: string; duration: string } | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
   const [completedProgram, setCompletedProgram] = useState<{ name: string; duration: string } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -207,6 +208,8 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                   setFullscreenLoader("rocket-man");
                 } else if (isRippleProgram) {
                   setFullscreenLoader("ripple-wave");
+                } else if (hasVideo) {
+                  setFullscreenVideo({ src: videoSrc!, name: program.name, duration: program.duration });
                 }
               }}
               className={`
