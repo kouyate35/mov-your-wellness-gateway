@@ -174,30 +174,29 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
                 </svg>
               </button>
 
-              {/* App Store */}
+              {/* App Store — official Apple mark */}
               <button
                 onClick={() => openStore("app")}
                 className="group relative aspect-square rounded-3xl overflow-hidden shadow-sm border border-border/40 transition-all active:scale-[0.97] hover:shadow-md"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #1FBFFE 0%, #1376FE 50%, #0E47C9 100%)",
-                }}
                 aria-label="Ouvrir App Store"
               >
                 <svg
-                  viewBox="0 0 100 100"
-                  className="absolute inset-0 w-full h-full p-6"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  viewBox="0 0 256 256"
+                  className="absolute inset-0 w-full h-full"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Stylized "A" — App Store mark */}
-                  <path d="M28 74 L46 36 L54 36 L72 74" />
-                  <path d="M37 60 L63 60" />
-                  <path d="M40 78 L42 81" />
+                  <defs>
+                    <linearGradient id="as-bg" x1="50%" y1="0%" x2="50%" y2="100%">
+                      <stop offset="0%" stopColor="#2AC9FA" />
+                      <stop offset="100%" stopColor="#1F62E8" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="256" height="256" rx="56" fill="url(#as-bg)" />
+                  {/* Authentic App Store "A" glyph */}
+                  <path
+                    fill="#ffffff"
+                    d="M82.6 174.7l-7.4 12.8c-2.7 4.7-8.7 6.3-13.4 3.6-4.7-2.7-6.3-8.7-3.6-13.4l5.5-9.5c6.2-1.9 11.3-.4 15.2 4.4l3.7 2.1zM168.9 154.6h22.7l-46.6-80.7-2.8 4.9c-3.2 5.5-3.7 11-1.7 17.5 4.5 7.7 11.2 19.4 20.1 35l8.3 23.3zm21.1 13.4H68.6c-5.4 0-9.8-4.4-9.8-9.8s4.4-9.8 9.8-9.8h25.2l32.3-55.9-10.1-17.5c-2.7-4.7-1.1-10.6 3.6-13.4 4.7-2.7 10.6-1.1 13.4 3.6l4.4 7.6 4.4-7.6c2.7-4.7 8.7-6.3 13.4-3.6 4.7 2.7 6.3 8.7 3.6 13.4l-42 72.7h30.4c9.9 0 15.4 11.6 11.1 19.7H190c5.4 0 9.8 4.4 9.8 9.8s-4.4 9.8-9.8 9.8z"
+                  />
                 </svg>
               </button>
             </div>

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Compass, Map, BarChart3, Smartphone, User, Sparkles, Settings, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import { Home, Map, BarChart3, Smartphone, User, Sparkles, Settings, HelpCircle, LogOut, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -8,7 +8,7 @@ import SettingsModal from "@/components/SettingsModal";
 import HelpModal from "@/components/HelpModal";
 
 const navItems = [
-  { id: "explore", label: "Explorer", icon: Compass, path: "/explore" },
+  { id: "home", label: "Home", icon: Home, path: "/explore" },
   { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" },
   { id: "community", label: "Communauté", icon: Map, path: "/community" },
   { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" },
