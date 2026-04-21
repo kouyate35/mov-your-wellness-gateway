@@ -11,7 +11,7 @@ import MovementChallenge from "./pages/MovementChallenge";
 import Onboarding from "./pages/Onboarding";
 import OnboardingStep2 from "./pages/OnboardingStep2";
 import Auth from "./pages/Auth";
-import Explore from "./pages/Explore";
+
 import Settings from "./pages/Settings";
 import Subscription from "./pages/Subscription";
 import HelpCenter from "./pages/HelpCenter";
@@ -49,7 +49,7 @@ const App = () => {
             <Route path="/home" element={<Index />} />
             <Route path="/app/:appId" element={<AppDetail />} />
             <Route path="/challenge" element={<MovementChallenge />} />
-            <Route path="/explore" element={<Explore />} />
+            <Route path="/explore" element={<Index />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/help-center" element={<HelpCenter />} />
