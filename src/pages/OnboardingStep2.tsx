@@ -65,12 +65,41 @@ const OnboardingStep2 = () => {
         <div className="absolute inset-0 bg-black/75" />
       </div>
 
-      {/* Content — centered breathing bubble */}
+      {/* Content — cloud title + centered breathing bubble */}
       <div className="absolute inset-0 flex flex-col justify-center items-center px-6">
-        {/* Box Breathing animated bubble */}
+        {/* Cloud-style title — airy, layered, premium */}
+        <div
+          className="relative mb-8 w-full max-w-sm text-center animate-fade-in select-none"
+          style={{ animationDelay: "0.05s", animationFillMode: "both" }}
+        >
+          <p
+            className="text-[11px] uppercase tracking-[0.4em] text-white/40 mb-2"
+          >
+            Workout
+          </p>
+          <h1
+            className="font-bold leading-[0.95] text-white"
+            style={{
+              fontFamily: '"Baloo 2", "Fredoka", system-ui, sans-serif',
+              textShadow:
+                "0 2px 0 rgba(255,255,255,0.08), 0 8px 24px rgba(255,255,255,0.12), 0 18px 60px rgba(255,255,255,0.06)",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            <span className="block text-[28px] text-white/90">Votre bien-être</span>
+            <span className="block text-[34px] mt-1 bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent">
+              physique,
+            </span>
+            <span className="block text-[22px] mt-2 italic font-medium text-white/60">
+              notre sérénité.
+            </span>
+          </h1>
+        </div>
+
+        {/* Box Breathing animated bubble — fills the squircle */}
         <div
           className="relative w-[78%] max-w-sm aspect-square rounded-[2.5rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10 animate-fade-in"
-          style={{ animationDelay: "0.1s", animationFillMode: "both" }}
+          style={{ animationDelay: "0.15s", animationFillMode: "both" }}
         >
           <video
             src={boxBreathingVideo}
@@ -78,7 +107,7 @@ const OnboardingStep2 = () => {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-contain bg-black"
+            className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 pointer-events-none" />
         </div>
