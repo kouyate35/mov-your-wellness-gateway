@@ -98,12 +98,14 @@ const OnboardingStep2 = () => {
               }}
             />
 
-            {/* Label — fades out as fill covers it */}
+            {/* Label — stays readable as white fill grows underneath */}
             <div
               className="absolute inset-y-0 left-0 right-0 flex items-center justify-center pointer-events-none"
-              style={{ opacity: 1 - Math.min(1, progress * 1.2) }}
             >
-              <span className="text-muted-foreground text-sm ml-12">
+              <span
+                className="text-sm ml-12 transition-colors duration-200"
+                style={{ color: progress > 0.15 ? "hsl(var(--background))" : "hsl(var(--muted-foreground))" }}
+              >
                 Créer mon compte <ChevronRight className="inline h-4 w-4" />
               </span>
             </div>
