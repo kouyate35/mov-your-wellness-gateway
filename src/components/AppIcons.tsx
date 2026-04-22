@@ -1,5 +1,5 @@
 import React from "react";
-import movIconImage from "@/assets/mov-icon.png";
+import movIconImage from "@/assets/workout-logo.png";
 
 interface IconProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -24,7 +24,7 @@ const svgSizeClasses = {
 export const WorkoutIcon = ({ size = "md" }: { size?: "sm" | "md" | "lg" | "xl" }) => {
   return (
     <div className={`${sizeClasses[size]} bg-black rounded-2xl flex items-center justify-center shrink-0 overflow-hidden`}>
-      <img src={movIconImage} alt="Workout" className="w-[70%] h-[70%] object-contain" />
+      <img src={movIconImage} alt="Workout" className="w-full h-full object-cover" />
     </div>
   );
 };
