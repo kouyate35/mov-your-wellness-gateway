@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, ChevronDown, ChevronUp, Zap, Crown, Star } from "lucide-react";
 import subscriptionHero from "@/assets/subscription-hero.jpg";
-import movIcon from "@/assets/mov-icon.png";
+import movIcon from "@/assets/workout-logo.png";
 
 type PlanId = "free" | "classique" | "premium";
 type Billing = "monthly" | "annual";
