@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, ChevronRight, MessageCircle } from "lucide-react";
-import movIcon from "@/assets/mov-icon.png";
+import movIcon from "@/assets/workout-logo.png";
 
 const articles = [
   {
@@ -87,8 +87,8 @@ const HelpCenter = () => {
       <section className="px-4 mb-8">
         <p className="text-xs text-muted-foreground mb-4">Toutes les collections &gt; Workout</p>
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-card border border-border/50 flex items-center justify-center overflow-hidden">
-            <img src={movIcon} alt="Workout" className="w-10 h-10" />
+          <div className="w-16 h-16 rounded-2xl bg-black border border-border/50 flex items-center justify-center overflow-hidden">
+            <img src={movIcon} alt="Workout" className="w-full h-full object-cover" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-foreground">Workout</h2>
