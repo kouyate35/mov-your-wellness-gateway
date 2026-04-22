@@ -51,7 +51,7 @@ const AppAccessModal = ({
                     Ouvre les paramètres Android
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Tu vas être redirigé vers les paramètres. Trouve "Mov" dans la liste et active l'accès.
+                    Tu vas être redirigé vers les paramètres. Trouve "Workout" dans la liste et active l'accès.
                   </p>
                 </div>
               </div>
@@ -83,7 +83,7 @@ const AppAccessModal = ({
                     Identifier tes applications de divertissement
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Mov analyse uniquement les applications liées au divertissement et aux réseaux sociaux (réseaux, vidéos, jeux) afin de t'aider à mieux gérer ton temps.
+                    Workout analyse uniquement les applications liées au divertissement et aux réseaux sociaux (réseaux, vidéos, jeux) afin de t'aider à mieux gérer ton temps.
                   </p>
                 </div>
               </div>
@@ -98,7 +98,7 @@ const AppAccessModal = ({
                     Aucune lecture de contenu
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Mov ne lit ni tes messages, ni tes contenus. Seuls les noms des applications et leur catégorie sont utilisés.
+                    Workout ne lit ni tes messages, ni tes contenus. Seuls les noms des applications et leur catégorie sont utilisés.
                   </p>
                 </div>
               </div>
@@ -113,7 +113,7 @@ const AppAccessModal = ({
                     Tu gardes le contrôle
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Tu peux désactiver cet accès à tout moment depuis les réglages Mov.
+                    Tu peux désactiver cet accès à tout moment depuis les réglages Workout.
                   </p>
                 </div>
               </div>

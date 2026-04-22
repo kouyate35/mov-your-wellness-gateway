@@ -66,7 +66,7 @@ const OnboardingStep2 = () => {
       </div>
 
       {/* Content — cloud title + centered breathing bubble */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center px-6">
+      <div className="absolute inset-0 flex flex-col justify-start items-center px-6 pt-12">
         {/* Cloud-style title — airy, layered, premium */}
         <div
           className="relative mb-8 w-full max-w-sm text-center animate-fade-in select-none"
