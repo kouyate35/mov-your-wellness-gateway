@@ -32,7 +32,7 @@ const AppAccessModal = ({
           <p className="text-sm text-muted-foreground mt-1">
             {needsPermission 
               ? "Autorise l'accès aux statistiques d'utilisation"
-              : "Pour personnaliser ton expérience Mov"
+              : "Pour personnaliser ton expérience Workout"
             }
           </p>
         </div>
