@@ -125,8 +125,21 @@ const OnboardingStep2 = () => {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover opacity-0"
+            aria-hidden="true"
           />
+          {CATEGORY_VIDEOS.map((v, i) => (
+            <video
+              key={v.src}
+              src={v.src}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+              style={{ opacity: activeVideo === i ? 1 : 0 }}
+            />
+          ))}
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 pointer-events-none" />
         </div>
 
