@@ -1,17 +1,35 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import onboardingHero from "@/assets/onboarding-hero.jpg";
 import boxBreathingVideo from "@/assets/exercise-box-breathing.mp4";
+import pushupsVideo from "@/assets/exercise-pushups.mp4";
+import forwardFoldVideo from "@/assets/exercise-forward-fold.mp4";
+import pauseVideo from "@/assets/exercise-pause.mp4";
+
+const CATEGORY_VIDEOS = [
+  { src: boxBreathingVideo, label: "Sérénité" },
+  { src: pushupsVideo, label: "Force" },
+  { src: forwardFoldVideo, label: "Souplesse" },
+  { src: pauseVideo, label: "Pause" },
+];
 
 const OnboardingStep2 = () => {
   const navigate = useNavigate();
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [activeVideo, setActiveVideo] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef(0);
   const maxDragRef = useRef(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveVideo((i) => (i + 1) % CATEGORY_VIDEOS.length);
+    }, 2000);
+    return () => clearInterval(id);
+  }, []);
 
   const getMaxDrag = () => {
     const w = containerRef.current?.offsetWidth ?? 0;
@@ -107,8 +125,21 @@ const OnboardingStep2 = () => {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover opacity-0"
+            aria-hidden="true"
           />
+          {CATEGORY_VIDEOS.map((v, i) => (
+            <video
+              key={v.src}
+              src={v.src}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+              style={{ opacity: activeVideo === i ? 1 : 0 }}
+            />
+          ))}
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 pointer-events-none" />
         </div>
 
