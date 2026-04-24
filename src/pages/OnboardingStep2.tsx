@@ -19,9 +19,17 @@ const OnboardingStep2 = () => {
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [activeVideo, setActiveVideo] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef(0);
   const maxDragRef = useRef(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActiveVideo((i) => (i + 1) % CATEGORY_VIDEOS.length);
+    }, 2000);
+    return () => clearInterval(id);
+  }, []);
 
   const getMaxDrag = () => {
     const w = containerRef.current?.offsetWidth ?? 0;
