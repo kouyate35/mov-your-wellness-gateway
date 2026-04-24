@@ -27,7 +27,7 @@ const OnboardingStep2 = () => {
   useEffect(() => {
     const id = setInterval(() => {
       setActiveVideo((i) => (i + 1) % CATEGORY_VIDEOS.length);
-    }, 2000);
+    }, 4500);
     return () => clearInterval(id);
   }, []);
 
