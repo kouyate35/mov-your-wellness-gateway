@@ -1,8 +1,18 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import onboardingHero from "@/assets/onboarding-hero.jpg";
 import boxBreathingVideo from "@/assets/exercise-box-breathing.mp4";
+import pushupsVideo from "@/assets/exercise-pushups.mp4";
+import forwardFoldVideo from "@/assets/exercise-forward-fold.mp4";
+import pauseVideo from "@/assets/exercise-pause.mp4";
+
+const CATEGORY_VIDEOS = [
+  { src: boxBreathingVideo, label: "Sérénité" },
+  { src: pushupsVideo, label: "Force" },
+  { src: forwardFoldVideo, label: "Souplesse" },
+  { src: pauseVideo, label: "Pause" },
+];
 
 const OnboardingStep2 = () => {
   const navigate = useNavigate();
