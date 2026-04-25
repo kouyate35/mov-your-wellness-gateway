@@ -156,13 +156,13 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
           )}
 
           {/* Store rows — Play Store & App Store */}
-          <div className="px-2 py-3 pb-5">
+          <div className="px-2 py-3 pb-5 min-w-0">
             <button
               onClick={() => openStore("play")}
-              className="w-full flex items-center gap-4 px-3 py-3 rounded-2xl hover:bg-secondary/40 transition-colors"
+              className="w-full min-w-0 flex items-center gap-3 px-3 py-3 rounded-2xl hover:bg-secondary/40 transition-colors"
             >
-              <div className="w-11 h-11 rounded-full bg-secondary/70 flex items-center justify-center shrink-0">
-                <svg viewBox="0 0 512 512" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+              <div className="w-10 h-10 rounded-full bg-secondary/70 flex items-center justify-center shrink-0">
+                <svg viewBox="0 0 512 512" className="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <linearGradient id="ps-blue-r" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#00D4FF" />
@@ -187,7 +187,7 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
                   <path fill="url(#ps-yellow-r)" d="M460 232 380 188l-77 80 77 80 80-44c22-12 22-60 0-72z" />
                 </svg>
               </div>
-              <span className="flex-1 text-left text-sm text-foreground font-medium">
+              <span className="flex-1 min-w-0 text-left text-sm text-foreground font-medium truncate">
                 Télécharger sur Play Store
               </span>
               <ChevronRight className="w-4 h-4 text-muted-foreground/60 shrink-0" />
@@ -195,9 +195,9 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
 
             <button
               onClick={() => openStore("app")}
-              className="w-full flex items-center gap-4 px-3 py-3 rounded-2xl hover:bg-secondary/40 transition-colors"
+              className="w-full min-w-0 flex items-center gap-3 px-3 py-3 rounded-2xl hover:bg-secondary/40 transition-colors"
             >
-              <div className="w-11 h-11 rounded-full overflow-hidden shrink-0 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 flex items-center justify-center">
                 <svg viewBox="0 0 256 256" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <linearGradient id="as-bg-r" x1="50%" y1="0%" x2="50%" y2="100%">
@@ -212,7 +212,7 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
                   />
                 </svg>
               </div>
-              <span className="flex-1 text-left text-sm text-foreground font-medium">
+              <span className="flex-1 min-w-0 text-left text-sm text-foreground font-medium truncate">
                 Télécharger sur App Store
               </span>
               <ChevronRight className="w-4 h-4 text-muted-foreground/60 shrink-0" />
