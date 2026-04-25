@@ -133,25 +133,29 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
           </div>
 
           {/* Suggested apps row — horizontal scroll, squircle icons */}
-          <div className="mt-5">
-            <div
-              className="flex gap-4 overflow-x-auto px-5 pb-2 scrollbar-hide"
-              style={{ scrollbarWidth: "none" }}
-            >
-              {suggestedApps.map((app) => (
-                <button
-                  key={app.id}
-                  onClick={() => handleSearch(app)}
-                  className="flex flex-col items-center gap-1.5 shrink-0 active:scale-95 transition-transform"
-                >
-                  <div className="w-14 h-14">{getAppIcon(app.id, "lg")}</div>
-                  <span className="text-[11px] text-foreground/90 font-medium max-w-[60px] truncate">
-                    {app.name}
-                  </span>
-                </button>
-              ))}
+          {suggestedApps.length > 0 && (
+            <div className="mt-5">
+              <div
+                className="flex gap-4 overflow-x-auto px-5 pb-3 scrollbar-hide"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {suggestedApps.map((app) => (
+                  <button
+                    key={app.id}
+                    onClick={() => handleSearch(app)}
+                    className="flex flex-col items-center gap-2 shrink-0 active:scale-95 transition-transform w-16"
+                  >
+                    <div className="w-14 h-14 flex items-center justify-center">
+                      {getAppIcon(app.id, "lg")}
+                    </div>
+                    <span className="text-[11px] text-foreground/90 font-medium truncate w-full text-center">
+                      {app.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Divider */}
           <div className="mx-5 mt-3 h-px bg-border/40" />
