@@ -80,7 +80,7 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
     <>
       <Dialog open={isOpen && !scanOpen} onOpenChange={(o) => !o && onClose()}>
         <DialogContent
-          className="sm:max-w-md bg-card border-border rounded-3xl p-0 gap-0 overflow-hidden"
+          className="w-[calc(100vw-32px)] max-w-[calc(100vw-32px)] sm:max-w-md min-w-0 bg-card border-border rounded-3xl p-0 gap-0 overflow-hidden"
           hideCloseButton
         >
           {/* Header — minimal "Envoi en tant que" style */}
