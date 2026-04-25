@@ -134,16 +134,16 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
 
           {/* Suggested apps row — horizontal scroll, squircle icons */}
           {suggestedApps.length > 0 && (
-            <div className="mt-5">
+            <div className="mt-5 w-full min-w-0 overflow-hidden border-y border-border/35 py-4">
               <div
-                className="flex gap-4 overflow-x-auto px-5 pb-3 scrollbar-hide"
+                className="flex gap-5 overflow-x-auto px-5 scrollbar-hide overscroll-x-contain"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {suggestedApps.map((app) => (
                   <button
                     key={app.id}
                     onClick={() => handleSearch(app)}
-                    className="flex flex-col items-center gap-1.5 shrink-0 active:scale-95 transition-transform w-14"
+                    className="flex w-[58px] flex-col items-center gap-1.5 shrink-0 active:scale-95 transition-transform"
                   >
                     {getAppIcon(app.id, "md")}
                     <span className="text-[10px] text-foreground/90 font-medium truncate w-full text-center leading-tight">
@@ -154,9 +154,6 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
               </div>
             </div>
           )}
-
-          {/* Divider */}
-          <div className="mx-5 mt-3 h-px bg-border/40" />
 
           {/* Store rows — Play Store & App Store */}
           <div className="px-2 py-3 pb-5">
