@@ -69,11 +69,12 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  // Suggested apps: not yet connected, take first 8
-  const suggestedApps = useMemo(
-    () => apps.filter((a) => !connectedAppIds.includes(a.id)).slice(0, 8),
-    [connectedAppIds]
-  );
+  // Suggested apps: prioritize not-yet-connected, fall back to all apps
+  const suggestedApps = useMemo(() => {
+    const notConnected = apps.filter((a) => !connectedAppIds.includes(a.id));
+    const list = notConnected.length > 0 ? notConnected : apps;
+    return list.slice(0, 10);
+  }, [connectedAppIds]);
 
   return (
     <>
