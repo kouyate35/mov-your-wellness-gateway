@@ -84,12 +84,12 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
           hideCloseButton
         >
           {/* Header — minimal "Envoi en tant que" style */}
-          <div className="px-5 pt-5 pb-4 flex items-center justify-between">
-            <div className="flex flex-col">
+          <div className="px-5 pt-5 pb-4 flex items-center justify-between min-w-0">
+            <div className="flex flex-col min-w-0 pr-3">
               <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70 font-medium">
                 Ajouter
               </span>
-              <h2 className="text-base font-semibold text-foreground leading-tight">
+              <h2 className="text-base font-semibold text-foreground leading-tight truncate">
                 Nouvelle application
               </h2>
             </div>
@@ -103,9 +103,9 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
           </div>
 
           {/* Search bubble (équivalent "Inviter d'autres personnes") */}
-          <div className="px-5">
-            <div className="relative bg-secondary/50 rounded-2xl border border-border/40 px-4 py-3 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-background/60 flex items-center justify-center shrink-0">
+          <div className="px-5 min-w-0">
+            <div className="relative bg-secondary/50 rounded-2xl border border-border/40 p-3 flex items-center gap-2.5 min-w-0 overflow-hidden">
+              <div className="w-9 h-9 rounded-full bg-background/60 flex items-center justify-center shrink-0">
                 <Search className="w-4 h-4 text-muted-foreground" />
               </div>
               <div className="flex-1 min-w-0">
@@ -125,7 +125,7 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
               <button
                 onClick={() => handleSearch()}
                 disabled={!query.trim()}
-                className="h-9 px-4 rounded-full bg-foreground text-background text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-opacity shrink-0"
+                className="h-8 px-3 rounded-full bg-foreground text-background text-[11px] font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-opacity shrink-0"
               >
                 Rechercher
               </button>
