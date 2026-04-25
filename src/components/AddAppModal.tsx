@@ -143,12 +143,10 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
                   <button
                     key={app.id}
                     onClick={() => handleSearch(app)}
-                    className="flex flex-col items-center gap-2 shrink-0 active:scale-95 transition-transform w-16"
+                    className="flex flex-col items-center gap-1.5 shrink-0 active:scale-95 transition-transform w-14"
                   >
-                    <div className="w-14 h-14 flex items-center justify-center">
-                      {getAppIcon(app.id, "lg")}
-                    </div>
-                    <span className="text-[11px] text-foreground/90 font-medium truncate w-full text-center">
+                    {getAppIcon(app.id, "md")}
+                    <span className="text-[10px] text-foreground/90 font-medium truncate w-full text-center leading-tight">
                       {app.name}
                     </span>
                   </button>
