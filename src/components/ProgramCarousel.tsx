@@ -24,13 +24,10 @@ const parseDurationToSeconds = (duration: string): number => {
   return total || 300;
 };
 
-// Import exercise videos - Move (realistic scripted scenes: phone-down → exercise → phone-up)
-import exerciseSquatsAsset from "@/assets/exercise-squats.mp4.asset.json";
-import exercisePushupsAsset from "@/assets/exercise-pushups.mp4.asset.json";
-import exercisePlankAsset from "@/assets/exercise-plank.mp4.asset.json";
-const exerciseSquats = exerciseSquatsAsset.url;
-const exercisePushups = exercisePushupsAsset.url;
-const exercisePlank = exercisePlankAsset.url;
+// Import exercise videos - Move
+import exerciseSquats from "@/assets/exercise-squats.mp4";
+import exercisePushups from "@/assets/exercise-pushups.mp4";
+import exercisePlank from "@/assets/exercise-plank.mp4";
 
 // Import exercise videos - Flex (new category)
 import exerciseLateralStretch from "@/assets/exercise-lateral-stretch.mp4";
