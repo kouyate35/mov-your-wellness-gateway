@@ -151,7 +151,7 @@ type ViewState = "main" | "notifications" | "search" | "chat" | "chatProfile" | 
 
 const Community = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"swipe" | "nearby">("swipe");
+  const [activeTab, setActiveTab] = useState<"global" | "nearby">("global");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const [direction, setDirection] = useState<"left" | "right" | null>(null);
