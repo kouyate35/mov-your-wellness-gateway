@@ -151,9 +151,9 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
               </div>
               
               {/* Content - Top */}
-              <div className="absolute top-0 left-0 right-0 p-6 pr-14">
-                <h3 className="text-3xl font-bold text-white tracking-tight">{category.name}</h3>
-                <p className="text-white/80 text-sm font-medium uppercase tracking-wider mt-2">
+              <div className="absolute top-0 left-0 right-0 p-4 pr-12">
+                <h3 className="text-2xl font-bold text-white tracking-tight">{category.name}</h3>
+                <p className="text-white/80 text-[11px] font-medium uppercase tracking-wider mt-1">
                   {category.tagline}
                 </p>
               </div>
