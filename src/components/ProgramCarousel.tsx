@@ -256,7 +256,7 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
                 transition-all duration-300
                 ${selectedProgramId === program.id ? 'ring-2 ring-white ring-offset-2 ring-offset-background' : ''}
               `}
-              style={{ aspectRatio: '3/4' }}
+              style={{ aspectRatio: '4/5' }}
             >
               {/* Video background or gradient fallback */}
               {hasVideo ? (
