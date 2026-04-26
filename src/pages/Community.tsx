@@ -811,10 +811,10 @@ const Community = () => {
       {/* TABS */}
       <div className="relative z-50 flex mx-4 mb-1.5 bg-[hsl(0,0%,12%)] rounded-[14px] p-[3px]">
         <button
-          onClick={() => setActiveTab("swipe")}
-          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${activeTab === "swipe" ? "bg-[hsl(0,0%,20%)] text-white" : "text-white/45"}`}
+          onClick={() => setActiveTab("global")}
+          className={`flex-1 py-[6px] rounded-[11px] text-[13px] font-semibold transition-all ${activeTab === "global" ? "bg-[hsl(0,0%,20%)] text-white" : "text-white/45"}`}
         >
-          Swipe
+          Communauté
         </button>
         <button
           onClick={() => setActiveTab("nearby")}
@@ -825,166 +825,37 @@ const Community = () => {
         </button>
       </div>
 
-      {/* CARD AREA */}
-      <div className="flex-1 relative mx-2 mb-2 overflow-hidden rounded-2xl">
-        {noMoreProfiles ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-white/60">
-            <span className="text-5xl mb-4">🎉</span>
-            <p className="text-lg font-semibold">Plus de profils !</p>
-            <p className="text-sm mt-1">Reviens plus tard</p>
-          </div>
-        ) : (
-          <AnimatePresence onExitComplete={handleExitComplete}>
-            {profile && !direction && (
-              <motion.div
-                key={profile.id}
-                className="absolute inset-0 cursor-grab active:cursor-grabbing"
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.9}
-                onDrag={handleDrag}
-                onDragEnd={handleDragEnd}
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1, rotate: dragX * 0.03 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                style={{ willChange: "transform" }}
-              >
-                <div className="relative w-full h-full rounded-2xl overflow-hidden" onClick={handlePhotoTap}>
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={`${profile.id}-${currentPhoto}`}
-                      src={profile.photos[currentPhoto]}
-                      alt={profile.name}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      draggable={false}
-                    />
-                  </AnimatePresence>
-
-                  {/* Photo indicators */}
-                  <div className="absolute top-3 left-3 right-3 flex gap-1 z-10">
-                    {profile.photos.map((_, i) => (
-                      <div key={i} className="flex-1 h-[3px] rounded-full overflow-hidden bg-white/30">
-                        <div className={`h-full rounded-full transition-all duration-300 ${i === currentPhoto ? "bg-white w-full" : i < currentPhoto ? "bg-white/70 w-full" : "w-0"}`} />
-                      </div>
-                    ))}
+      {/* GRID AREA */}
+      <div className="flex-1 overflow-y-auto px-4 pt-2 pb-24">
+        <p className="text-white/80 text-center text-[15px] font-medium mb-5 px-2">
+          {activeTab === "global"
+            ? "1 248 personnes veulent faire du sport avec toi."
+            : "27 sportifs proches de toi prêts à bouger."}
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          {mockAddRequests.map((req) => (
+            <div key={req.id} className="rounded-2xl overflow-hidden bg-[hsl(0,0%,12%)]">
+              <div className="w-full aspect-[4/5] relative" style={{ background: `linear-gradient(135deg, ${req.color}, hsl(0,0%,20%))`, filter: "blur(8px)" }} />
+              <div className="px-3 pt-2 pb-3 -mt-12 relative z-10">
+                {req.active && (
+                  <div className="flex items-center gap-1 mb-1">
+                    <div className="w-2 h-2 rounded-full bg-[hsl(120,70%,50%)]" />
+                    <span className="text-white/70 text-[11px]">Actif récemment</span>
                   </div>
-
-                  {/* Three dots menu */}
-                  <button
-                    className="absolute top-3 right-3 z-10 p-1"
-                    onClick={(e) => { e.stopPropagation(); setShowBottomSheet(true); }}
-                  >
-                    <MoreHorizontal className="w-6 h-6 text-white drop-shadow-lg" />
+                )}
+                <div className="w-20 h-3 rounded bg-white/15 mb-2.5" />
+                <div className="flex gap-1.5">
+                  <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
+                    <X className="w-4 h-4 text-white" strokeWidth={3} />
                   </button>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-
-                  {/* Swipe overlays */}
-                  <AnimatePresence>
-                    {swipeOverlay === "like" && (
-                      <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }} className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                        <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl">
-                          <svg width="40" height="40" viewBox="0 0 24 24" fill="hsl(0,0%,8%)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                        </div>
-                      </motion.div>
-                    )}
-                    {swipeOverlay === "nope" && (
-                      <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }} className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                        <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl">
-                          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="hsl(0,0%,8%)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Profile info */}
-                  <div className={`absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-all duration-500 ${isLastPhoto ? "inset-0" : ""}`}>
-                    {isLastPhoto && <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />}
-                    <div className={`relative h-full flex flex-col ${isLastPhoto ? "justify-start pt-14 px-5 pb-5 overflow-y-auto pointer-events-auto" : "justify-end p-5"}`}>
-                      <div className="flex items-baseline gap-2">
-                        <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
-                        <span className="text-2xl text-white/80 font-light">{profile.age}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-1">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-white/70"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        <span className="text-white/70 text-sm">{profile.location}</span>
-                      </div>
-                      {isLastPhoto && profile.occupation && (
-                        <div className="flex items-center gap-1.5 mt-0.5"><span className="text-white/70 text-sm">{profile.occupation}</span></div>
-                      )}
-                      {isLastPhoto && profile.emojis && (
-                        <div className="flex gap-1 mt-3">{profile.emojis.map((emoji, i) => <span key={i} className="text-2xl">{emoji}</span>)}</div>
-                      )}
-                      {isLastPhoto && profile.interests && (
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {profile.interests.map(interest => (
-                            <span key={interest} className="bg-white/10 border border-white/15 text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">{interest}</span>
-                          ))}
-                        </div>
-                      )}
-                      {isLastPhoto && profile.description && (
-                        <p className="text-white/80 text-sm mt-3 leading-relaxed">{profile.description}</p>
-                      )}
-                      <div className="flex gap-2 mt-3">
-                        {profile.tags.map(tag => (
-                          <span key={tag} className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">{tag}</span>
-                        ))}
-                      </div>
-                      {!isLastPhoto && (
-                        <div className="mt-3 pointer-events-auto">
-                          <button className="px-8 py-3 rounded-full border border-white/25 text-white text-sm font-medium bg-white/5 backdrop-blur-sm active:bg-white/10 transition-colors">
-                            Envoie un message
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
+                    <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                  </button>
                 </div>
-              </motion.div>
-            )}
-
-            {/* Exiting card */}
-            {profile && direction && (
-              <motion.div
-                key={`exit-${profile.id}`}
-                className="absolute inset-0"
-                initial={{ x: 0, rotate: 0, opacity: 1 }}
-                animate={{ x: direction === "right" ? 500 : -500, rotate: direction === "right" ? 20 : -20, opacity: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                style={{ willChange: "transform" }}
-              >
-                <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                  <img src={profile.photos[currentPhoto]} alt={profile.name} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl">
-                      {direction === "right" ? (
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="hsl(0,0%,8%)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                      ) : (
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="hsl(0,0%,8%)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      )}
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <div className="flex items-baseline gap-2">
-                      <h2 className="text-3xl font-bold text-white">{profile.name}</h2>
-                      <span className="text-2xl text-white/80 font-light">{profile.age}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-1"><span className="text-white/70 text-sm">{profile.location}</span></div>
-                    <div className="flex gap-2 mt-3">
-                      {profile.tags.map(tag => <span key={tag} className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">{tag}</span>)}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* BOTTOM SHEET - Bloquer / Signaler */}
