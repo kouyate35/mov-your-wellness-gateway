@@ -194,7 +194,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
       </div>
 
       {/* Program Carousel - below description */}
-      <div className="mt-8">
+      <div className="mt-4">
         <ProgramCarousel 
           category={currentCategory}
           selectedProgramId={selectedProgramId}
