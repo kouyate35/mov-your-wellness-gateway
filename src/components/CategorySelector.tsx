@@ -121,7 +121,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
             <button
               key={category.id}
               onClick={() => scrollToCard(index)}
-              className="relative flex-shrink-0 w-full aspect-[4/5] snap-start overflow-hidden"
+              className="relative flex-shrink-0 w-full aspect-[4/3] snap-start overflow-hidden"
             >
               {/* Background image */}
               <img 
@@ -151,9 +151,9 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
               </div>
               
               {/* Content - Top */}
-              <div className="absolute top-0 left-0 right-0 p-6 pr-14">
-                <h3 className="text-3xl font-bold text-white tracking-tight">{category.name}</h3>
-                <p className="text-white/80 text-sm font-medium uppercase tracking-wider mt-2">
+              <div className="absolute top-0 left-0 right-0 p-4 pr-12">
+                <h3 className="text-2xl font-bold text-white tracking-tight">{category.name}</h3>
+                <p className="text-white/80 text-[11px] font-medium uppercase tracking-wider mt-1">
                   {category.tagline}
                 </p>
               </div>
@@ -194,7 +194,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
       </div>
 
       {/* Program Carousel - below description */}
-      <div className="mt-8">
+      <div className="mt-4">
         <ProgramCarousel 
           category={currentCategory}
           selectedProgramId={selectedProgramId}
