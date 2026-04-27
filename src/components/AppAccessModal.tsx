@@ -21,7 +21,7 @@ const AppAccessModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent 
-        className="sm:max-w-md bg-card border-border rounded-3xl p-0 gap-0"
+        className="max-w-[320px] w-[calc(100%-64px)] mx-auto bg-card border-border rounded-3xl p-0 gap-0"
         hideCloseButton
       >
         {/* Header */}

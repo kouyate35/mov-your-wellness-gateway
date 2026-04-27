@@ -37,7 +37,7 @@ const ConnectAppModal = ({ app, isOpen, onClose, onConnect }: ConnectAppModalPro
 
           {/* Subtitle */}
           <p className="text-sm text-foreground/80 text-center max-w-[260px] mb-6 leading-relaxed">
-            Workout utilise {app.name} pour mieux comprendre vos habitudes numériques et vous proposer un programme adapté.
+            Workout te propose des micro-défis rapides à chaque ouverture de {app.name}, pour prendre soin de ton corps et garder ton bien-être au quotidien.
           </p>
 
           {/* Buttons */}

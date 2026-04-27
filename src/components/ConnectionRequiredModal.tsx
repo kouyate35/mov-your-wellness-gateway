@@ -38,7 +38,7 @@ const ConnectionRequiredModal = ({
 
             {/* Description */}
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              Connecte d'abord cette application à Mov pour pouvoir sélectionner ton programme et débloquer tes sessions.
+              Connecte d'abord cette application à Workout pour pouvoir sélectionner ton programme et débloquer tes sessions.
             </p>
 
             {/* Buttons */}
