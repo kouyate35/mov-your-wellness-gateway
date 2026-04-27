@@ -107,8 +107,8 @@ const BottomNavBar = () => {
         )}
 
         {/* Floating pill nav */}
-        <div className="pointer-events-auto px-4 pb-3">
-          <div className="mx-auto max-w-md flex items-center justify-around h-16 px-2 rounded-full bg-card/85 backdrop-blur-xl border border-border/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)]">
+        <div className="pointer-events-auto px-8 pb-3">
+          <div className="mx-auto max-w-[340px] flex items-center justify-around h-16 px-2 rounded-full bg-card/85 backdrop-blur-xl border border-black/80 shadow-[0_0_0_1px_rgba(0,0,0,0.6),0_10px_40px_-10px_rgba(0,0,0,0.7)]">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
