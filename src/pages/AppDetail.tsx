@@ -88,7 +88,7 @@ const AppDetail = () => {
     }
     setSelectedCategory(id);
     setSelectedProgramId(null);
-    setProgram(app.id, id);
+    updateAppSetting(app.id, { categoryId: id as AppSetting["categoryId"], selectedProgramId: null });
   };
 
   const handleProgramSelect = (programId: string) => {
@@ -97,6 +97,7 @@ const AppDetail = () => {
       return;
     }
     setSelectedProgramId(programId);
+    setProgram(app.id, programId);
   };
 
   const handleOpenConnectFromRequired = () => {
