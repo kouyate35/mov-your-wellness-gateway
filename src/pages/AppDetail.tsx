@@ -18,15 +18,27 @@ type CategoryId = Category["id"];
 const AppDetail = () => {
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
-  const { getAppSetting, toggleApp, setProgram } = useAppSettings();
+  const { getAppSetting, toggleApp, setProgram, updateAppSetting } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [showConnectionRequiredModal, setShowConnectionRequiredModal] = useState(false);
   const [showProgramRequiredModal, setShowProgramRequiredModal] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showFireAnimation, setShowFireAnimation] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId>("move");
-  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
+
+  // Helper to find which category a program belongs to
+  const findCategoryOfProgram = (programId: string | null): CategoryId | null => {
+    if (!programId) return null;
+    for (const cat of (require("@/data/categories").categories as Category[])) {
+      if (cat.programs.find((p) => p.id === programId)) return cat.id;
+    }
+    return null;
+  };
+
+  const initialSetting = appId ? getAppSetting(appId) : null;
+  const initialCategory = (findCategoryOfProgram(initialSetting?.selectedProgramId ?? null) ?? (initialSetting?.categoryId as CategoryId) ?? "move") as CategoryId;
+  const [selectedCategory, setSelectedCategory] = useState<CategoryId>(initialCategory);
+  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(initialSetting?.selectedProgramId ?? null);
   const programSectionRef = useRef<HTMLDivElement>(null);
 
   const app = apps.find((a) => a.id === appId);
