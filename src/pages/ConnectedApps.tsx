@@ -149,6 +149,7 @@ const ConnectedApps = () => {
 
       <DisconnectAppModal
         isOpen={!!pendingDisconnect}
+        appId={pendingDisconnect?.id}
         appName={pendingDisconnect?.name ?? ""}
         onClose={() => setPendingDisconnect(null)}
         onConfirm={() => {
