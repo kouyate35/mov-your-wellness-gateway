@@ -65,10 +65,9 @@ const ConnectedApps = () => {
             const videoSrc = program ? programVideos[program.id] : undefined;
 
             return (
-              <button
+              <div
                 key={app.id}
-                onClick={() => navigate(`/app/${app.id}`)}
-                className="w-full bg-secondary/40 backdrop-blur-sm rounded-3xl border border-border/30 overflow-hidden active:scale-[0.99] transition-transform"
+                className="w-full bg-secondary/40 backdrop-blur-sm rounded-3xl border border-border/30 overflow-hidden"
               >
                 <div className="flex items-center gap-3 p-3">
                   {/* App icon */}
