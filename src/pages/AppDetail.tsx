@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronRight, Menu, Settings } from "lucide-react";
 import { apps } from "@/data/apps";
-import { useAppSettings } from "@/hooks/useAppSettings";
+import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
 import ConnectionRequiredModal from "@/components/ConnectionRequiredModal";
 import ProgramRequiredModal from "@/components/ProgramRequiredModal";
