@@ -11,7 +11,7 @@ import FireEmojiAnimation from "@/components/FireEmojiAnimation";
 import SettingsModal from "@/components/SettingsModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
-import { Category, getCategoryById } from "@/data/categories";
+import { Category, getCategoryById, categories } from "@/data/categories";
 
 type CategoryId = Category["id"];
 
@@ -29,7 +29,7 @@ const AppDetail = () => {
   // Helper to find which category a program belongs to
   const findCategoryOfProgram = (programId: string | null): CategoryId | null => {
     if (!programId) return null;
-    for (const cat of (require("@/data/categories").categories as Category[])) {
+    for (const cat of categories) {
       if (cat.programs.find((p) => p.id === programId)) return cat.id;
     }
     return null;
