@@ -112,14 +112,20 @@ const ConnectedApps = () => {
                         </span>
                       </div>
 
-                      {/* Lock icon */}
-                      <div className="w-6 h-6 rounded-full bg-background/80 border border-border/50 flex items-center justify-center shrink-0">
-                        <Lock className="w-3 h-3 text-muted-foreground" strokeWidth={2.2} />
-                      </div>
+                      {/* Lock icon - opens disconnect modal */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPendingDisconnect({ id: app.id, name: app.name });
+                        }}
+                        className="w-7 h-7 rounded-full bg-background/80 border border-border/50 flex items-center justify-center shrink-0 active:scale-90 transition-transform"
+                        aria-label={`Déconnecter ${app.name}`}
+                      >
+                        <Lock className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={2.2} />
+                      </button>
                     </div>
                   ) : (
-                    <div
-                      role="button"
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/app/${app.id}`);
@@ -128,10 +134,10 @@ const ConnectedApps = () => {
                     >
                       <span className="text-[11px] font-semibold text-primary">Choisir</span>
                       <ChevronRight className="w-3 h-3 text-primary" />
-                    </div>
+                    </button>
                   )}
                 </div>
-              </button>
+              </div>
             );
           })
         ) : (
