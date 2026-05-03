@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import AppDetail from "./pages/AppDetail";
 import MovementChallenge from "./pages/MovementChallenge";
-import Onboarding from "./pages/Onboarding";
+import Splash from "./pages/Splash";
 import OnboardingStep2 from "./pages/OnboardingStep2";
 import Auth from "./pages/Auth";
 
@@ -31,7 +31,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Onboarding />} />
+            <Route path="/" element={<Splash />} />
             <Route path="/onboarding-2" element={<OnboardingStep2 />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/home" element={<Index />} />
