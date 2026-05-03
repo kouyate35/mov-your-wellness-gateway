@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronRight, Menu, Settings } from "lucide-react";
 import { apps } from "@/data/apps";
-import { useAppSettings } from "@/hooks/useAppSettings";
+import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
 import ConnectionRequiredModal from "@/components/ConnectionRequiredModal";
 import ProgramRequiredModal from "@/components/ProgramRequiredModal";
@@ -11,22 +11,34 @@ import FireEmojiAnimation from "@/components/FireEmojiAnimation";
 import SettingsModal from "@/components/SettingsModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
-import { Category, getCategoryById } from "@/data/categories";
+import { Category, getCategoryById, categories } from "@/data/categories";
 
 type CategoryId = Category["id"];
 
 const AppDetail = () => {
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
-  const { getAppSetting, toggleApp, setProgram } = useAppSettings();
+  const { getAppSetting, toggleApp, setProgram, updateAppSetting } = useAppSettings();
   const [showConnectModal, setShowConnectModal] = useState(false);
   const [showConnectionRequiredModal, setShowConnectionRequiredModal] = useState(false);
   const [showProgramRequiredModal, setShowProgramRequiredModal] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showFireAnimation, setShowFireAnimation] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId>("move");
-  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
+
+  // Helper to find which category a program belongs to
+  const findCategoryOfProgram = (programId: string | null): CategoryId | null => {
+    if (!programId) return null;
+    for (const cat of categories) {
+      if (cat.programs.find((p) => p.id === programId)) return cat.id;
+    }
+    return null;
+  };
+
+  const initialSetting = appId ? getAppSetting(appId) : null;
+  const initialCategory = (findCategoryOfProgram(initialSetting?.selectedProgramId ?? null) ?? (initialSetting?.categoryId as CategoryId) ?? "move") as CategoryId;
+  const [selectedCategory, setSelectedCategory] = useState<CategoryId>(initialCategory);
+  const [selectedProgramId, setSelectedProgramId] = useState<string | null>(initialSetting?.selectedProgramId ?? null);
   const programSectionRef = useRef<HTMLDivElement>(null);
 
   const app = apps.find((a) => a.id === appId);
@@ -76,7 +88,7 @@ const AppDetail = () => {
     }
     setSelectedCategory(id);
     setSelectedProgramId(null);
-    setProgram(app.id, id);
+    updateAppSetting(app.id, { categoryId: id as AppSetting["categoryId"], selectedProgramId: null });
   };
 
   const handleProgramSelect = (programId: string) => {
@@ -85,6 +97,7 @@ const AppDetail = () => {
       return;
     }
     setSelectedProgramId(programId);
+    setProgram(app.id, programId);
   };
 
   const handleOpenConnectFromRequired = () => {
