@@ -73,7 +73,7 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
 
         {/* Tabs */}
         <div className="flex gap-1 px-5 pb-3 overflow-x-auto scrollbar-none">
-          {tabs.map((tab) => (
+          {(appInfo ? appTabs : fullTabs).map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -95,10 +95,11 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {activeTab === "profil" && (
-            <ProfilTab user={user} onDeleteAccount={handleDeleteAccount} appInfo={appInfo} onDisconnectApp={onDisconnectApp} />
+            <ProfilTab user={user} onDeleteAccount={handleDeleteAccount} appInfo={appInfo} onDisconnectApp={onDisconnectApp} compact={!!appInfo} />
           )}
           {activeTab === "notifications" && (
             <NotificationsTab
+              appInfo={appInfo}
               notifRappels={notifRappels} setNotifRappels={setNotifRappels}
               notifChallenges={notifChallenges} setNotifChallenges={setNotifChallenges}
               notifProgres={notifProgres} setNotifProgres={setNotifProgres}
@@ -107,6 +108,7 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
           )}
           {activeTab === "donnees" && <DonneesTab navigate={navigate} onClose={onClose} />}
           {activeTab === "securite" && <SecuriteTab />}
+          {activeTab === "confidentialite" && <ConfidentialiteTab appInfo={appInfo} />}
         </div>
       </div>
     </div>
