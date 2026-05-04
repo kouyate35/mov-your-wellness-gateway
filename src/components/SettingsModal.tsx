@@ -5,16 +5,23 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   X, User, Bell, Database, Shield, ChevronRight,
   Activity, BarChart3, Clock, Smartphone, Lock, Mail,
+  ShieldCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 
-type SettingsTab = "profil" | "notifications" | "donnees" | "securite";
+type SettingsTab = "profil" | "notifications" | "donnees" | "securite" | "confidentialite";
 
-const tabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
+const fullTabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
   { id: "profil", label: "Profil", icon: User },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "donnees", label: "Données", icon: Database },
   { id: "securite", label: "Sécurité", icon: Lock },
+];
+
+const appTabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
+  { id: "profil", label: "Profil", icon: User },
+  { id: "notifications", label: "Notifications", icon: Bell },
+  { id: "confidentialite", label: "Confidentialité", icon: ShieldCheck },
 ];
 
 interface AppInfo {
