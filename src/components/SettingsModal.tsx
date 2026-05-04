@@ -5,16 +5,23 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   X, User, Bell, Database, Shield, ChevronRight,
   Activity, BarChart3, Clock, Smartphone, Lock, Mail,
+  ShieldCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 
-type SettingsTab = "profil" | "notifications" | "donnees" | "securite";
+type SettingsTab = "profil" | "notifications" | "donnees" | "securite" | "confidentialite";
 
-const tabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
+const fullTabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
   { id: "profil", label: "Profil", icon: User },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "donnees", label: "Données", icon: Database },
   { id: "securite", label: "Sécurité", icon: Lock },
+];
+
+const appTabs: { id: SettingsTab; label: string; icon: React.ElementType }[] = [
+  { id: "profil", label: "Profil", icon: User },
+  { id: "notifications", label: "Notifications", icon: Bell },
+  { id: "confidentialite", label: "Confidentialité", icon: ShieldCheck },
 ];
 
 interface AppInfo {
@@ -66,7 +73,7 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
 
         {/* Tabs */}
         <div className="flex gap-1 px-5 pb-3 overflow-x-auto scrollbar-none">
-          {tabs.map((tab) => (
+          {(appInfo ? appTabs : fullTabs).map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -88,10 +95,11 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {activeTab === "profil" && (
-            <ProfilTab user={user} onDeleteAccount={handleDeleteAccount} appInfo={appInfo} onDisconnectApp={onDisconnectApp} />
+            <ProfilTab user={user} onDeleteAccount={handleDeleteAccount} appInfo={appInfo} onDisconnectApp={onDisconnectApp} compact={!!appInfo} />
           )}
           {activeTab === "notifications" && (
             <NotificationsTab
+              appInfo={appInfo}
               notifRappels={notifRappels} setNotifRappels={setNotifRappels}
               notifChallenges={notifChallenges} setNotifChallenges={setNotifChallenges}
               notifProgres={notifProgres} setNotifProgres={setNotifProgres}
@@ -100,6 +108,7 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
           )}
           {activeTab === "donnees" && <DonneesTab navigate={navigate} onClose={onClose} />}
           {activeTab === "securite" && <SecuriteTab />}
+          {activeTab === "confidentialite" && <ConfidentialiteTab appInfo={appInfo} />}
         </div>
       </div>
     </div>
@@ -108,14 +117,14 @@ const SettingsModal = ({ isOpen, onClose, appInfo, onDisconnectApp }: SettingsMo
 
 /* ─── Tab Contents ─── */
 
-const ProfilTab = ({ user, onDeleteAccount, appInfo, onDisconnectApp }: { 
+const ProfilTab = ({ user, onDeleteAccount, appInfo, onDisconnectApp, compact }: { 
   user: { name: string; email: string }; 
   onDeleteAccount: () => void;
   appInfo?: AppInfo;
   onDisconnectApp?: () => void;
+  compact?: boolean;
 }) => (
   <div className="space-y-5">
-    {/* App Info Section - shown when opened from AppDetail */}
     {appInfo && (
       <section>
         <div className="flex items-center gap-3 py-3">
@@ -135,55 +144,58 @@ const ProfilTab = ({ user, onDeleteAccount, appInfo, onDisconnectApp }: {
     <section>
       <h3 className="text-sm font-semibold text-foreground mb-4">Compte</h3>
       <div className="h-px bg-border/40 mb-4" />
-
       <SettingsRow label="Nom" value={user.name} />
       <SettingsRow label="E-mail" value={user.email} hasChevron />
     </section>
 
-    <section>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-foreground text-sm font-medium">Obtenir Workout Plus</span>
-        <button
-          onClick={() => window.location.href = "/subscription"}
-          className="px-4 py-1.5 bg-foreground text-background text-xs font-semibold rounded-full hover:opacity-90 transition-opacity"
-        >
-          Mettre à niveau
-        </button>
-      </div>
+    {!compact && (
+      <>
+        <section>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-foreground text-sm font-medium">Obtenir Workout Plus</span>
+            <button
+              onClick={() => window.location.href = "/subscription"}
+              className="px-4 py-1.5 bg-foreground text-background text-xs font-semibold rounded-full hover:opacity-90 transition-opacity"
+            >
+              Mettre à niveau
+            </button>
+          </div>
+          <p className="text-muted-foreground text-xs mb-4 leading-relaxed">
+            Bénéficiez de toutes les fonctionnalités de l'offre gratuite, et bien plus encore.
+          </p>
+          <div className="space-y-3.5">
+            <FeatureItem icon={Activity} text="Programmes d'entraînement personnalisés et illimités" />
+            <FeatureItem icon={BarChart3} text="Statistiques détaillées et suivi de progression avancé" />
+            <FeatureItem icon={Shield} text="Challenges exclusifs avec récompenses et badges" />
+            <FeatureItem icon={Clock} text="Rappels intelligents basés sur votre utilisation" />
+            <FeatureItem icon={Smartphone} text="Connexion illimitée d'applications à surveiller" />
+          </div>
+        </section>
 
-      <p className="text-muted-foreground text-xs mb-4 leading-relaxed">
-        Bénéficiez de toutes les fonctionnalités de l'offre gratuite, et bien plus encore.
-      </p>
+        <div className="h-px bg-border/40" />
 
-      <div className="space-y-3.5">
-        <FeatureItem icon={Activity} text="Programmes d'entraînement personnalisés et illimités" />
-        <FeatureItem icon={BarChart3} text="Statistiques détaillées et suivi de progression avancé" />
-        <FeatureItem icon={Shield} text="Challenges exclusifs avec récompenses et badges" />
-        <FeatureItem icon={Clock} text="Rappels intelligents basés sur votre utilisation" />
-        <FeatureItem icon={Smartphone} text="Connexion illimitée d'applications à surveiller" />
-      </div>
-    </section>
-
-    <div className="h-px bg-border/40" />
-
-    <div className="flex items-center justify-between py-1">
-      <span className="text-foreground text-sm">Supprimer le compte</span>
-      <button
-        onClick={onDeleteAccount}
-        className="px-4 py-1.5 rounded-full border border-destructive/60 text-destructive text-xs font-medium hover:bg-destructive/10 transition-colors"
-      >
-        Supprimer
-      </button>
-    </div>
+        <div className="flex items-center justify-between py-1">
+          <span className="text-foreground text-sm">Supprimer le compte</span>
+          <button
+            onClick={onDeleteAccount}
+            className="px-4 py-1.5 rounded-full border border-destructive/60 text-destructive text-xs font-medium hover:bg-destructive/10 transition-colors"
+          >
+            Supprimer
+          </button>
+        </div>
+      </>
+    )}
   </div>
 );
 
 const NotificationsTab = ({
+  appInfo,
   notifRappels, setNotifRappels,
   notifChallenges, setNotifChallenges,
   notifProgres, setNotifProgres,
   notifMaj, setNotifMaj,
 }: {
+  appInfo?: AppInfo;
   notifRappels: boolean; setNotifRappels: (v: boolean) => void;
   notifChallenges: boolean; setNotifChallenges: (v: boolean) => void;
   notifProgres: boolean; setNotifProgres: (v: boolean) => void;
@@ -192,12 +204,53 @@ const NotificationsTab = ({
   <div className="space-y-0">
     <h3 className="text-sm font-semibold text-foreground mb-4">Notifications</h3>
     <div className="h-px bg-border/40 mb-2" />
-    <NotificationRow label="Rappels de session" description="Recevez un rappel lorsqu'il est temps de faire votre programme." enabled={notifRappels} onToggle={() => setNotifRappels(!notifRappels)} />
-    <NotificationRow label="Challenges" description="Soyez notifié lorsqu'un nouveau challenge est disponible." enabled={notifChallenges} onToggle={() => setNotifChallenges(!notifChallenges)} />
-    <NotificationRow label="Progrès hebdomadaire" description="Recevez un résumé de vos performances chaque semaine." enabled={notifProgres} onToggle={() => setNotifProgres(!notifProgres)} />
-    <NotificationRow label="Mises à jour" description="Restez informé des nouvelles fonctionnalités." enabled={notifMaj} onToggle={() => setNotifMaj(!notifMaj)} />
+    {appInfo ? (
+      <>
+        <NotificationRow label={`Rappels ${appInfo.name}`} description={`Recevez un rappel avant chaque session déclenchée par ${appInfo.name}.`} enabled={notifRappels} onToggle={() => setNotifRappels(!notifRappels)} />
+        <NotificationRow label="Micro-défis" description={`Soyez notifié à chaque micro-défi déclenché à l'ouverture de ${appInfo.name}.`} enabled={notifChallenges} onToggle={() => setNotifChallenges(!notifChallenges)} />
+        <NotificationRow label="Résumé d'utilisation" description={`Résumé hebdomadaire de votre temps passé sur ${appInfo.name}.`} enabled={notifProgres} onToggle={() => setNotifProgres(!notifProgres)} />
+      </>
+    ) : (
+      <>
+        <NotificationRow label="Rappels de session" description="Recevez un rappel lorsqu'il est temps de faire votre programme." enabled={notifRappels} onToggle={() => setNotifRappels(!notifRappels)} />
+        <NotificationRow label="Challenges" description="Soyez notifié lorsqu'un nouveau challenge est disponible." enabled={notifChallenges} onToggle={() => setNotifChallenges(!notifChallenges)} />
+        <NotificationRow label="Progrès hebdomadaire" description="Recevez un résumé de vos performances chaque semaine." enabled={notifProgres} onToggle={() => setNotifProgres(!notifProgres)} />
+        <NotificationRow label="Mises à jour" description="Restez informé des nouvelles fonctionnalités." enabled={notifMaj} onToggle={() => setNotifMaj(!notifMaj)} />
+      </>
+    )}
   </div>
 );
+
+const ConfidentialiteTab = ({ appInfo }: { appInfo?: AppInfo }) => {
+  const [shareUsage, setShareUsage] = useState(false);
+  const [bgDetection, setBgDetection] = useState(true);
+  const appName = appInfo?.name ?? "cette application";
+  return (
+    <div className="space-y-0">
+      <h3 className="text-sm font-semibold text-foreground mb-4">Confidentialité</h3>
+      <div className="h-px bg-border/40 mb-2" />
+      <NotificationRow
+        label="Détection en arrière-plan"
+        description={`Autoriser Workout à détecter l'ouverture de ${appName} pour déclencher les micro-défis.`}
+        enabled={bgDetection}
+        onToggle={() => setBgDetection(!bgDetection)}
+      />
+      <NotificationRow
+        label="Partager les statistiques"
+        description={`Partager anonymement votre temps d'utilisation de ${appName} pour améliorer Workout.`}
+        enabled={shareUsage}
+        onToggle={() => setShareUsage(!shareUsage)}
+      />
+      <DataRow
+        label="Effacer les données liées"
+        description={`Supprimer l'historique d'utilisation et les sessions liées à ${appName}.`}
+        actionLabel="Effacer"
+        onAction={() => toast.error("Cette action est irréversible.")}
+        destructive
+      />
+    </div>
+  );
+};
 
 const DonneesTab = ({ navigate, onClose }: { navigate: (path: string) => void; onClose: () => void }) => (
   <div className="space-y-0">
