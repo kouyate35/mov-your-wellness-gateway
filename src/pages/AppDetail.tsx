@@ -149,17 +149,6 @@ const AppDetail = () => {
           
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
           <span className="text-base font-medium text-muted-foreground">{app.name}</span>
-
-          {/* Challenge button - visible only when program is selected */}
-          {selectedProgramId && selectedProgram && (
-            <button
-              onClick={handleChallengeClick}
-              className="ml-auto flex items-center gap-1.5 px-4 py-2 bg-white text-black text-sm font-semibold rounded-full hover:bg-white/90 transition-all active:scale-95"
-            >
-              <span className="text-base animate-pulse">🔥</span>
-              <span>Challenge</span>
-            </button>
-          )}
         </div>
       </header>
 
