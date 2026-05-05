@@ -121,7 +121,7 @@ const CategorySelector = ({ selectedCategory, onSelectCategory, selectedProgramI
             <button
               key={category.id}
               onClick={() => scrollToCard(index)}
-              className="relative flex-shrink-0 w-full aspect-[4/3] snap-start overflow-hidden"
+              className="relative flex-shrink-0 w-full aspect-[16/10] snap-start overflow-hidden"
             >
               {/* Background image */}
               <img 
