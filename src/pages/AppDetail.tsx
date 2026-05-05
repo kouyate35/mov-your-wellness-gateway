@@ -187,8 +187,8 @@ const AppDetail = () => {
       </section>
 
       {/* Category Selection */}
-      <section className="px-4 pt-3">
-        <h2 className="text-xs font-medium mb-2 text-muted-foreground">
+      <section className="px-4 pt-5">
+        <h2 className="text-[10.5px] font-semibold uppercase tracking-[0.14em] mb-3 text-muted-foreground/80 px-1">
           Choisissez le plan qui vous convient
         </h2>
         

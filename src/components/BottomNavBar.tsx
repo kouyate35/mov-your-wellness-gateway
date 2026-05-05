@@ -107,34 +107,34 @@ const BottomNavBar = () => {
         )}
 
         {/* Floating pill nav */}
-        <div className="pointer-events-auto px-8 pb-3">
-          <div className="mx-auto max-w-[340px] flex items-center justify-around h-16 px-2 rounded-full bg-card/85 backdrop-blur-xl border border-black/80 shadow-[0_0_0_1px_rgba(0,0,0,0.6),0_10px_40px_-10px_rgba(0,0,0,0.7)]">
+        <div className="pointer-events-auto px-10 pb-4">
+          <div className="mx-auto max-w-[300px] flex items-center justify-around h-[58px] px-1.5 rounded-full bg-[hsl(0_0%_8%)]/95 backdrop-blur-2xl border border-white/[0.06] shadow-[0_0_0_0.5px_rgba(0,0,0,0.8),0_12px_32px_-8px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.04)]">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <button
                   key={item.id}
                   onClick={() => navigate(item.path)}
-                  className="relative flex items-center justify-center flex-1 h-12"
+                  className="relative flex items-center justify-center flex-1 h-11"
                 >
                   <div
                     className={cn(
-                      "absolute inset-y-1 left-1 right-1 rounded-full transition-all duration-300 ease-out",
-                      isActive ? "bg-foreground/10 scale-100 opacity-100" : "scale-90 opacity-0"
+                      "absolute inset-y-0.5 left-0.5 right-0.5 rounded-full transition-all duration-300 ease-out",
+                      isActive ? "bg-white/[0.07] scale-100 opacity-100" : "scale-90 opacity-0"
                     )}
                   />
-                  <div className="relative flex flex-col items-center gap-0.5">
+                  <div className="relative flex flex-col items-center gap-[3px]">
                     <item.icon
                       className={cn(
-                        "w-5 h-5 transition-colors",
-                        isActive ? "text-foreground" : "text-muted-foreground/70"
+                        "w-[18px] h-[18px] transition-colors",
+                        isActive ? "text-foreground" : "text-muted-foreground/60"
                       )}
                       strokeWidth={isActive ? 2.2 : 1.6}
                     />
                     <span
                       className={cn(
-                        "text-[9px] transition-colors",
-                        isActive ? "text-foreground font-semibold" : "text-muted-foreground/70"
+                        "text-[8.5px] tracking-wide transition-colors leading-none",
+                        isActive ? "text-foreground font-semibold" : "text-muted-foreground/60 font-medium"
                       )}
                     >
                       {item.label}

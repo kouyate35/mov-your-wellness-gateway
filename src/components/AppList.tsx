@@ -12,8 +12,8 @@ const AppList = ({ apps, activeApps }: AppListProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="px-5">
-      <div className="space-y-0.5">
+    <div className="px-3">
+      <div className="space-y-1">
         {apps.map((app) => (
           <AppListItem
             key={app.id}
@@ -40,25 +40,25 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
     <button
       onClick={onClick}
       className={`
-        w-full flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200
-        hover:bg-secondary/50 active:bg-secondary/70
-        ${isActive ? "bg-secondary/30" : ""}
+        group w-full flex items-center gap-3.5 px-3 py-3 rounded-2xl transition-all duration-200
+        hover:bg-white/[0.03] active:bg-white/[0.05]
       `}
     >
       {/* App icon container with connection badge */}
       <div className="relative">
         <div className={`
-          w-11 h-11 rounded-xl flex items-center justify-center
+          w-11 h-11 rounded-[14px] flex items-center justify-center
           ${app.bgColor} ${app.iconColor}
+          shadow-[0_2px_6px_rgba(0,0,0,0.25)]
         `}>
           {iconComponent || <span className="text-lg">{app.icon}</span>}
         </div>
-        
-        {/* Connection badge - ChatGPT style (small check circle at bottom-left) */}
+
+        {/* Connection badge - ChatGPT style */}
         {isActive && (
-          <div className="absolute -bottom-0.5 -left-0.5 w-5 h-5 bg-background rounded-full flex items-center justify-center border-2 border-background">
-            <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
-              <Check className="w-2.5 h-2.5 text-gray-800" strokeWidth={3} />
+          <div className="absolute -bottom-0.5 -left-0.5 w-[18px] h-[18px] bg-background rounded-full flex items-center justify-center">
+            <div className="w-[14px] h-[14px] bg-white rounded-full flex items-center justify-center">
+              <Check className="w-2 h-2 text-gray-900" strokeWidth={3.5} />
             </div>
           </div>
         )}
@@ -66,12 +66,12 @@ const AppListItem = ({ app, isActive, onClick }: AppListItemProps) => {
 
       {/* App info */}
       <div className="flex-1 text-left min-w-0">
-        <h3 className="font-medium text-sm text-foreground truncate">{app.name}</h3>
-        <p className="text-xs text-muted-foreground truncate">{app.description}</p>
+        <h3 className="font-semibold text-[15px] text-foreground truncate leading-tight">{app.name}</h3>
+        <p className="text-[12px] text-muted-foreground/70 truncate mt-0.5">{app.description}</p>
       </div>
 
       {/* Right side - just chevron */}
-      <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+      <ChevronRight className="w-4 h-4 text-muted-foreground/40 flex-shrink-0 group-hover:text-muted-foreground/70 group-hover:translate-x-0.5 transition-all" />
     </button>
   );
 };

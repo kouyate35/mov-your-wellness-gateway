@@ -111,12 +111,12 @@ const Index = () => {
       />
 
       {/* Header */}
-      <header className="pt-3 pb-4 px-4">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-semibold text-foreground tracking-tight">
-            Work<span className="font-normal">out</span>
+      <header className="pt-4 pb-5 px-5">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-[26px] font-semibold text-foreground tracking-tight leading-none">
+            Work<span className="font-light text-foreground/90">out</span>
           </h1>
-          <span className="px-3 py-1.5 text-[11px] font-medium bg-secondary/80 rounded-full text-muted-foreground border border-border/50">
+          <span className="px-2.5 py-1 text-[10px] font-medium bg-white/[0.04] rounded-full text-muted-foreground/80 border border-white/[0.06] tracking-wide">
             Work avant de scroll
           </span>
           <div className="ml-auto">

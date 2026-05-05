@@ -12,29 +12,18 @@ const tabs = [
 
 const SectionTabs = ({ activeTab, onTabChange, onAddApp }: SectionTabsProps) => {
   return (
-    <div className="flex justify-between items-center w-full px-4 py-3">
-      <div className="flex gap-2">
-        {tabs.map((tab, index) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(index)}
-            className={`
-              px-3 py-2 rounded-full whitespace-nowrap text-xs font-medium transition-all duration-200
-              ${activeTab === index 
-                ? "bg-secondary text-foreground" 
-                : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-              }
-            `}
-          >
-            {tab.label}
-          </button>
-        ))}
+    <div className="flex justify-between items-center w-full px-5 pt-2 pb-3">
+      <div className="flex items-center gap-2">
+        <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
+          Applis détectées
+        </h2>
       </div>
       <button
         onClick={onAddApp}
-        className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0"
+        className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.25)] hover:scale-105 active:scale-95 transition-transform"
+        aria-label="Ajouter une application"
       >
-        <Plus size={20} className="text-black" />
+        <Plus size={16} className="text-black" strokeWidth={2.5} />
       </button>
     </div>
   );
