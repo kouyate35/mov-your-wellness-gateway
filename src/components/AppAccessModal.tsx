@@ -20,22 +20,25 @@ const AppAccessModal = ({
 }: AppAccessModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent 
-        className="max-w-[320px] w-[calc(100%-64px)] mx-auto bg-card border-border rounded-3xl p-0 gap-0"
+      <DialogContent
+        className="max-w-[340px] w-[calc(100%-48px)] mx-auto bg-card border border-white/[0.06] rounded-3xl p-0 gap-0"
         hideCloseButton
       >
         {/* Header */}
-        <div className="p-6 pb-4 text-center border-b border-border">
-          <h2 className="text-xl font-semibold text-foreground">
+        <div className="px-6 pt-7 pb-5 text-center">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-semibold mb-2">
+            {needsPermission ? "Permission" : "Confidentialité"}
+          </p>
+          <h2 className="text-[19px] font-semibold text-foreground tracking-tight">
             {needsPermission ? "Permission requise" : "Accès aux applications"}
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {needsPermission 
+          <p className="text-[12.5px] text-muted-foreground mt-2 leading-relaxed px-2">
+            {needsPermission
               ? "Autorise l'accès aux statistiques d'utilisation"
-              : "Pour personnaliser ton expérience Workout"
-            }
+              : "Pour personnaliser ton expérience Workout"}
           </p>
         </div>
+        <div className="h-px bg-white/[0.05] mx-6" />
 
         {/* Content */}
         <div className="p-6 space-y-5">
