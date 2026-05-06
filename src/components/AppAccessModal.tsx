@@ -46,8 +46,8 @@ const AppAccessModal = ({
             // Mode permission Android
             <>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                  <ExternalLink className="w-5 h-5 text-primary" strokeWidth={1.5} />
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center">
+                  <ExternalLink className="w-4 h-4 text-foreground/80" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm text-foreground">
@@ -60,8 +60,8 @@ const AppAccessModal = ({
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4 text-foreground/80" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm text-foreground">
@@ -78,8 +78,8 @@ const AppAccessModal = ({
             <>
               {/* Bloc 1 - Identification */}
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                  <Scan className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center">
+                  <Scan className="w-4 h-4 text-foreground/80" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm text-foreground">
@@ -93,8 +93,8 @@ const AppAccessModal = ({
 
               {/* Bloc 2 - Confidentialité */}
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4 text-foreground/80" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm text-foreground">
@@ -108,8 +108,8 @@ const AppAccessModal = ({
 
               {/* Bloc 3 - Contrôle */}
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                  <Settings2 className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center">
+                  <Settings2 className="w-4 h-4 text-foreground/80" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm text-foreground">
