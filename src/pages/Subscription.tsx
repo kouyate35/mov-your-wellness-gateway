@@ -272,10 +272,8 @@ const Subscription = () => {
                         <div
                           className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${
                             feature.included
-                              ? plan.highlight
-                                ? "bg-info/15 text-info"
-                                : "bg-foreground/10 text-foreground/70"
-                              : "bg-muted text-muted-foreground/30"
+                              ? "bg-foreground/12 text-foreground/80"
+                              : "bg-white/[0.04] text-muted-foreground/30"
                           }`}
                         >
                           <Check className="w-2.5 h-2.5" strokeWidth={3} />
