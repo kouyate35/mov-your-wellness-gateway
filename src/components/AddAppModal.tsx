@@ -83,30 +83,30 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
           className="w-[calc(100vw-32px)] max-w-[calc(100vw-32px)] sm:max-w-md min-w-0 bg-card border-border rounded-3xl p-0 gap-0 overflow-hidden"
           hideCloseButton
         >
-          {/* Header — minimal "Envoi en tant que" style */}
-          <div className="px-5 pt-5 pb-4 flex items-center justify-between min-w-0">
+          {/* Header — refined typography */}
+          <div className="px-5 pt-6 pb-4 flex items-center justify-between min-w-0">
             <div className="flex flex-col min-w-0 pr-3">
-              <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70 font-medium">
+              <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70 font-semibold">
                 Ajouter
               </span>
-              <h2 className="text-base font-semibold text-foreground leading-tight truncate">
+              <h2 className="text-[17px] font-semibold text-foreground leading-tight truncate tracking-tight mt-0.5">
                 Nouvelle application
               </h2>
             </div>
             <button
               onClick={onClose}
-              className="w-9 h-9 rounded-full bg-secondary/70 hover:bg-secondary flex items-center justify-center transition-colors shrink-0"
+              className="w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.08] flex items-center justify-center transition-colors shrink-0"
               aria-label="Fermer"
             >
               <X className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
 
-          {/* Search bubble (équivalent "Inviter d'autres personnes") */}
+          {/* Search bubble */}
           <div className="px-5 min-w-0">
-            <div className="relative bg-secondary/50 rounded-2xl border border-border/40 p-3 flex items-center gap-2.5 min-w-0 overflow-hidden">
-              <div className="w-9 h-9 rounded-full bg-background/60 flex items-center justify-center shrink-0">
-                <Search className="w-4 h-4 text-muted-foreground" />
+            <div className="relative bg-white/[0.04] rounded-2xl border border-white/[0.06] p-2.5 flex items-center gap-2.5 min-w-0 overflow-hidden">
+              <div className="w-8 h-8 rounded-full bg-white/[0.04] flex items-center justify-center shrink-0">
+                <Search className="w-3.5 h-3.5 text-muted-foreground" />
               </div>
               <div className="flex-1 min-w-0">
                 <input
@@ -116,16 +116,16 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Nom de l'application"
-                  className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none truncate"
+                  className="w-full bg-transparent text-[13.5px] text-foreground placeholder:text-muted-foreground/60 focus:outline-none truncate"
                 />
-                <p className="text-[11px] text-muted-foreground/70 mt-0.5 truncate">
+                <p className="text-[10.5px] text-muted-foreground/60 mt-0.5 truncate">
                   Recherche dans le catalogue
                 </p>
               </div>
               <button
                 onClick={() => handleSearch()}
                 disabled={!query.trim()}
-                className="h-8 px-3 rounded-full bg-foreground text-background text-[11px] font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-opacity shrink-0"
+                className="h-8 px-3.5 rounded-full bg-foreground text-background text-[11px] font-semibold disabled:opacity-25 disabled:cursor-not-allowed transition-opacity shrink-0"
               >
                 Rechercher
               </button>
@@ -134,19 +134,22 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
 
           {/* Suggested apps row — horizontal scroll, squircle icons */}
           {suggestedApps.length > 0 && (
-            <div className="mt-5 w-full min-w-0 overflow-hidden border-y border-border/35 py-4">
+            <div className="mt-5 w-full min-w-0 overflow-hidden border-t border-white/[0.05] py-4">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground/60 font-semibold px-5 mb-3">
+                Suggestions
+              </p>
               <div
-                className="flex gap-5 overflow-x-auto px-5 scrollbar-hide overscroll-x-contain"
+                className="flex gap-4 overflow-x-auto px-5 scrollbar-hide overscroll-x-contain"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {suggestedApps.map((app) => (
                   <button
                     key={app.id}
                     onClick={() => handleSearch(app)}
-                    className="flex w-[58px] flex-col items-center gap-1.5 shrink-0 active:scale-95 transition-transform"
+                    className="flex w-[54px] flex-col items-center gap-1.5 shrink-0 active:scale-95 transition-transform"
                   >
                     {getAppIcon(app.id, "md")}
-                    <span className="text-[10px] text-foreground/90 font-medium truncate w-full text-center leading-tight">
+                    <span className="text-[10px] text-foreground/80 font-medium truncate w-full text-center leading-tight">
                       {app.name}
                     </span>
                   </button>
@@ -156,7 +159,7 @@ const AddAppModal = ({ isOpen, onClose, connectedAppIds, onAddApp }: AddAppModal
           )}
 
           {/* Store rows — Play Store & App Store */}
-          <div className="px-2 py-3 pb-5 min-w-0">
+          <div className="px-2 py-3 pb-5 min-w-0 border-t border-white/[0.05] mt-1">
             <button
               onClick={() => openStore("play")}
               className="w-full min-w-0 flex items-center gap-3 px-3 py-3 rounded-2xl hover:bg-secondary/40 transition-colors"
