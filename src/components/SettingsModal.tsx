@@ -390,8 +390,7 @@ const NotificationsTab = ({
       </>
     ) : (
       <>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Notifications</h3>
-        <div className="h-px bg-border/40 mb-2" />
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">Notifications</h3>
         <NotificationRow label="Rappels de session" description="Recevez un rappel lorsqu'il est temps de faire votre programme." enabled={notifRappels} onToggle={() => setNotifRappels(!notifRappels)} />
         <NotificationRow label="Challenges" description="Soyez notifié lorsqu'un nouveau challenge est disponible." enabled={notifChallenges} onToggle={() => setNotifChallenges(!notifChallenges)} />
         <NotificationRow label="Progrès hebdomadaire" description="Recevez un résumé de vos performances chaque semaine." enabled={notifProgres} onToggle={() => setNotifProgres(!notifProgres)} />
@@ -403,8 +402,7 @@ const NotificationsTab = ({
 
 const DonneesTab = ({ navigate, onClose }: { navigate: (path: string) => void; onClose: () => void }) => (
   <div className="space-y-0">
-    <h3 className="text-sm font-semibold text-foreground mb-4">Gestion des données</h3>
-    <div className="h-px bg-border/40 mb-2" />
+    <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">Gestion des données</h3>
     <DataRow label="Historique d'activité" description="Consultez et gérez votre historique de sessions." actionLabel="Gérer" onAction={() => toast.info("Bientôt disponible")} />
     <DataRow label="Applications connectées" description="Gérez les applications liées à votre compte." actionLabel="Gérer" onAction={() => { navigate("/home"); onClose(); }} />
     <DataRow label="Réinitialiser la progression" description="Remet à zéro tous vos compteurs et statistiques." actionLabel="Réinitialiser" onAction={() => toast.error("Cette action est irréversible.")} destructive />
@@ -415,8 +413,7 @@ const DonneesTab = ({ navigate, onClose }: { navigate: (path: string) => void; o
 
 const SecuriteTab = () => (
   <div className="space-y-0">
-    <h3 className="text-sm font-semibold text-foreground mb-4">Sécurité</h3>
-    <div className="h-px bg-border/40 mb-2" />
+    <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">Sécurité</h3>
     <DataRow label="Changer le mot de passe" description="Mettez à jour votre mot de passe pour sécuriser votre compte." actionLabel="Modifier" onAction={() => toast.info("Bientôt disponible")} />
     <DataRow label="Changer l'adresse e-mail" description="Modifiez l'adresse e-mail associée à votre compte." actionLabel="Modifier" onAction={() => toast.info("Bientôt disponible")} />
   </div>
