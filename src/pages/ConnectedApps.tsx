@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Link2, Lock, ChevronRight } from "lucide-react";
+import { Lock, ChevronRight } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { getAppIcon } from "@/components/AppIcons";
@@ -49,15 +49,20 @@ const ConnectedApps = () => {
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      {/* Header */}
-      <header className="px-4 pt-6 pb-5">
-        <div className="flex items-center gap-3">
-          <Link2 className="w-5 h-5 text-muted-foreground" />
-          <h1 className="text-xl font-semibold text-foreground">Applications connectées</h1>
-        </div>
+      {/* Header — minimal, premium */}
+      <header className="px-5 pt-7 pb-6">
+        <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-1.5">
+          Connexions
+        </p>
+        <h1 className="text-[22px] font-semibold text-foreground tracking-tight">
+          Applications
+        </h1>
+        <p className="text-[12.5px] text-muted-foreground mt-1.5 leading-relaxed">
+          {connectedApps.length} {connectedApps.length > 1 ? "apps liées" : "app liée"} à tes micro-défis
+        </p>
       </header>
 
-      <div className="px-4 space-y-3">
+      <div className="px-4 space-y-2">
         {connectedApps.length > 0 ? (
           connectedApps.map((app) => {
             const programId = settings[app.id]?.selectedProgramId ?? null;
@@ -67,27 +72,26 @@ const ConnectedApps = () => {
             return (
               <div
                 key={app.id}
-                className="w-full bg-secondary/40 backdrop-blur-sm rounded-3xl border border-border/30 overflow-hidden"
+                className="w-full bg-white/[0.025] hover:bg-white/[0.04] transition-colors rounded-2xl border border-white/[0.06] overflow-hidden"
               >
                 <div className="flex items-center gap-3 p-3">
                   {/* App icon */}
                   <div className="shrink-0">{getAppIcon(app.id, "md", true)}</div>
 
-                  {/* App name + tagline */}
+                  {/* App name + category */}
                   <div className="flex-1 text-left min-w-0">
-                    <p className="text-base font-semibold text-foreground truncate">
+                    <p className="text-[15px] font-semibold text-foreground truncate leading-tight">
                       {app.name}
                     </p>
-                    <p className="text-xs text-muted-foreground truncate">
+                    <p className="text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground/70 mt-1 truncate font-medium">
                       {program ? program.categoryName : "Aucun programme"}
                     </p>
                   </div>
 
                   {/* Program bubble (mini) */}
                   {program ? (
-                    <div className="relative flex items-center gap-2 pl-1.5 pr-2.5 py-1.5 rounded-2xl bg-background/60 border border-border/40 shrink-0">
-                      {/* Mini video thumbnail */}
-                      <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-black shrink-0">
+                    <div className="relative flex items-center gap-2 pl-1 pr-2 py-1 rounded-2xl bg-white/[0.04] border border-white/[0.06] shrink-0">
+                      <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-black shrink-0">
                         {videoSrc ? (
                           <video
                             src={videoSrc}
@@ -98,30 +102,28 @@ const ConnectedApps = () => {
                             className="absolute inset-0 w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-primary/10" />
+                          <div className="absolute inset-0 bg-gradient-to-br from-foreground/20 to-foreground/5" />
                         )}
                       </div>
 
-                      {/* Program label */}
-                      <div className="flex flex-col leading-tight max-w-[90px]">
-                        <span className="text-[11px] font-semibold text-primary truncate">
+                      <div className="flex flex-col leading-tight max-w-[88px]">
+                        <span className="text-[11px] font-semibold text-foreground truncate">
                           {program.name}
                         </span>
-                        <span className="text-[10px] text-muted-foreground truncate">
+                        <span className="text-[10px] text-muted-foreground/80 truncate">
                           {program.duration}
                         </span>
                       </div>
 
-                      {/* Lock icon - opens disconnect modal */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setPendingDisconnect({ id: app.id, name: app.name });
                         }}
-                        className="w-7 h-7 rounded-full bg-background/80 border border-border/50 flex items-center justify-center shrink-0 active:scale-90 transition-transform"
+                        className="w-7 h-7 rounded-full bg-background/80 border border-white/[0.06] flex items-center justify-center shrink-0 active:scale-90 transition-transform"
                         aria-label={`Déconnecter ${app.name}`}
                       >
-                        <Lock className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={2.2} />
+                        <Lock className="w-3 h-3 text-muted-foreground/80" strokeWidth={2} />
                       </button>
                     </div>
                   ) : (
@@ -130,10 +132,10 @@ const ConnectedApps = () => {
                         e.stopPropagation();
                         navigate(`/app/${app.id}`);
                       }}
-                      className="flex items-center gap-1 px-3 py-2 rounded-2xl bg-primary/15 border border-primary/30 shrink-0"
+                      className="flex items-center gap-1 px-3.5 py-2 rounded-full bg-foreground text-background shrink-0 active:scale-95 transition-transform"
                     >
-                      <span className="text-[11px] font-semibold text-primary">Choisir</span>
-                      <ChevronRight className="w-3 h-3 text-primary" />
+                      <span className="text-[11px] font-semibold">Choisir</span>
+                      <ChevronRight className="w-3 h-3" strokeWidth={2.5} />
                     </button>
                   )}
                 </div>

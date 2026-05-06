@@ -310,47 +310,58 @@ const ProfilTab = ({ user, onDeleteAccount }: {
   user: { name: string; email: string };
   onDeleteAccount: () => void;
 }) => (
-  <div className="space-y-5">
+  <div className="space-y-7">
     <section>
-      <h3 className="text-sm font-semibold text-foreground mb-4">Compte</h3>
-      <div className="h-px bg-border/40 mb-4" />
+      <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">
+        Compte
+      </h3>
       <SettingsRow label="Nom" value={user.name} />
       <SettingsRow label="E-mail" value={user.email} hasChevron />
     </section>
 
     <section>
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-foreground text-sm font-medium">Obtenir Workout Plus</span>
-        <button
-          onClick={() => window.location.href = "/subscription"}
-          className="px-4 py-1.5 bg-foreground text-background text-xs font-semibold rounded-full hover:opacity-90 transition-opacity"
-        >
-          Mettre à niveau
-        </button>
-      </div>
-      <p className="text-muted-foreground text-xs mb-4 leading-relaxed">
-        Bénéficiez de toutes les fonctionnalités de l'offre gratuite, et bien plus encore.
-      </p>
-      <div className="space-y-3.5">
-        <FeatureItem icon={Activity} text="Programmes d'entraînement personnalisés et illimités" />
-        <FeatureItem icon={BarChart3} text="Statistiques détaillées et suivi de progression avancé" />
-        <FeatureItem icon={Shield} text="Challenges exclusifs avec récompenses et badges" />
-        <FeatureItem icon={Clock} text="Rappels intelligents basés sur votre utilisation" />
-        <FeatureItem icon={Smartphone} text="Connexion illimitée d'applications à surveiller" />
+      <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">
+        Plan
+      </h3>
+      <div className="rounded-2xl bg-white/[0.025] border border-white/[0.06] p-4">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="min-w-0">
+            <p className="text-foreground text-[14px] font-semibold leading-tight">Workout Plus</p>
+            <p className="text-muted-foreground text-[12px] mt-1 leading-relaxed">
+              Programmes illimités, statistiques avancées et défis exclusifs.
+            </p>
+          </div>
+          <button
+            onClick={() => window.location.href = "/subscription"}
+            className="px-3.5 py-1.5 bg-foreground text-background text-[11px] font-semibold rounded-full hover:opacity-90 transition-opacity shrink-0"
+          >
+            Mettre à niveau
+          </button>
+        </div>
+        <div className="space-y-2.5 pt-3 border-t border-white/[0.05]">
+          <FeatureItem icon={Activity} text="Programmes personnalisés et illimités" />
+          <FeatureItem icon={BarChart3} text="Statistiques détaillées et progression" />
+          <FeatureItem icon={Shield} text="Challenges exclusifs avec récompenses" />
+          <FeatureItem icon={Clock} text="Rappels intelligents basés sur l'usage" />
+          <FeatureItem icon={Smartphone} text="Connexion illimitée d'applications" />
+        </div>
       </div>
     </section>
 
-    <div className="h-px bg-border/40" />
-
-    <div className="flex items-center justify-between py-1">
-      <span className="text-foreground text-sm">Supprimer le compte</span>
-      <button
-        onClick={onDeleteAccount}
-        className="px-4 py-1.5 rounded-full border border-destructive/60 text-destructive text-xs font-medium hover:bg-destructive/10 transition-colors"
-      >
-        Supprimer
-      </button>
-    </div>
+    <section>
+      <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">
+        Zone de danger
+      </h3>
+      <div className="flex items-center justify-between py-2">
+        <span className="text-foreground text-[13.5px]">Supprimer le compte</span>
+        <button
+          onClick={onDeleteAccount}
+          className="px-3.5 py-1.5 rounded-full border border-destructive/50 text-destructive text-[11px] font-semibold hover:bg-destructive/10 transition-colors"
+        >
+          Supprimer
+        </button>
+      </div>
+    </section>
   </div>
 );
 
@@ -379,8 +390,7 @@ const NotificationsTab = ({
       </>
     ) : (
       <>
-        <h3 className="text-sm font-semibold text-foreground mb-4">Notifications</h3>
-        <div className="h-px bg-border/40 mb-2" />
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">Notifications</h3>
         <NotificationRow label="Rappels de session" description="Recevez un rappel lorsqu'il est temps de faire votre programme." enabled={notifRappels} onToggle={() => setNotifRappels(!notifRappels)} />
         <NotificationRow label="Challenges" description="Soyez notifié lorsqu'un nouveau challenge est disponible." enabled={notifChallenges} onToggle={() => setNotifChallenges(!notifChallenges)} />
         <NotificationRow label="Progrès hebdomadaire" description="Recevez un résumé de vos performances chaque semaine." enabled={notifProgres} onToggle={() => setNotifProgres(!notifProgres)} />
@@ -392,8 +402,7 @@ const NotificationsTab = ({
 
 const DonneesTab = ({ navigate, onClose }: { navigate: (path: string) => void; onClose: () => void }) => (
   <div className="space-y-0">
-    <h3 className="text-sm font-semibold text-foreground mb-4">Gestion des données</h3>
-    <div className="h-px bg-border/40 mb-2" />
+    <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">Gestion des données</h3>
     <DataRow label="Historique d'activité" description="Consultez et gérez votre historique de sessions." actionLabel="Gérer" onAction={() => toast.info("Bientôt disponible")} />
     <DataRow label="Applications connectées" description="Gérez les applications liées à votre compte." actionLabel="Gérer" onAction={() => { navigate("/home"); onClose(); }} />
     <DataRow label="Réinitialiser la progression" description="Remet à zéro tous vos compteurs et statistiques." actionLabel="Réinitialiser" onAction={() => toast.error("Cette action est irréversible.")} destructive />
@@ -404,8 +413,7 @@ const DonneesTab = ({ navigate, onClose }: { navigate: (path: string) => void; o
 
 const SecuriteTab = () => (
   <div className="space-y-0">
-    <h3 className="text-sm font-semibold text-foreground mb-4">Sécurité</h3>
-    <div className="h-px bg-border/40 mb-2" />
+    <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3">Sécurité</h3>
     <DataRow label="Changer le mot de passe" description="Mettez à jour votre mot de passe pour sécuriser votre compte." actionLabel="Modifier" onAction={() => toast.info("Bientôt disponible")} />
     <DataRow label="Changer l'adresse e-mail" description="Modifiez l'adresse e-mail associée à votre compte." actionLabel="Modifier" onAction={() => toast.info("Bientôt disponible")} />
   </div>
