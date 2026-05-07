@@ -158,84 +158,93 @@ const MovementChallenge = () => {
         </div>
       )}
 
-      {/* HUD Overlay - Top area */}
-      <div className="absolute top-0 left-0 right-0 z-10 p-4 pointer-events-none">
-        <div className="flex justify-between items-start">
-          {/* Left side - Camera status and app info */}
-          <div className="flex flex-col gap-2">
-            {/* Camera status */}
+      {/* Subtle top + bottom gradient for HUD legibility */}
+      <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-black/70 via-black/30 to-transparent z-[5] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-[5] pointer-events-none" />
+
+      {/* HUD — Top */}
+      <div className="absolute top-0 left-0 right-0 z-10 px-4 pt-[max(env(safe-area-inset-top),16px)] pb-3 pointer-events-none">
+        <div className="flex justify-between items-start gap-3">
+          {/* Left — App context */}
+          <div className="flex flex-col gap-2 min-w-0">
+            {/* Eyebrow */}
+            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/55">
+              Avant d'accéder à
+            </p>
+            <h2 className="text-white text-[22px] font-semibold tracking-tight leading-none truncate">
+              {appId.charAt(0).toUpperCase() + appId.slice(1)}
+            </h2>
+            {/* Camera status pill */}
             <div
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm w-fit",
+                "mt-1 flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md border w-fit",
                 isReady
-                  ? "bg-green-500/30 text-green-300"
-                  : "bg-white/20 text-white/70"
+                  ? "bg-emerald-500/15 border-emerald-400/30 text-emerald-300"
+                  : "bg-white/10 border-white/15 text-white/70"
               )}
             >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Camera className="w-4 h-4" />
-              )}
-              <span className="text-sm font-medium">
-                {isLoading ? "Chargement..." : isReady ? "Caméra active" : "En attente"}
-              </span>
-            </div>
-
-            {/* App info */}
-            <div className="bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full w-fit">
-              <span className="text-white/80 text-sm">
-                Avant d'accéder à{" "}
-                <span className="font-semibold text-white">
-                  {appId.charAt(0).toUpperCase() + appId.slice(1)}
-                </span>
+              <span className={cn("w-1.5 h-1.5 rounded-full", isReady ? "bg-emerald-400 animate-pulse" : "bg-white/60")} />
+              <span className="text-[10.5px] font-medium tracking-wide">
+                {isLoading ? "Initialisation" : isReady ? "Caméra active" : "En attente"}
               </span>
             </div>
           </div>
 
-          {/* Right side - Tutorial video */}
-          <div className="w-24 h-24 rounded-xl overflow-hidden border-2 border-white/30 bg-black/60 backdrop-blur-sm shadow-lg">
-            <video 
-              src={tutorialVideo} 
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
+          {/* Right — Tutorial PiP */}
+          <div className="relative shrink-0">
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 bg-white text-black text-[8.5px] font-bold uppercase tracking-[0.15em] rounded-sm">
+              Modèle
+            </div>
+            <div className="w-[88px] h-[120px] rounded-2xl overflow-hidden border border-white/20 bg-black/60 backdrop-blur-sm shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+              <video
+                src={tutorialVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Counter and progress - Bottom area */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 p-6 pointer-events-none">
-        {/* Push-up counter */}
-        <div className="flex flex-col items-center gap-4">
-          {/* Phase instruction */}
-          <div className="bg-black/50 backdrop-blur-sm px-6 py-2 rounded-full">
-            <p className="text-white font-medium">
+      {/* HUD — Bottom */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-[max(env(safe-area-inset-bottom),28px)] pointer-events-none">
+        <div className="flex flex-col items-center gap-5">
+          {/* Instruction */}
+          <div className="px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/15">
+            <p className="text-white text-[15px] font-semibold tracking-tight">
               {phase === "down" ? config.instruction : config.instructionAlt}
             </p>
           </div>
 
-          {/* Progress dots */}
-          <div className="flex gap-3">
-            {Array.from({ length: config.required }).map((_, index) => (
-              <div
-                key={index}
-                className={cn(
-                  "w-4 h-4 rounded-full transition-all duration-300",
-                  index < count
-                    ? "bg-green-400 scale-125 shadow-lg shadow-green-400/50"
-                    : "bg-white/30"
-                )}
-              />
-            ))}
+          {/* Progress segmented bar */}
+          <div className="w-full max-w-[240px]">
+            <div className="flex items-center gap-1.5">
+              {Array.from({ length: config.required }).map((_, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "flex-1 h-[3px] rounded-full transition-all duration-300",
+                    index < count ? "bg-white" : "bg-white/20"
+                  )}
+                />
+              ))}
+            </div>
+            <div className="flex items-baseline justify-between mt-2.5">
+              <p className="text-white/55 text-[10.5px] font-medium uppercase tracking-[0.18em]">
+                Progression
+              </p>
+              <p className="text-white text-[12px] font-semibold tabular-nums">
+                {count}<span className="text-white/40"> / {config.required}</span>
+              </p>
+            </div>
           </div>
 
-          {/* Instructions */}
-          <p className="text-white/50 text-xs text-center max-w-xs">
-            Fais {config.required} répétitions face à la caméra pour débloquer l'app
+          {/* Hint */}
+          <p className="text-white/45 text-[11px] text-center max-w-[260px] leading-relaxed">
+            Place-toi face à la caméra et complète les répétitions pour débloquer l'app.
           </p>
         </div>
       </div>
