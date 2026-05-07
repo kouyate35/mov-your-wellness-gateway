@@ -170,25 +170,36 @@ const AppRootPanel = ({
   onDisconnectApp?: () => void;
   onOpenPanel: (p: AppPanel) => void;
 }) => (
-  <div className="space-y-5">
-    <section>
-      <div className="flex items-center gap-3 py-3">
-        {getAppIcon(appInfo.id, "md", true)}
-        <span className="text-foreground text-base font-semibold flex-1">{appInfo.name}</span>
-        <button
-          onClick={onDisconnectApp}
-          className="px-4 py-2 rounded-full border border-border text-foreground text-xs font-medium hover:bg-muted/50 transition-colors"
-        >
-          Déconnecter
-        </button>
+  <div className="space-y-6">
+    {/* App identity card */}
+    <section className="rounded-2xl bg-white/[0.025] border border-white/[0.06] p-3.5 flex items-center gap-3">
+      <div className="shrink-0">{getAppIcon(appInfo.id, "md", true)}</div>
+      <div className="flex-1 min-w-0">
+        <p className="text-foreground text-[14.5px] font-semibold leading-tight truncate">{appInfo.name}</p>
+        <p className="text-muted-foreground text-[11px] mt-0.5 flex items-center gap-1.5">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          Connectée
+        </p>
       </div>
-      <div className="h-px bg-border/40 mt-1" />
+      <button
+        onClick={onDisconnectApp}
+        className="px-3.5 py-1.5 rounded-full border border-white/[0.08] text-foreground/90 text-[11px] font-semibold hover:bg-white/[0.04] transition-colors shrink-0"
+      >
+        Déconnecter
+      </button>
     </section>
 
-    <section className="space-y-1">
-      <PanelRow icon={Trophy} label="Challenge" description="Choisissez le défi associé à cette appli." onClick={() => onOpenPanel("challenge")} />
-      <PanelRow icon={Bell} label="Notifications" description="Gérez les rappels et alertes liés à cette appli." onClick={() => onOpenPanel("notifications")} />
-      <PanelRow icon={ShieldCheck} label="Confidentialité" description="Détection, partage et données liées à cette appli." onClick={() => onOpenPanel("confidentialite")} />
+    <section>
+      <h3 className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-2 px-1">
+        Configuration
+      </h3>
+      <div className="rounded-2xl bg-white/[0.02] border border-white/[0.05] overflow-hidden">
+        <PanelRow icon={Trophy} label="Challenge" description="Défi associé à cette appli" onClick={() => onOpenPanel("challenge")} />
+        <div className="h-px bg-white/[0.04] mx-3" />
+        <PanelRow icon={Bell} label="Notifications" description="Rappels et alertes" onClick={() => onOpenPanel("notifications")} />
+        <div className="h-px bg-white/[0.04] mx-3" />
+        <PanelRow icon={ShieldCheck} label="Confidentialité" description="Détection et données" onClick={() => onOpenPanel("confidentialite")} />
+      </div>
     </section>
   </div>
 );
@@ -203,16 +214,16 @@ const PanelRow = ({
 }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-center gap-3 py-3 px-2 -mx-2 rounded-xl hover:bg-foreground/5 transition-colors text-left"
+    className="w-full flex items-center gap-3 py-3 px-3.5 hover:bg-white/[0.02] transition-colors text-left"
   >
-    <div className="w-9 h-9 rounded-full bg-foreground/8 border border-border/40 flex items-center justify-center shrink-0">
-      <Icon className="w-4 h-4 text-foreground" strokeWidth={1.8} />
+    <div className="w-8 h-8 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center shrink-0">
+      <Icon className="w-3.5 h-3.5 text-foreground/85" strokeWidth={1.8} />
     </div>
     <div className="flex-1 min-w-0">
-      <div className="text-foreground text-sm font-medium leading-tight">{label}</div>
-      <p className="text-muted-foreground text-xs mt-0.5 leading-snug truncate">{description}</p>
+      <div className="text-foreground text-[13.5px] font-medium leading-tight">{label}</div>
+      <p className="text-muted-foreground text-[11px] mt-0.5 leading-snug truncate">{description}</p>
     </div>
-    <ChevronRight className="w-4 h-4 text-muted-foreground/60 shrink-0" />
+    <ChevronRight className="w-4 h-4 text-muted-foreground/50 shrink-0" />
   </button>
 );
 

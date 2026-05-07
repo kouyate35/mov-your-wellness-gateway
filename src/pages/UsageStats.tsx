@@ -120,12 +120,15 @@ const UsageStats = () => {
             </div>
           </section>
 
-          {/* PILLARS — sober */}
+          {/* PILLARS — premium editorial */}
           <section className="mb-12">
-            <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-4">
-              Répartition par pilier
-            </p>
-            <div className="space-y-3.5">
+            <div className="flex items-baseline justify-between mb-5">
+              <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70">
+                Répartition par pilier
+              </p>
+              <p className="text-[11px] text-muted-foreground/70 tabular-nums">37 sessions</p>
+            </div>
+            <div className="space-y-4">
               {[
                 { name: "MOVE", count: 18, pct: 48 },
                 { name: "FLEX", count: 9, pct: 24 },
@@ -133,44 +136,50 @@ const UsageStats = () => {
                 { name: "FOCUS", count: 3, pct: 8 },
                 { name: "PAUSE", count: 2, pct: 6 },
               ].map((p) => (
-                <div key={p.name} className="flex items-center gap-3">
-                  <span className="text-[10.5px] font-semibold w-14 text-foreground/80 tracking-[0.12em]">
-                    {p.name}
-                  </span>
-                  <div className="flex-1 h-[3px] rounded-full overflow-hidden bg-white/[0.06]">
+                <div key={p.name}>
+                  <div className="flex items-baseline justify-between mb-1.5">
+                    <span className="text-[11px] font-semibold text-foreground/85 tracking-[0.16em]">
+                      {p.name}
+                    </span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-[13px] font-semibold text-foreground tabular-nums">{p.count}</span>
+                      <span className="text-[10px] text-muted-foreground/60 tabular-nums">· {p.pct}%</span>
+                    </div>
+                  </div>
+                  <div className="h-[2px] rounded-full overflow-hidden bg-white/[0.05]">
                     <div
-                      className="h-full rounded-full bg-foreground/80 transition-all"
+                      className="h-full rounded-full bg-foreground/85 transition-all duration-700"
                       style={{ width: `${p.pct}%` }}
                     />
                   </div>
-                  <span className="text-[11px] text-muted-foreground w-6 text-right tabular-nums">{p.count}</span>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* ACHIEVEMENTS — minimalist list */}
+          {/* ACHIEVEMENTS — refined cards */}
           <section className="mb-8">
             <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-4">
               Accomplissements
             </p>
-            <div className="space-y-0">
+            <div className="rounded-2xl bg-white/[0.02] border border-white/[0.05] overflow-hidden">
               {[
-                { icon: Flame, title: "Série de 12 jours", desc: "Aucun défi matinal raté" },
-                { icon: Trophy, title: "Record de pompes", desc: "75 pompes en une session" },
-                { icon: Activity, title: "Discipline numérique", desc: "47 apps débloquées par l'effort" },
+                { icon: Flame, title: "Série de 12 jours", desc: "Aucun défi matinal raté", value: "12" },
+                { icon: Trophy, title: "Record de pompes", desc: "75 pompes en une session", value: "75" },
+                { icon: Activity, title: "Discipline numérique", desc: "47 apps débloquées par l'effort", value: "47" },
               ].map((a, i, arr) => (
                 <div
                   key={a.title}
-                  className={`flex items-center gap-3 py-4 ${i < arr.length - 1 ? "border-b border-white/[0.04]" : ""}`}
+                  className={`flex items-center gap-3.5 px-4 py-3.5 ${i < arr.length - 1 ? "border-b border-white/[0.04]" : ""}`}
                 >
                   <div className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center shrink-0">
-                    <a.icon className="w-4 h-4 text-foreground/80" strokeWidth={1.8} />
+                    <a.icon className="w-[15px] h-[15px] text-foreground/85" strokeWidth={1.7} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-foreground text-[13.5px] font-medium leading-tight">{a.title}</p>
+                    <p className="text-foreground text-[13.5px] font-semibold leading-tight">{a.title}</p>
                     <p className="text-muted-foreground text-[11.5px] mt-0.5 truncate">{a.desc}</p>
                   </div>
+                  <span className="text-foreground/90 text-[15px] font-semibold tabular-nums shrink-0">{a.value}</span>
                 </div>
               ))}
             </div>
