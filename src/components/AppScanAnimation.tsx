@@ -54,86 +54,75 @@ const AppScanAnimation = ({ isScanning, onComplete }: AppScanAnimationProps) => 
   if (!isScanning && visibleApps.length === 0) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center">
-      {/* Cercle de scan animé */}
-      <div className="relative mb-8">
-        {/* Cercles pulsants */}
-        <div className="absolute inset-0 w-32 h-32 rounded-full bg-primary/20 animate-pulse-ring" />
-        <div 
-          className="absolute inset-0 w-32 h-32 rounded-full bg-primary/10 animate-pulse-ring" 
-          style={{ animationDelay: "0.5s" }} 
-        />
-        
-        {/* Cercle central avec icône */}
-        <div className="relative w-32 h-32 rounded-full bg-secondary border-2 border-primary/30 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-md flex flex-col items-center justify-center px-6">
+      {/* Scan visual */}
+      <div className="relative mb-10">
+        {!scanComplete && (
+          <>
+            <div className="absolute inset-0 w-32 h-32 rounded-full bg-foreground/[0.04] animate-pulse-ring" />
+            <div
+              className="absolute inset-0 w-32 h-32 rounded-full bg-foreground/[0.04] animate-pulse-ring"
+              style={{ animationDelay: "0.6s" }}
+            />
+          </>
+        )}
+
+        <div className="relative w-32 h-32 rounded-full bg-white/[0.025] border border-white/[0.06] flex items-center justify-center">
           {scanComplete ? (
             <div className="animate-pop-in">
-              <Check className="w-12 h-12 text-primary" strokeWidth={2.5} />
+              <Check className="w-11 h-11 text-foreground" strokeWidth={2} />
             </div>
           ) : (
-            <svg 
-              className="w-12 h-12 text-primary animate-spin" 
-              style={{ animationDuration: "3s" }}
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="absolute inset-0 w-full h-full animate-spin text-foreground/85"
+              style={{ animationDuration: "1.6s" }}
+              viewBox="0 0 100 100"
+              fill="none"
+              stroke="currentColor"
               strokeWidth="1.5"
             >
-              <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
-              <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round" />
+              <path d="M50 6 a44 44 0 0 1 44 44" strokeLinecap="round" />
             </svg>
           )}
         </div>
       </div>
 
-      {/* Texte de statut */}
-      <div className="text-center mb-8">
-        <h3 className="text-lg font-semibold text-foreground mb-1">
-          {scanComplete ? "Détection terminée !" : "Analyse en cours..."}
+      {/* Status text */}
+      <div className="text-center mb-10">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground/70 mb-2">
+          {scanComplete ? "Terminé" : "Analyse"}
+        </p>
+        <h3 className="text-[19px] font-semibold text-foreground tracking-tight mb-1.5">
+          {scanComplete ? "Détection terminée" : "Analyse en cours…"}
         </h3>
-        <p className="text-sm text-muted-foreground">
-          {scanComplete 
+        <p className="text-[13px] text-muted-foreground">
+          {scanComplete
             ? `${visibleApps.length} applications détectées`
-            : "Recherche des applications de divertissement"
-          }
+            : "Recherche des applications de divertissement"}
         </p>
       </div>
 
-      {/* Grille d'apps détectées */}
-      <div className="grid grid-cols-5 gap-3 max-w-xs">
+      {/* Apps grid */}
+      <div className="grid grid-cols-5 gap-3 max-w-xs mb-10">
         {SCAN_APP_IDS.map((appId, index) => {
           const app = apps.find((a) => a.id === appId);
           const isVisible = visibleApps.includes(appId);
-          
           if (!app) return null;
 
           return (
             <div
               key={appId}
-              className={`
-                relative w-12 h-12 rounded-xl flex items-center justify-center
-                transition-all duration-300
-                ${isVisible ? "opacity-100" : "opacity-0"}
-                ${app.bgColor}
-              `}
-              style={{
-                animationDelay: `${index * 100}ms`,
-                transform: isVisible ? "scale(1)" : "scale(0)",
-              }}
+              className={`relative w-12 h-12 transition-all duration-300 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}
             >
-              <div className={`w-full h-full rounded-xl flex items-center justify-center ${isVisible ? "animate-pop-in" : ""}`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
+              <div className={`w-full h-full ${isVisible ? "animate-pop-in" : ""}`} style={{ animationDelay: `${index * 80}ms` }}>
                 {getAppIcon(appId, "sm", true)}
               </div>
-              
-              {/* Badge de check quand détecté */}
               {isVisible && (
-                <div 
-                  className="absolute -bottom-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center animate-pop-in"
-                  style={{ animationDelay: `${index * 100 + 200}ms` }}
+                <div
+                  className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-white rounded-full flex items-center justify-center ring-[2px] ring-background animate-pop-in"
+                  style={{ animationDelay: `${index * 80 + 180}ms` }}
                 >
-                  <Check className="w-3 h-3 text-primary-foreground" strokeWidth={3} />
+                  <Check className="w-2.5 h-2.5 text-black" strokeWidth={3.5} />
                 </div>
               )}
             </div>
@@ -141,13 +130,11 @@ const AppScanAnimation = ({ isScanning, onComplete }: AppScanAnimationProps) => 
         })}
       </div>
 
-      {/* Barre de progression */}
-      <div className="mt-8 w-64 h-1.5 bg-secondary rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-          style={{ 
-            width: `${(visibleApps.length / SCAN_APP_IDS.length) * 100}%` 
-          }}
+      {/* Progress bar */}
+      <div className="w-56 h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
+        <div
+          className="h-full bg-foreground rounded-full transition-all duration-300 ease-out"
+          style={{ width: `${(visibleApps.length / SCAN_APP_IDS.length) * 100}%` }}
         />
       </div>
     </div>
