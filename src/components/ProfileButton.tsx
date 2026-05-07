@@ -48,53 +48,64 @@ const ProfileButton = () => {
       {open && (
         <div
           ref={popupRef}
-          className="absolute top-full right-0 mt-2 w-[260px] bg-popover rounded-2xl shadow-xl border border-border overflow-hidden z-50 animate-fade-in"
+          className="absolute top-full right-0 mt-2 w-[268px] bg-popover/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/[0.06] overflow-hidden z-50 animate-fade-in"
         >
-          <div className="p-4 pb-3">
+          <div className="px-4 pt-4 pb-3.5">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-info flex items-center justify-center">
-                <span className="text-info-foreground font-semibold text-sm">{userInitial}</span>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-info to-info/70 flex items-center justify-center shadow-sm">
+                <span className="text-info-foreground font-semibold text-[14px]">{userInitial}</span>
               </div>
-              <div>
-                <p className="text-foreground text-sm font-medium">{user.name}</p>
-                <p className="text-muted-foreground text-xs">@u{userId}</p>
+              <div className="min-w-0">
+                <p className="text-foreground text-[13.5px] font-semibold leading-tight truncate">{user.name}</p>
+                <p className="text-muted-foreground text-[11px] mt-0.5 truncate">@u{userId}</p>
               </div>
             </div>
           </div>
 
-          <div className="h-px bg-border mx-4" />
+          <div className="h-px bg-white/[0.05]" />
 
-          <div className="p-2">
-            {items.map((item, index) => (
-              <div key={index}>
-                <button
-                  onClick={item.action}
-                  className="w-full flex items-center justify-between px-3 py-3 text-foreground hover:bg-muted rounded-lg transition-colors text-left"
-                >
-                  <div className="flex items-center gap-3">
-                    <item.icon className="w-5 h-5 text-muted-foreground" />
-                    <span className="text-sm">{item.label}</span>
-                  </div>
-                  {item.hasChevron && <ChevronRight className="w-4 h-4 text-muted-foreground" />}
-                </button>
-                {index === 1 && <div className="h-px bg-border my-1 mx-3" />}
-              </div>
+          <div className="py-1.5">
+            {items.slice(0, 2).map((item, index) => (
+              <button
+                key={index}
+                onClick={item.action}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-foreground hover:bg-white/[0.03] transition-colors text-left"
+              >
+                <item.icon className="w-[18px] h-[18px] text-muted-foreground/80" strokeWidth={1.7} />
+                <span className="text-[13px] flex-1">{item.label}</span>
+              </button>
             ))}
           </div>
 
-          <div className="border-t border-border p-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-info flex items-center justify-center">
-                <span className="text-info-foreground font-semibold text-xs">{userInitial}</span>
+          <div className="h-px bg-white/[0.05]" />
+
+          <div className="py-1.5">
+            {items.slice(2).map((item, index) => (
+              <button
+                key={index}
+                onClick={item.action}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-foreground hover:bg-white/[0.03] transition-colors text-left"
+              >
+                <item.icon className="w-[18px] h-[18px] text-muted-foreground/80" strokeWidth={1.7} />
+                <span className="text-[13px] flex-1">{item.label}</span>
+                {item.hasChevron && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50" />}
+              </button>
+            ))}
+          </div>
+
+          <div className="border-t border-white/[0.05] px-3 py-2.5 flex items-center justify-between bg-white/[0.015]">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-info to-info/70 flex items-center justify-center">
+                <span className="text-info-foreground font-semibold text-[11px]">{userInitial}</span>
               </div>
-              <div>
-                <p className="text-foreground text-xs font-medium">{user.name}</p>
-                <p className="text-muted-foreground text-[10px]">{user.plan}</p>
+              <div className="min-w-0">
+                <p className="text-foreground text-[11.5px] font-semibold leading-tight truncate">{user.name}</p>
+                <p className="text-muted-foreground text-[10px] mt-0.5">{user.plan}</p>
               </div>
             </div>
             <button
               onClick={() => { navigate("/subscription"); setOpen(false); }}
-              className="px-2.5 py-1 bg-secondary rounded-full text-foreground text-[10px] font-medium hover:bg-secondary/80 transition-colors"
+              className="px-3 py-1.5 bg-foreground text-background rounded-full text-[10.5px] font-semibold hover:opacity-90 transition-opacity shrink-0"
             >
               Mettre à niveau
             </button>
