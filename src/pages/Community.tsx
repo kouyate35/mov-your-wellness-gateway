@@ -829,29 +829,28 @@ const Community = () => {
 
       {/* GRID AREA */}
       <div className="flex-1 overflow-y-auto px-4 pt-2 pb-24">
-        <p className="text-white/80 text-center text-[15px] font-medium mb-5 px-2">
+        <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 text-center mb-5 px-2">
           {activeTab === "global"
-            ? "1 248 personnes veulent faire du sport avec toi."
-            : "27 sportifs proches de toi prêts à bouger."}
+            ? "1 248 personnes veulent faire du sport avec toi"
+            : "27 sportifs proches de toi prêts à bouger"}
         </p>
         <div className="grid grid-cols-2 gap-3">
           {mockAddRequests.map((req) => (
-            <div key={req.id} className="rounded-2xl overflow-hidden bg-[hsl(0,0%,12%)]">
-              <div className="w-full aspect-[4/5] relative" style={{ background: `linear-gradient(135deg, ${req.color}, hsl(0,0%,20%))`, filter: "blur(8px)" }} />
-              <div className="px-3 pt-2 pb-3 -mt-12 relative z-10">
-                {req.active && (
-                  <div className="flex items-center gap-1 mb-1">
-                    <div className="w-2 h-2 rounded-full bg-[hsl(120,70%,50%)]" />
-                    <span className="text-white/70 text-[11px]">Actif récemment</span>
-                  </div>
-                )}
-                <div className="w-20 h-3 rounded bg-white/15 mb-2.5" />
+            <div key={req.id} className="rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
+              <div className="w-full aspect-[4/5] relative flex items-center justify-center" style={{ background: `linear-gradient(160deg, ${req.color} 0%, hsl(0,0%,12%) 100%)` }}>
+                <span className="text-white/85 text-3xl font-semibold tracking-tight">{req.name.charAt(0)}</span>
+              </div>
+              <div className="px-3 pt-2.5 pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-white text-[13px] font-semibold truncate">{req.name}</p>
+                  {req.active && <div className="w-1.5 h-1.5 rounded-full bg-[hsl(140,70%,50%)]" />}
+                </div>
                 <div className="flex gap-1.5">
-                  <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
-                    <X className="w-4 h-4 text-white" strokeWidth={3} />
+                  <button className="flex-1 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center active:bg-white/10 transition-colors">
+                    <X className="w-3.5 h-3.5 text-white/80" strokeWidth={2.5} />
                   </button>
-                  <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
-                    <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                  <button className="flex-1 py-1.5 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
+                    <Plus className="w-3.5 h-3.5 text-[hsl(0,0%,8%)]" strokeWidth={2.8} />
                   </button>
                 </div>
               </div>
