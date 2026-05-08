@@ -514,15 +514,17 @@ const Community = () => {
                 <button
                   key={msg.id}
                   onClick={() => { setChatContact(msg); setViewState("chat"); setChatMessage(""); }}
-                  className="flex items-center gap-3 py-3.5 border-b border-white/5 w-full text-left active:bg-white/5 transition-colors"
+                  className="flex items-center gap-3 py-3.5 border-b border-white/[0.05] w-full text-left active:bg-white/5 transition-colors"
                 >
-                  <div className="w-14 h-14 rounded-full flex-shrink-0" style={{ background: msg.color }} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white/60 text-xs font-medium mb-0.5">{msg.name}</p>
-                    <p className="text-white/70 text-sm truncate">Dit "{msg.message}" · {msg.time}</p>
+                  <div
+                    className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-white text-base font-semibold"
+                    style={{ background: msg.color }}
+                  >
+                    {msg.name.charAt(0)}
                   </div>
-                  <div className="w-11 h-11 rounded-lg bg-[hsl(0,0%,16%)] flex items-center justify-center flex-shrink-0">
-                    <User className="w-5 h-5 text-white/40" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-[14.5px] font-semibold leading-tight">{msg.name}</p>
+                    <p className="text-white/55 text-[13px] truncate mt-0.5">"{msg.message}" · <span className="text-white/35">{msg.time}</span></p>
                   </div>
                 </button>
               ))}
@@ -619,8 +621,8 @@ const Community = () => {
           </div>
 
           {/* Biographie */}
-          <h3 className="text-white text-lg font-bold mb-3">Biographie</h3>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl px-5 py-4 mb-8">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 mb-3 px-1">Biographie</p>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl px-5 py-4 mb-8">
             {editingBio ? (
               <div>
                 <textarea
@@ -637,81 +639,81 @@ const Community = () => {
               </div>
             ) : (
               <button onClick={() => { setTempBio(userBio); setEditingBio(true); }} className="w-full text-left">
-                <p className="text-white/70 text-[15px] leading-relaxed">{userBio || "Écris une petite description..."}</p>
+                <p className="text-white/75 text-[15px] leading-relaxed">{userBio || "Écris une petite description..."}</p>
               </button>
             )}
           </div>
 
           {/* Mon compte */}
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white text-lg font-bold">Mon compte</h3>
-            <button onClick={() => setShowEditAccount(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
-              <Pencil className="w-4 h-4 text-white" />
+          <div className="flex items-center justify-between mb-3 px-1">
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45">Mon compte</p>
+            <button onClick={() => setShowEditAccount(true)} className="w-7 h-7 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center">
+              <Pencil className="w-3.5 h-3.5 text-white/80" />
             </button>
           </div>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
-            <div className="flex items-center px-5 py-4">
-              <User className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Nom d'utilisateur</span>
-              <span className="ml-auto text-white/50 text-[15px]">{editAccountData.username}</span>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.05] mb-8">
+            <div className="flex items-center px-5 py-3.5">
+              <User className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Nom d'utilisateur</span>
+              <span className="ml-auto text-white/50 text-[14px] tabular-nums">{editAccountData.username}</span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editAccountData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <Cake className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Âge</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editAccountData.age} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 {editAccountData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <MapPin className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Lieu</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">🇫🇷 {editAccountData.lieu} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <Ban className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Utilisateurs bloqués</span>
-              <ChevronRight className="ml-auto w-4 h-4 text-white/30" />
+            <div className="flex items-center px-5 py-3.5">
+              <Ban className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Utilisateurs bloqués</span>
+              <ChevronRight className="ml-auto w-4 h-4 text-white/25" />
             </div>
           </div>
 
           {/* Préférences de recherche d'amis */}
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white text-lg font-bold">Préférences de recherche d'amis</h3>
-            <button onClick={() => setShowEditPrefs(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
-              <Pencil className="w-4 h-4 text-white" />
+          <div className="flex items-center justify-between mb-3 px-1">
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45">Préférences de recherche</p>
+            <button onClick={() => setShowEditPrefs(true)} className="w-7 h-7 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center">
+              <Pencil className="w-3.5 h-3.5 text-white/80" />
             </button>
           </div>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
-            <div className="flex items-center px-5 py-4">
-              <Users className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Genre</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.genre} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.05] mb-8">
+            <div className="flex items-center px-5 py-3.5">
+              <Users className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Genre</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editPrefsData.genre} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <Cake className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Âge</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editPrefsData.age} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <MapPin className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Lieu</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editPrefsData.lieu} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
           </div>
 
           {/* Visibilité */}
-          <h3 className="text-white text-lg font-bold mb-3">Visibilité</h3>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8">
-            <div className="flex items-center px-5 py-4">
-              <Eye className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Montrer ma région</span>
-              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
-                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 mb-3 px-1">Visibilité</p>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.05]">
+            <div className="flex items-center px-5 py-3.5">
+              <Eye className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Montrer ma région</span>
+              <div className="ml-auto w-11 h-[26px] rounded-full bg-white relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-[22px] h-[22px] rounded-full bg-[hsl(0,0%,8%)] transition-all" />
               </div>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <UserSearch className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Visible dans la recherche</span>
-              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
-                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+            <div className="flex items-center px-5 py-3.5">
+              <UserSearch className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Visible dans la recherche</span>
+              <div className="ml-auto w-11 h-[26px] rounded-full bg-white relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-[22px] h-[22px] rounded-full bg-[hsl(0,0%,8%)] transition-all" />
               </div>
             </div>
           </div>
@@ -827,29 +829,28 @@ const Community = () => {
 
       {/* GRID AREA */}
       <div className="flex-1 overflow-y-auto px-4 pt-2 pb-24">
-        <p className="text-white/80 text-center text-[15px] font-medium mb-5 px-2">
+        <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 text-center mb-5 px-2">
           {activeTab === "global"
-            ? "1 248 personnes veulent faire du sport avec toi."
-            : "27 sportifs proches de toi prêts à bouger."}
+            ? "1 248 personnes veulent faire du sport avec toi"
+            : "27 sportifs proches de toi prêts à bouger"}
         </p>
         <div className="grid grid-cols-2 gap-3">
           {mockAddRequests.map((req) => (
-            <div key={req.id} className="rounded-2xl overflow-hidden bg-[hsl(0,0%,12%)]">
-              <div className="w-full aspect-[4/5] relative" style={{ background: `linear-gradient(135deg, ${req.color}, hsl(0,0%,20%))`, filter: "blur(8px)" }} />
-              <div className="px-3 pt-2 pb-3 -mt-12 relative z-10">
-                {req.active && (
-                  <div className="flex items-center gap-1 mb-1">
-                    <div className="w-2 h-2 rounded-full bg-[hsl(120,70%,50%)]" />
-                    <span className="text-white/70 text-[11px]">Actif récemment</span>
-                  </div>
-                )}
-                <div className="w-20 h-3 rounded bg-white/15 mb-2.5" />
+            <div key={req.id} className="rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
+              <div className="w-full aspect-[4/5] relative flex items-center justify-center" style={{ background: `linear-gradient(160deg, ${req.color} 0%, hsl(0,0%,12%) 100%)` }}>
+                <span className="text-white/85 text-3xl font-semibold tracking-tight">{req.name.charAt(0)}</span>
+              </div>
+              <div className="px-3 pt-2.5 pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-white text-[13px] font-semibold truncate">{req.name}</p>
+                  {req.active && <div className="w-1.5 h-1.5 rounded-full bg-[hsl(140,70%,50%)]" />}
+                </div>
                 <div className="flex gap-1.5">
-                  <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
-                    <X className="w-4 h-4 text-white" strokeWidth={3} />
+                  <button className="flex-1 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center active:bg-white/10 transition-colors">
+                    <X className="w-3.5 h-3.5 text-white/80" strokeWidth={2.5} />
                   </button>
-                  <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
-                    <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                  <button className="flex-1 py-1.5 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
+                    <Plus className="w-3.5 h-3.5 text-[hsl(0,0%,8%)]" strokeWidth={2.8} />
                   </button>
                 </div>
               </div>
@@ -922,45 +923,46 @@ const Community = () => {
             </div>
             <div className="flex-1 overflow-y-auto px-4">
               {notifTab === "messages" ? (
-                <div className="space-y-1">
+                <div>
                   {mockMessages.map((msg) => (
                     <button
                       key={msg.id}
                       onClick={() => { setChatContact(msg); setShowNotifications(false); setViewState("chat"); setChatMessage(""); }}
-                      className="flex items-center gap-3 py-3 border-b border-white/5 w-full text-left active:bg-white/5 transition-colors"
+                      className="flex items-center gap-3 py-3.5 border-b border-white/[0.05] w-full text-left active:bg-white/5 transition-colors"
                     >
-                      <div className="w-14 h-14 rounded-full flex-shrink-0" style={{ background: msg.color }} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white/60 text-xs font-medium mb-0.5">{msg.name}</p>
-                        <p className="text-white/70 text-sm truncate">Dit "{msg.message}" · {msg.time}</p>
+                      <div
+                        className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-white text-base font-semibold"
+                        style={{ background: msg.color }}
+                      >
+                        {msg.name.charAt(0)}
                       </div>
-                      <div className="w-11 h-11 rounded-lg bg-[hsl(0,0%,16%)] flex items-center justify-center flex-shrink-0">
-                        <User className="w-5 h-5 text-white/40" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-[14.5px] font-semibold leading-tight">{msg.name}</p>
+                        <p className="text-white/55 text-[13px] truncate mt-0.5">"{msg.message}" · <span className="text-white/35">{msg.time}</span></p>
                       </div>
                     </button>
                   ))}
                 </div>
               ) : (
                 <div>
-                  <p className="text-white/80 text-center text-[15px] font-medium mb-5">133 personnes veulent faire du sport avec toi.</p>
+                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 text-center mb-4">133 personnes veulent faire du sport avec toi</p>
                   <div className="grid grid-cols-2 gap-3">
                     {mockAddRequests.map((req) => (
-                      <div key={req.id} className="rounded-2xl overflow-hidden bg-[hsl(0,0%,12%)]">
-                        <div className="w-full aspect-[4/5] relative" style={{ background: `linear-gradient(135deg, ${req.color}, hsl(0,0%,20%))`, filter: "blur(8px)" }} />
-                        <div className="px-3 pt-2 pb-3 -mt-12 relative z-10">
-                          {req.active && (
-                            <div className="flex items-center gap-1 mb-1">
-                              <div className="w-2 h-2 rounded-full bg-[hsl(120,70%,50%)]" />
-                              <span className="text-white/70 text-[11px]">Actif récemment</span>
-                            </div>
-                          )}
-                          <div className="w-20 h-3 rounded bg-white/15 mb-2.5" />
+                      <div key={req.id} className="rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.06]">
+                        <div className="w-full aspect-[4/5] relative flex items-center justify-center" style={{ background: `linear-gradient(160deg, ${req.color} 0%, hsl(0,0%,12%) 100%)` }}>
+                          <span className="text-white/85 text-3xl font-semibold tracking-tight">{req.name.charAt(0)}</span>
+                        </div>
+                        <div className="px-3 pt-2.5 pb-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <p className="text-white text-[13px] font-semibold truncate">{req.name}</p>
+                            {req.active && <div className="w-1.5 h-1.5 rounded-full bg-[hsl(140,70%,50%)]" />}
+                          </div>
                           <div className="flex gap-1.5">
-                            <button className="flex-1 py-2 rounded-full bg-[hsl(0,0%,22%)] flex items-center justify-center active:bg-[hsl(0,0%,28%)] transition-colors">
-                              <X className="w-4 h-4 text-white" strokeWidth={3} />
+                            <button className="flex-1 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center active:bg-white/10 transition-colors">
+                              <X className="w-3.5 h-3.5 text-white/80" strokeWidth={2.5} />
                             </button>
-                            <button className="flex-1 py-2 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
-                              <Plus className="w-4 h-4 text-[hsl(0,0%,8%)]" strokeWidth={3} />
+                            <button className="flex-1 py-1.5 rounded-full bg-white flex items-center justify-center active:bg-white/90 transition-colors">
+                              <Plus className="w-3.5 h-3.5 text-[hsl(0,0%,8%)]" strokeWidth={2.8} />
                             </button>
                           </div>
                         </div>
