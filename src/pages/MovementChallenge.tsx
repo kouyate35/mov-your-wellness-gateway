@@ -49,12 +49,25 @@ const programConfig: Record<string, { required: number; instruction: string; ins
   "pause": { required: 1, instruction: "🧘 Respire...", instructionAlt: "🧘 Calme..." },
 };
 
+// Programs that require holding a static posture (no rep counting, no progress bar)
+const staticPosturePrograms = new Set(["pause", "box-breathing", "coherence", "gainage"]);
+
+// Posture hint per static program
+const posturePrograms: Record<string, { title: string; hint: string }> = {
+  "pause": { title: "Assise — lotus", hint: "Place-toi dans le repère, respire lentement." },
+  "box-breathing": { title: "Assise droite", hint: "4s inspire · 4s tiens · 4s expire · 4s tiens." },
+  "coherence": { title: "Debout détendu", hint: "5s inspire · 5s expire pendant 1 minute." },
+  "gainage": { title: "Planche", hint: "Maintiens la position, gainage actif." },
+};
+
 const MovementChallenge = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("app") || "instagram";
   const programId = searchParams.get("program") || "pompes-10";
   const [isComplete, setIsComplete] = useState(false);
+  const isStaticPosture = staticPosturePrograms.has(programId);
+  const posture = posturePrograms[programId];
 
   // Get the tutorial video for the selected program
   const tutorialVideo = programTutorials[programId] || exercisePushups;
