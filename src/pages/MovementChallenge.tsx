@@ -49,12 +49,25 @@ const programConfig: Record<string, { required: number; instruction: string; ins
   "pause": { required: 1, instruction: "🧘 Respire...", instructionAlt: "🧘 Calme..." },
 };
 
+// Programs that require holding a static posture (no rep counting, no progress bar)
+const staticPosturePrograms = new Set(["pause", "box-breathing", "coherence", "gainage"]);
+
+// Posture hint per static program
+const posturePrograms: Record<string, { title: string; hint: string }> = {
+  "pause": { title: "Assise — lotus", hint: "Place-toi dans le repère, respire lentement." },
+  "box-breathing": { title: "Assise droite", hint: "4s inspire · 4s tiens · 4s expire · 4s tiens." },
+  "coherence": { title: "Debout détendu", hint: "5s inspire · 5s expire pendant 1 minute." },
+  "gainage": { title: "Planche", hint: "Maintiens la position, gainage actif." },
+};
+
 const MovementChallenge = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("app") || "instagram";
   const programId = searchParams.get("program") || "pompes-10";
   const [isComplete, setIsComplete] = useState(false);
+  const isStaticPosture = staticPosturePrograms.has(programId);
+  const posture = posturePrograms[programId];
 
   // Get the tutorial video for the selected program
   const tutorialVideo = programTutorials[programId] || exercisePushups;
@@ -87,12 +100,27 @@ const MovementChallenge = () => {
     initCamera();
   }, [startDetection, programId]);
 
-  // Handle completion
+  // Handle completion (rep-based programs)
   useEffect(() => {
-    if (count >= config.required && !isComplete) {
+    if (!isStaticPosture && count >= config.required && !isComplete) {
       setIsComplete(true);
     }
-  }, [count, isComplete, config.required]);
+  }, [count, isComplete, config.required, isStaticPosture]);
+
+  // Static posture: auto-complete after a hold timer (visualised by progress ring elsewhere)
+  const [holdSeconds, setHoldSeconds] = useState(0);
+  const HOLD_TARGET = 20;
+  useEffect(() => {
+    if (!isStaticPosture || !isReady) return;
+    const interval = setInterval(() => {
+      setHoldSeconds((s) => {
+        const next = s + 1;
+        if (next >= HOLD_TARGET) setIsComplete(true);
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isStaticPosture, isReady]);
 
   // Auto-redirect to completion screen when complete
   useEffect(() => {
@@ -192,10 +220,7 @@ const MovementChallenge = () => {
 
           {/* Right — Tutorial PiP */}
           <div className="relative shrink-0">
-            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 bg-white text-black text-[8.5px] font-bold uppercase tracking-[0.15em] rounded-sm">
-              Modèle
-            </div>
-            <div className="w-[88px] h-[120px] rounded-2xl overflow-hidden border border-white/20 bg-black/60 backdrop-blur-sm shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+            <div className="w-[88px] h-[120px] rounded-2xl overflow-hidden border border-white/20 bg-black/60 backdrop-blur-sm shadow-[0_8px_24px_rgba(0,0,0,0.5)] relative">
               <video
                 src={tutorialVideo}
                 autoPlay
@@ -204,10 +229,69 @@ const MovementChallenge = () => {
                 playsInline
                 className="w-full h-full object-cover"
               />
+              {/* Bottom label inside the video frame */}
+              <div className="absolute bottom-0 left-0 right-0 px-1.5 py-1 bg-gradient-to-t from-black/85 to-transparent">
+                <p className="text-white text-[8.5px] font-semibold uppercase tracking-[0.18em] text-center">
+                  Modèle
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Centered posture frame for static programs */}
+      {isStaticPosture && (
+        <div className="absolute inset-0 z-[6] flex items-center justify-center pointer-events-none">
+          <div className="relative">
+            {/* Pulsing rings */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute w-[280px] h-[280px] rounded-full border border-white/15 animate-ping opacity-30" style={{ animationDuration: "3s" }} />
+              <div className="absolute w-[220px] h-[220px] rounded-full border border-white/20 animate-ping opacity-40" style={{ animationDuration: "4s", animationDelay: "0.5s" }} />
+            </div>
+            {/* Glassmorphic posture silhouette */}
+            <svg
+              viewBox="0 0 200 320"
+              className="w-[200px] h-[320px] relative"
+              style={{ filter: "drop-shadow(0 0 24px rgba(255,255,255,0.15))" }}
+            >
+              <defs>
+                <linearGradient id="posture-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="white" stopOpacity="0.18" />
+                  <stop offset="100%" stopColor="white" stopOpacity="0.06" />
+                </linearGradient>
+              </defs>
+              {/* Head */}
+              <circle cx="100" cy="40" r="22" fill="url(#posture-fill)" stroke="white" strokeOpacity="0.5" strokeWidth="1.2" />
+              {/* Torso (seated/standing) */}
+              <path
+                d="M70 75 Q60 80 58 130 Q56 170 65 200 Q70 215 100 218 Q130 215 135 200 Q144 170 142 130 Q140 80 130 75 Q115 70 100 70 Q85 70 70 75 Z"
+                fill="url(#posture-fill)"
+                stroke="white"
+                strokeOpacity="0.5"
+                strokeWidth="1.2"
+              />
+              {/* Arms raised in prayer / namaste */}
+              <path
+                d="M75 85 Q60 60 80 35 Q90 20 100 18 Q110 20 120 35 Q140 60 125 85"
+                fill="none"
+                stroke="white"
+                strokeOpacity="0.6"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              {/* Crossed legs */}
+              <path
+                d="M65 215 Q50 240 70 270 Q90 285 130 270 Q150 240 135 215"
+                fill="url(#posture-fill)"
+                stroke="white"
+                strokeOpacity="0.45"
+                strokeWidth="1.2"
+              />
+            </svg>
+          </div>
+        </div>
+      )}
 
       {/* HUD — Bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-[max(env(safe-area-inset-bottom),28px)] pointer-events-none">
@@ -215,37 +299,70 @@ const MovementChallenge = () => {
           {/* Instruction */}
           <div className="px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/15">
             <p className="text-white text-[15px] font-semibold tracking-tight">
-              {phase === "down" ? config.instruction : config.instructionAlt}
+              {isStaticPosture
+                ? (posture?.title ?? "Place-toi dans le repère")
+                : (phase === "down" ? config.instruction : config.instructionAlt)}
             </p>
           </div>
 
-          {/* Progress segmented bar */}
-          <div className="w-full max-w-[240px]">
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: config.required }).map((_, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "flex-1 h-[3px] rounded-full transition-all duration-300",
-                    index < count ? "bg-white" : "bg-white/20"
-                  )}
-                />
-              ))}
-            </div>
-            <div className="flex items-baseline justify-between mt-2.5">
-              <p className="text-white/55 text-[10.5px] font-medium uppercase tracking-[0.18em]">
-                Progression
+          {isStaticPosture ? (
+            <>
+              {/* Hold timer ring */}
+              <div className="relative w-[68px] h-[68px]">
+                <svg className="absolute inset-0 -rotate-90" viewBox="0 0 68 68">
+                  <circle cx="34" cy="34" r="30" stroke="white" strokeOpacity="0.15" strokeWidth="3" fill="none" />
+                  <circle
+                    cx="34"
+                    cy="34"
+                    r="30"
+                    stroke="white"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeDasharray={2 * Math.PI * 30}
+                    strokeDashoffset={2 * Math.PI * 30 * (1 - Math.min(holdSeconds / HOLD_TARGET, 1))}
+                    style={{ transition: "stroke-dashoffset 1s linear" }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-white text-[14px] font-semibold tabular-nums">
+                    {Math.max(HOLD_TARGET - holdSeconds, 0)}s
+                  </span>
+                </div>
+              </div>
+              <p className="text-white/55 text-[11px] text-center max-w-[260px] leading-relaxed">
+                {posture?.hint ?? "Place-toi dans le repère et respire calmement."}
               </p>
-              <p className="text-white text-[12px] font-semibold tabular-nums">
-                {count}<span className="text-white/40"> / {config.required}</span>
+            </>
+          ) : (
+            <>
+              {/* Progress segmented bar */}
+              <div className="w-full max-w-[240px]">
+                <div className="flex items-center gap-1.5">
+                  {Array.from({ length: config.required }).map((_, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "flex-1 h-[3px] rounded-full transition-all duration-300",
+                        index < count ? "bg-white" : "bg-white/20"
+                      )}
+                    />
+                  ))}
+                </div>
+                <div className="flex items-baseline justify-between mt-2.5">
+                  <p className="text-white/55 text-[10.5px] font-medium uppercase tracking-[0.18em]">
+                    Progression
+                  </p>
+                  <p className="text-white text-[12px] font-semibold tabular-nums">
+                    {count}<span className="text-white/40"> / {config.required}</span>
+                  </p>
+                </div>
+              </div>
+              <p className="text-white/45 text-[11px] text-center max-w-[260px] leading-relaxed">
+                Place-toi face à la caméra et complète les répétitions pour débloquer l'app.
               </p>
-            </div>
-          </div>
-
-          {/* Hint */}
-          <p className="text-white/45 text-[11px] text-center max-w-[260px] leading-relaxed">
-            Place-toi face à la caméra et complète les répétitions pour débloquer l'app.
-          </p>
+            </>
+          )}
         </div>
       </div>
     </div>
