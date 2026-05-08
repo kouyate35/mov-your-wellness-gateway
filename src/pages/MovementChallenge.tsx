@@ -100,12 +100,27 @@ const MovementChallenge = () => {
     initCamera();
   }, [startDetection, programId]);
 
-  // Handle completion
+  // Handle completion (rep-based programs)
   useEffect(() => {
-    if (count >= config.required && !isComplete) {
+    if (!isStaticPosture && count >= config.required && !isComplete) {
       setIsComplete(true);
     }
-  }, [count, isComplete, config.required]);
+  }, [count, isComplete, config.required, isStaticPosture]);
+
+  // Static posture: auto-complete after a hold timer (visualised by progress ring elsewhere)
+  const [holdSeconds, setHoldSeconds] = useState(0);
+  const HOLD_TARGET = 20;
+  useEffect(() => {
+    if (!isStaticPosture || !isReady) return;
+    const interval = setInterval(() => {
+      setHoldSeconds((s) => {
+        const next = s + 1;
+        if (next >= HOLD_TARGET) setIsComplete(true);
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isStaticPosture, isReady]);
 
   // Auto-redirect to completion screen when complete
   useEffect(() => {
