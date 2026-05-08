@@ -192,10 +192,7 @@ const MovementChallenge = () => {
 
           {/* Right — Tutorial PiP */}
           <div className="relative shrink-0">
-            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 bg-white text-black text-[8.5px] font-bold uppercase tracking-[0.15em] rounded-sm">
-              Modèle
-            </div>
-            <div className="w-[88px] h-[120px] rounded-2xl overflow-hidden border border-white/20 bg-black/60 backdrop-blur-sm shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+            <div className="w-[88px] h-[120px] rounded-2xl overflow-hidden border border-white/20 bg-black/60 backdrop-blur-sm shadow-[0_8px_24px_rgba(0,0,0,0.5)] relative">
               <video
                 src={tutorialVideo}
                 autoPlay
@@ -204,6 +201,12 @@ const MovementChallenge = () => {
                 playsInline
                 className="w-full h-full object-cover"
               />
+              {/* Bottom label inside the video frame */}
+              <div className="absolute bottom-0 left-0 right-0 px-1.5 py-1 bg-gradient-to-t from-black/85 to-transparent">
+                <p className="text-white text-[8.5px] font-semibold uppercase tracking-[0.18em] text-center">
+                  Modèle
+                </p>
+              </div>
             </div>
           </div>
         </div>
