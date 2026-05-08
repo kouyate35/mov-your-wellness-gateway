@@ -716,7 +716,6 @@ const Community = () => {
             </div>
           </div>
         </div>
-        </div>
 
         {/* Edit Account Modal */}
         <AnimatePresence>
