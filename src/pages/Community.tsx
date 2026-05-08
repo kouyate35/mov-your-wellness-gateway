@@ -619,8 +619,8 @@ const Community = () => {
           </div>
 
           {/* Biographie */}
-          <h3 className="text-white text-lg font-bold mb-3">Biographie</h3>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl px-5 py-4 mb-8">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 mb-3 px-1">Biographie</p>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl px-5 py-4 mb-8">
             {editingBio ? (
               <div>
                 <textarea
@@ -637,84 +637,85 @@ const Community = () => {
               </div>
             ) : (
               <button onClick={() => { setTempBio(userBio); setEditingBio(true); }} className="w-full text-left">
-                <p className="text-white/70 text-[15px] leading-relaxed">{userBio || "Écris une petite description..."}</p>
+                <p className="text-white/75 text-[15px] leading-relaxed">{userBio || "Écris une petite description..."}</p>
               </button>
             )}
           </div>
 
           {/* Mon compte */}
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white text-lg font-bold">Mon compte</h3>
-            <button onClick={() => setShowEditAccount(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
-              <Pencil className="w-4 h-4 text-white" />
+          <div className="flex items-center justify-between mb-3 px-1">
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45">Mon compte</p>
+            <button onClick={() => setShowEditAccount(true)} className="w-7 h-7 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center">
+              <Pencil className="w-3.5 h-3.5 text-white/80" />
             </button>
           </div>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
-            <div className="flex items-center px-5 py-4">
-              <User className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Nom d'utilisateur</span>
-              <span className="ml-auto text-white/50 text-[15px]">{editAccountData.username}</span>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.05] mb-8">
+            <div className="flex items-center px-5 py-3.5">
+              <User className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Nom d'utilisateur</span>
+              <span className="ml-auto text-white/50 text-[14px] tabular-nums">{editAccountData.username}</span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editAccountData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <Cake className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Âge</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editAccountData.age} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">🇫🇷 {editAccountData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <MapPin className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Lieu</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">🇫🇷 {editAccountData.lieu} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <Ban className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Utilisateurs bloqués</span>
-              <ChevronRight className="ml-auto w-4 h-4 text-white/30" />
+            <div className="flex items-center px-5 py-3.5">
+              <Ban className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Utilisateurs bloqués</span>
+              <ChevronRight className="ml-auto w-4 h-4 text-white/25" />
             </div>
           </div>
 
           {/* Préférences de recherche d'amis */}
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-white text-lg font-bold">Préférences de recherche d'amis</h3>
-            <button onClick={() => setShowEditPrefs(true)} className="w-8 h-8 rounded-full bg-[hsl(0,0%,18%)] flex items-center justify-center">
-              <Pencil className="w-4 h-4 text-white" />
+          <div className="flex items-center justify-between mb-3 px-1">
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45">Préférences de recherche</p>
+            <button onClick={() => setShowEditPrefs(true)} className="w-7 h-7 rounded-full bg-white/[0.06] border border-white/[0.06] flex items-center justify-center">
+              <Pencil className="w-3.5 h-3.5 text-white/80" />
             </button>
           </div>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8 mb-8">
-            <div className="flex items-center px-5 py-4">
-              <Users className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Genre</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.genre} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.05] mb-8">
+            <div className="flex items-center px-5 py-3.5">
+              <Users className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Genre</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editPrefsData.genre} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <Cake className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Âge</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.age} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <Cake className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Âge</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editPrefsData.age} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <MapPin className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Lieu</span>
-              <span className="ml-auto text-white/50 text-[15px] flex items-center gap-1">{editPrefsData.lieu} <ChevronRight className="w-4 h-4 text-white/30" /></span>
+            <div className="flex items-center px-5 py-3.5">
+              <MapPin className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Lieu</span>
+              <span className="ml-auto text-white/50 text-[14px] flex items-center gap-1">{editPrefsData.lieu} <ChevronRight className="w-4 h-4 text-white/25" /></span>
             </div>
           </div>
 
           {/* Visibilité */}
-          <h3 className="text-white text-lg font-bold mb-3">Visibilité</h3>
-          <div className="bg-[hsl(0,0%,14%)] rounded-2xl divide-y divide-white/8">
-            <div className="flex items-center px-5 py-4">
-              <Eye className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Montrer ma région</span>
-              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
-                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/45 mb-3 px-1">Visibilité</p>
+          <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl divide-y divide-white/[0.05]">
+            <div className="flex items-center px-5 py-3.5">
+              <Eye className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Montrer ma région</span>
+              <div className="ml-auto w-11 h-[26px] rounded-full bg-white relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-[22px] h-[22px] rounded-full bg-[hsl(0,0%,8%)] transition-all" />
               </div>
             </div>
-            <div className="flex items-center px-5 py-4">
-              <UserSearch className="w-5 h-5 text-white/50 mr-4 flex-shrink-0" />
-              <span className="text-white text-[15px]">Visible dans la recherche</span>
-              <div className="ml-auto w-12 h-7 rounded-full bg-white relative cursor-pointer">
-                <div className="absolute right-0.5 top-0.5 w-6 h-6 rounded-full bg-[hsl(0,0%,8%)] transition-all" />
+            <div className="flex items-center px-5 py-3.5">
+              <UserSearch className="w-[18px] h-[18px] text-white/45 mr-4 flex-shrink-0" />
+              <span className="text-white text-[14.5px]">Visible dans la recherche</span>
+              <div className="ml-auto w-11 h-[26px] rounded-full bg-white relative cursor-pointer">
+                <div className="absolute right-0.5 top-0.5 w-[22px] h-[22px] rounded-full bg-[hsl(0,0%,8%)] transition-all" />
               </div>
             </div>
           </div>
+        </div>
         </div>
 
         {/* Edit Account Modal */}
