@@ -240,59 +240,6 @@ const MovementChallenge = () => {
         </div>
       </div>
 
-      {/* Centered posture frame for static programs */}
-      {isStaticPosture && (
-        <div className="absolute inset-0 z-[6] flex items-center justify-center pointer-events-none">
-          <div className="relative">
-            {/* Pulsing rings */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="absolute w-[280px] h-[280px] rounded-full border border-white/15 animate-ping opacity-30" style={{ animationDuration: "3s" }} />
-              <div className="absolute w-[220px] h-[220px] rounded-full border border-white/20 animate-ping opacity-40" style={{ animationDuration: "4s", animationDelay: "0.5s" }} />
-            </div>
-            {/* Glassmorphic posture silhouette */}
-            <svg
-              viewBox="0 0 200 320"
-              className="w-[200px] h-[320px] relative"
-              style={{ filter: "drop-shadow(0 0 24px rgba(255,255,255,0.15))" }}
-            >
-              <defs>
-                <linearGradient id="posture-fill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="white" stopOpacity="0.18" />
-                  <stop offset="100%" stopColor="white" stopOpacity="0.06" />
-                </linearGradient>
-              </defs>
-              {/* Head */}
-              <circle cx="100" cy="40" r="22" fill="url(#posture-fill)" stroke="white" strokeOpacity="0.5" strokeWidth="1.2" />
-              {/* Torso (seated/standing) */}
-              <path
-                d="M70 75 Q60 80 58 130 Q56 170 65 200 Q70 215 100 218 Q130 215 135 200 Q144 170 142 130 Q140 80 130 75 Q115 70 100 70 Q85 70 70 75 Z"
-                fill="url(#posture-fill)"
-                stroke="white"
-                strokeOpacity="0.5"
-                strokeWidth="1.2"
-              />
-              {/* Arms raised in prayer / namaste */}
-              <path
-                d="M75 85 Q60 60 80 35 Q90 20 100 18 Q110 20 120 35 Q140 60 125 85"
-                fill="none"
-                stroke="white"
-                strokeOpacity="0.6"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              {/* Crossed legs */}
-              <path
-                d="M65 215 Q50 240 70 270 Q90 285 130 270 Q150 240 135 215"
-                fill="url(#posture-fill)"
-                stroke="white"
-                strokeOpacity="0.45"
-                strokeWidth="1.2"
-              />
-            </svg>
-          </div>
-        </div>
-      )}
-
       {/* HUD — Bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-[max(env(safe-area-inset-bottom),28px)] pointer-events-none">
         <div className="flex flex-col items-center gap-5">

@@ -6,87 +6,85 @@ interface SkeletonOverlayProps {
   videoHeight: number;
 }
 
-// MoveNet skeleton connections
-const SKELETON_CONNECTIONS: [string, string][] = [
-  // Face
+// MoveNet skeleton connections grouped for styling
+const FACE_CONNECTIONS: [string, string][] = [
   ["nose", "left_eye"],
   ["nose", "right_eye"],
   ["left_eye", "left_ear"],
   ["right_eye", "right_ear"],
-  // Upper body
+];
+
+const BODY_CONNECTIONS: [string, string][] = [
   ["left_shoulder", "right_shoulder"],
   ["left_shoulder", "left_elbow"],
   ["right_shoulder", "right_elbow"],
   ["left_elbow", "left_wrist"],
   ["right_elbow", "right_wrist"],
-  // Torso
   ["left_shoulder", "left_hip"],
   ["right_shoulder", "right_hip"],
   ["left_hip", "right_hip"],
-  // Lower body
   ["left_hip", "left_knee"],
   ["right_hip", "right_knee"],
   ["left_knee", "left_ankle"],
   ["right_knee", "right_ankle"],
 ];
 
+// Major joint keypoints to highlight (subtle, not all 17)
+const KEY_JOINTS = new Set([
+  "left_shoulder", "right_shoulder",
+  "left_elbow", "right_elbow",
+  "left_wrist", "right_wrist",
+  "left_hip", "right_hip",
+  "left_knee", "right_knee",
+  "left_ankle", "right_ankle",
+]);
+
 const SkeletonOverlay = ({
   keypoints,
   videoWidth,
   videoHeight,
 }: SkeletonOverlayProps) => {
-  const minConfidence = 0.3;
+  const minConfidence = 0.35;
 
   const getKeypoint = (name: string) =>
     keypoints.find((kp) => kp.name === name);
 
-  // Draw keypoint as circle
-  const renderKeypoint = (kp: poseDetection.Keypoint) => {
-    if (!kp || kp.score! < minConfidence) return null;
+  const renderJoint = (kp: poseDetection.Keypoint) => {
+    if (!kp || !kp.name || kp.score! < minConfidence) return null;
+    if (!KEY_JOINTS.has(kp.name)) return null;
 
     return (
-      <circle
-        key={kp.name}
-        cx={kp.x}
-        cy={kp.y}
-        r={8}
-        fill="white"
-        stroke="rgba(255,255,255,0.5)"
-        strokeWidth={2}
-        style={{
-          filter: "drop-shadow(0 0 6px rgba(255,255,255,0.8))",
-        }}
-      />
+      <g key={kp.name}>
+        {/* Soft halo */}
+        <circle cx={kp.x} cy={kp.y} r={5} fill="white" fillOpacity={0.12} />
+        {/* Inner dot */}
+        <circle cx={kp.x} cy={kp.y} r={2} fill="white" />
+      </g>
     );
   };
 
-  // Draw connection line between two keypoints
-  const renderConnection = (from: string, to: string, index: number) => {
-    const kpFrom = getKeypoint(from);
-    const kpTo = getKeypoint(to);
-
-    if (
-      !kpFrom ||
-      !kpTo ||
-      kpFrom.score! < minConfidence ||
-      kpTo.score! < minConfidence
-    ) {
+  const renderConnection = (
+    from: string,
+    to: string,
+    index: number,
+    opts: { width: number; opacity: number }
+  ) => {
+    const a = getKeypoint(from);
+    const b = getKeypoint(to);
+    if (!a || !b || a.score! < minConfidence || b.score! < minConfidence) {
       return null;
     }
-
     return (
       <line
         key={`${from}-${to}-${index}`}
-        x1={kpFrom.x}
-        y1={kpFrom.y}
-        x2={kpTo.x}
-        y2={kpTo.y}
-        stroke="#ff6600"
-        strokeWidth={4}
+        x1={a.x}
+        y1={a.y}
+        x2={b.x}
+        y2={b.y}
+        stroke="white"
+        strokeOpacity={opts.opacity}
+        strokeWidth={opts.width}
         strokeLinecap="round"
-        style={{
-          filter: "drop-shadow(0 0 4px rgba(255,102,0,0.6))",
-        }}
       />
     );
   };
@@ -96,15 +94,18 @@ const SkeletonOverlay = ({
       className="absolute inset-0 w-full h-full pointer-events-none"
       viewBox={`0 0 ${videoWidth} ${videoHeight}`}
       preserveAspectRatio="xMidYMid slice"
-      style={{ transform: "scaleX(-1)" }} // Mirror to match front camera
+      style={{ transform: "scaleX(-1)" }}
     >
-      {/* Draw connections first (so joints appear on top) */}
-      {SKELETON_CONNECTIONS.map(([from, to], index) =>
-        renderConnection(from, to, index)
+      {/* Face — very thin, very subtle */}
+      {FACE_CONNECTIONS.map(([f, t], i) =>
+        renderConnection(f, t, i, { width: 1, opacity: 0.35 })
       )}
-
-      {/* Draw keypoints */}
-      {keypoints.map((kp) => renderKeypoint(kp))}
+      {/* Body — thin pro lines */}
+      {BODY_CONNECTIONS.map(([f, t], i) =>
+        renderConnection(f, t, i, { width: 1.5, opacity: 0.85 })
+      )}
+      {/* Joints */}
+      {keypoints.map((kp) => renderJoint(kp))}
     </svg>
   );
 };
