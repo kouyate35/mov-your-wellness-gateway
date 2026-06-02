@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Menu, Settings } from "lucide-react";
+import { ChevronRight, Menu, Settings, Lock, Flame, Clock } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
@@ -185,6 +185,62 @@ const AppDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Today's stats bubble — premium info card */}
+      {isConnected && (
+        <section className="px-4 pt-5">
+          <div className="rounded-2xl bg-white/[0.025] border border-white/[0.05] p-4">
+            <div className="flex items-stretch gap-4">
+              {/* Left — main metric */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <Lock className="w-3 h-3 text-muted-foreground/70" strokeWidth={2} />
+                  <p className="text-[9.5px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70 leading-tight">
+                    Temps débloqué
+                    <br />
+                    aujourd'hui
+                  </p>
+                </div>
+                <div className="flex items-baseline gap-1 leading-none">
+                  <span className="text-foreground text-[36px] font-semibold tabular-nums tracking-tight">
+                    12
+                  </span>
+                  <span className="text-[13px] font-semibold text-muted-foreground/80">min</span>
+                </div>
+                <p className="mt-3 text-[10.5px] text-muted-foreground/70">
+                  Objectif quotidien · 30 min
+                </p>
+                <div className="mt-1.5 h-1 rounded-full overflow-hidden bg-white/[0.05]">
+                  <div className="h-full rounded-full bg-foreground/85" style={{ width: "40%" }} />
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="w-px bg-white/[0.06]" />
+
+              {/* Right — mini stats */}
+              <div className="flex flex-col justify-between py-0.5 gap-2">
+                {[
+                  { icon: Flame, value: "124", unit: "kcal", label: "Brûlées" },
+                  { icon: Clock, value: "2h 14m", label: "Économisées" },
+                  { icon: Lock, value: "18", label: "Déblocages" },
+                ].map((s) => (
+                  <div key={s.label} className="flex items-center gap-2">
+                    <s.icon className="w-3.5 h-3.5 text-muted-foreground/70 shrink-0" strokeWidth={1.7} />
+                    <div className="leading-tight">
+                      <p className="text-[12.5px] font-semibold text-foreground tabular-nums">
+                        {s.value}
+                        {s.unit && <span className="text-[9.5px] font-medium text-muted-foreground/70 ml-0.5">{s.unit}</span>}
+                      </p>
+                      <p className="text-[9.5px] text-muted-foreground/65 leading-none">{s.label}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Category Selection */}
       <section className="px-4 pt-5">
