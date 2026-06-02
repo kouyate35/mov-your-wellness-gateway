@@ -106,46 +106,50 @@ const BottomNavBar = () => {
           </div>
         )}
 
-        {/* Floating pill nav */}
-        <div className="pointer-events-auto px-10 pb-4">
-          <div className="mx-auto max-w-[300px] flex items-center justify-around h-[58px] px-1.5 rounded-full bg-[hsl(0_0%_8%)]/95 backdrop-blur-2xl border border-white/[0.06] shadow-[0_0_0_0.5px_rgba(0,0,0,0.8),0_12px_32px_-8px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.04)]">
+        {/* Fused bottom nav — no horizontal border, blends into bg via gradient */}
+        <div
+          className="pointer-events-auto pt-6 pb-2.5"
+          style={{
+            background:
+              "linear-gradient(to top, hsl(var(--background)) 35%, hsl(var(--background) / 0.85) 70%, hsl(var(--background) / 0) 100%)",
+          }}
+        >
+          <div className="flex items-center justify-around px-2 max-w-[420px] mx-auto">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <button
                   key={item.id}
                   onClick={() => navigate(item.path)}
-                  className="relative flex items-center justify-center flex-1 h-11"
+                  className="relative flex flex-col items-center gap-1 px-3 py-1.5"
                 >
-                  <div
+                  <item.icon
                     className={cn(
-                      "absolute inset-y-0.5 left-0.5 right-0.5 rounded-full transition-all duration-300 ease-out",
-                      isActive ? "bg-white/[0.07] scale-100 opacity-100" : "scale-90 opacity-0"
+                      "w-[20px] h-[20px] transition-colors",
+                      isActive ? "text-foreground" : "text-muted-foreground/55"
+                    )}
+                    strokeWidth={isActive ? 2.1 : 1.6}
+                  />
+                  <span
+                    className={cn(
+                      "text-[9.5px] tracking-wide transition-colors leading-none",
+                      isActive ? "text-foreground font-semibold" : "text-muted-foreground/55 font-medium"
+                    )}
+                  >
+                    {item.label}
+                  </span>
+                  <span
+                    className={cn(
+                      "absolute -bottom-0.5 w-1 h-1 rounded-full transition-all",
+                      isActive ? "bg-foreground opacity-100" : "opacity-0"
                     )}
                   />
-                  <div className="relative flex flex-col items-center gap-[3px]">
-                    <item.icon
-                      className={cn(
-                        "w-[18px] h-[18px] transition-colors",
-                        isActive ? "text-foreground" : "text-muted-foreground/60"
-                      )}
-                      strokeWidth={isActive ? 2.2 : 1.6}
-                    />
-                    <span
-                      className={cn(
-                        "text-[8.5px] tracking-wide transition-colors leading-none",
-                        isActive ? "text-foreground font-semibold" : "text-muted-foreground/60 font-medium"
-                      )}
-                    >
-                      {item.label}
-                    </span>
-                  </div>
                 </button>
               );
             })}
           </div>
+          <div className="h-[env(safe-area-inset-bottom,0px)]" />
         </div>
-        <div className="h-[env(safe-area-inset-bottom,0px)]" />
       </nav>
 
       <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />

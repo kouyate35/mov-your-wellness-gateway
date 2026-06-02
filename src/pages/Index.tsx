@@ -16,6 +16,7 @@ import { useManuallyAddedApps } from "@/hooks/useManuallyAddedApps";
 import { toast } from "sonner";
 import BottomNavBar from "@/components/BottomNavBar";
 import ProfileButton from "@/components/ProfileButton";
+import TodayProgress from "@/components/TodayProgress";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -110,28 +111,34 @@ const Index = () => {
         onOpenSettings={openPermissionSettings}
       />
 
-      {/* Header */}
-      <header className="pt-4 pb-5 px-5">
-        <div className="flex items-center gap-2.5">
-          <h1 className="text-[26px] font-semibold text-foreground tracking-tight leading-none">
-            Work<span className="font-light text-foreground/90">out</span>
+      {/* Header — editorial */}
+      <header className="pt-5 pb-6 px-5">
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-[34px] leading-[0.95] tracking-tight font-bold text-foreground">
+            <span className="font-light text-foreground/45">MOVE</span>{" "}
+            <span className="font-bold">before</span>
+            <br />
+            <span className="font-bold">you scroll<span className="text-foreground/70">.</span></span>
           </h1>
-          <span className="px-2.5 py-1 text-[10px] font-medium bg-white/[0.04] rounded-full text-muted-foreground/80 border border-white/[0.06] tracking-wide">
-            Work avant de scroll
-          </span>
-          <div className="ml-auto">
+          <div className="pt-1">
             <ProfileButton />
           </div>
         </div>
+        <p className="mt-3 text-[13.5px] text-muted-foreground/80">
+          <span className="text-foreground/85">Bon retour.</span> Reprends ton rythme.
+        </p>
       </header>
 
       {/* Category Carousel */}
-      <section className="mb-6">
+      <section className="mb-7">
         <CategoryCarousel
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
       </section>
+
+      {/* Today's progress — 3 stat bubbles */}
+      <TodayProgress />
 
       {/* Section Tabs */}
       <SectionTabs
