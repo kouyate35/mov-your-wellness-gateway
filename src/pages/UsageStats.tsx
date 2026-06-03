@@ -234,25 +234,29 @@ const UsageStats = () => {
 
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { icon: Hourglass, value: "16h 42m", label: "Temps écran économisé", trend: "+28%" },
-            { icon: Flame, value: "8 274", label: "Calories brûlées", trend: "+32%" },
-            { icon: Lock, value: "143", label: "Apps débloquées", trend: "+18%" },
-            { icon: Leaf, value: "21,6 kg", label: "CO₂ évité (approx.)", trend: "+15%" },
+            { icon: Hourglass, value: "16h 42m", label: "Temps écran économisé", trend: "+28%", color: "#9BE15D" },
+            { icon: Flame, value: "8 274", label: "Calories brûlées", trend: "+32%", color: "#FF7A45" },
+            { icon: Lock, value: "143", label: "Apps débloquées", trend: "+18%", color: "#5BA8FF" },
+            { icon: Leaf, value: "21,6 kg", label: "CO₂ évité (approx.)", trend: "+15%", color: "#7FD1B9" },
           ].map((m) => (
             <div key={m.label} className="rounded-2xl bg-white/[0.025] border border-white/[0.05] p-3.5">
-              <div className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center mb-3">
-                <m.icon className="w-3.5 h-3.5 text-foreground/80" strokeWidth={1.8} />
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center mb-3"
+                style={{ backgroundColor: `${m.color}1A`, border: `1px solid ${m.color}33` }}
+              >
+                <m.icon className="w-3.5 h-3.5" strokeWidth={1.8} style={{ color: m.color }} />
               </div>
               <p className="text-foreground text-[18px] font-semibold tabular-nums leading-none tracking-tight">
                 {m.value}
               </p>
               <p className="mt-2 text-[10.5px] text-muted-foreground/70 leading-tight">{m.label}</p>
-              <p className="mt-2 text-[10px] text-foreground/70 tabular-nums font-medium">
+              <p className="mt-2 text-[10px] tabular-nums font-medium" style={{ color: m.color }}>
                 {m.trend} <span className="text-muted-foreground/55 font-normal">vs mois dernier</span>
               </p>
             </div>
           ))}
         </div>
+
       </section>
 
       {/* Monthly progress line */}
