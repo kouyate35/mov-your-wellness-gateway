@@ -169,12 +169,17 @@ const UsageStats = () => {
                     <div className="w-full h-full rounded-md border border-dashed border-white/[0.08]" />
                   ) : (
                     <div
-                      className={`w-full rounded-md transition-all duration-500 ${
-                        b.peak ? "bg-foreground" : "bg-white/[0.12]"
-                      }`}
-                      style={{ height: `${b.value * 100}%` }}
+                      className="w-full rounded-md transition-all duration-500"
+                      style={{
+                        height: `${b.value * 100}%`,
+                        background: b.peak
+                          ? "linear-gradient(180deg, #5BA8FF 0%, #9BE15D 100%)"
+                          : "rgba(255,255,255,0.12)",
+                        boxShadow: b.peak ? "0 8px 20px -8px rgba(91,168,255,0.45)" : undefined,
+                      }}
                     />
                   )}
+
                 </div>
                 <span
                   className={`text-[9.5px] tabular-nums ${
