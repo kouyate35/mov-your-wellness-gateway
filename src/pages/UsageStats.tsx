@@ -102,13 +102,18 @@ const UsageStats = () => {
             {/* Progress ring */}
             <div className="relative w-[110px] h-[110px] shrink-0">
               <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
+                <defs>
+                  <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#5BA8FF" />
+                    <stop offset="100%" stopColor="#9BE15D" />
+                  </linearGradient>
+                </defs>
                 <circle cx="50" cy="50" r="44" stroke="hsl(var(--foreground))" strokeOpacity="0.08" strokeWidth="6" fill="none" />
                 <circle
                   cx="50"
                   cy="50"
                   r="44"
-                  stroke="hsl(var(--foreground))"
-                  strokeOpacity="0.95"
+                  stroke="url(#ring-grad)"
                   strokeWidth="6"
                   fill="none"
                   strokeLinecap="round"
@@ -128,17 +133,23 @@ const UsageStats = () => {
             {/* Mini stats */}
             <div className="flex-1 grid grid-cols-3 gap-2 min-w-0">
               {[
-                { icon: Clock, value: "2h 14m", label: "Économisé" },
-                { icon: Flame, value: "1240", label: "kcal" },
-                { icon: Lock, value: "18", label: "Apps" },
+                { icon: Clock, value: "2h 14m", label: "Économisé", color: "#9BE15D" },
+                { icon: Flame, value: "1240", label: "kcal", color: "#FF7A45" },
+                { icon: Lock, value: "18", label: "Apps", color: "#5BA8FF" },
               ].map((s) => (
                 <div key={s.label} className="rounded-xl bg-white/[0.03] border border-white/[0.05] p-2.5">
-                  <s.icon className="w-3 h-3 text-muted-foreground/70 mb-1.5" strokeWidth={1.8} />
+                  <div
+                    className="w-5 h-5 rounded-md flex items-center justify-center mb-1.5"
+                    style={{ backgroundColor: `${s.color}1A`, border: `1px solid ${s.color}33` }}
+                  >
+                    <s.icon className="w-2.5 h-2.5" strokeWidth={2} style={{ color: s.color }} />
+                  </div>
                   <p className="text-foreground text-[13px] font-semibold tabular-nums leading-none">{s.value}</p>
                   <p className="text-[9px] text-muted-foreground/65 mt-1.5 leading-none">{s.label}</p>
                 </div>
               ))}
             </div>
+
           </div>
 
           <p className="mt-4 text-[12.5px] text-muted-foreground">
