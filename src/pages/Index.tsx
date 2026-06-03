@@ -29,6 +29,7 @@ const Index = () => {
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [showScanAnimation, setShowScanAnimation] = useState(false);
   const [showAddAppModal, setShowAddAppModal] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
   const { addedIds, addApp, getAddedApps } = useManuallyAddedApps();
   const { 
@@ -42,14 +43,26 @@ const Index = () => {
     openPermissionSettings,
   } = useInstalledApps();
 
-  // Afficher le modal au premier lancement si accès non accordé/refusé
+  // First-launch flow: guide → access modal
   useEffect(() => {
-    if (!hasAccessGranted && !hasAccessDenied) {
-      // Petit délai pour que l'interface se charge d'abord
-      const timer = setTimeout(() => setShowAccessModal(true), 500);
-      return () => clearTimeout(timer);
-    }
+    if (hasAccessGranted || hasAccessDenied) return;
+    const seenGuide = localStorage.getItem(ONBOARDING_GUIDE_KEY) === "true";
+    const timer = setTimeout(() => {
+      if (seenGuide) {
+        setShowAccessModal(true);
+      } else {
+        setShowGuide(true);
+      }
+    }, 500);
+    return () => clearTimeout(timer);
   }, [hasAccessGranted, hasAccessDenied]);
+
+  const handleGuideComplete = () => {
+    localStorage.setItem(ONBOARDING_GUIDE_KEY, "true");
+    setShowGuide(false);
+    setTimeout(() => setShowAccessModal(true), 200);
+  };
+
 
   // Utiliser les apps détectées si disponibles, sinon toutes les apps
   // + fusionner les apps ajoutées manuellement (sans doublon)
