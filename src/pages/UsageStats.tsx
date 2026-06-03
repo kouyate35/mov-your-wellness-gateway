@@ -318,8 +318,12 @@ const MonthlyLineChart = ({ data }: { data: number[] }) => {
 
         <defs>
           <linearGradient id="line-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity="0" />
+            <stop offset="0%" stopColor="#5BA8FF" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#5BA8FF" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="line-stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#5BA8FF" />
+            <stop offset="100%" stopColor="#9BE15D" />
           </linearGradient>
         </defs>
 
@@ -327,16 +331,16 @@ const MonthlyLineChart = ({ data }: { data: number[] }) => {
         <polyline
           points={polyline}
           fill="none"
-          stroke="hsl(var(--foreground))"
-          strokeOpacity="0.9"
-          strokeWidth="1.5"
+          stroke="url(#line-stroke)"
+          strokeWidth="1.75"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
 
         {/* Highlight dot */}
-        <circle cx={hx} cy={hy} r="4.5" fill="hsl(var(--foreground))" />
-        <circle cx={hx} cy={hy} r="8" fill="hsl(var(--foreground))" fillOpacity="0.15" />
+        <circle cx={hx} cy={hy} r="4.5" fill="#5BA8FF" />
+        <circle cx={hx} cy={hy} r="8" fill="#5BA8FF" fillOpacity="0.2" />
+
 
         {/* X labels */}
         {[1, 7, 14, 21, 28, 31].map((d) => (
