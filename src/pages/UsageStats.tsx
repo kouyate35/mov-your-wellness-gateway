@@ -47,7 +47,7 @@ const UsageStats = () => {
   return (
     <div className="min-h-screen bg-background pb-32">
       {/* Header */}
-      <header className="px-5 pt-[max(env(safe-area-inset-top),16px)] pb-5 flex items-start justify-between gap-4">
+      <header className="px-5 pt-[max(env(safe-area-inset-top),16px)] pb-5 flex items-start gap-3">
         <button
           onClick={() => navigate(-1)}
           className="w-9 h-9 -ml-2 rounded-full flex items-center justify-center active:scale-95 transition-transform"
@@ -60,14 +60,9 @@ const UsageStats = () => {
             <span className="font-light text-foreground/45">Ta</span>{" "}
             <span className="font-bold">progression<span className="text-foreground/70">.</span></span>
           </h1>
-          <p className="mt-2 text-[13px] text-muted-foreground">
-            <span className="text-foreground/85">La régularité</span> construit la liberté.
-          </p>
-        </div>
-        <div className="w-10 h-10 rounded-full bg-muted/40 border border-white/[0.06] overflow-hidden shrink-0 flex items-center justify-center">
-          <span className="text-foreground text-sm font-semibold">A</span>
         </div>
       </header>
+
 
       {/* Tabs */}
       <div className="px-5 mb-6">
