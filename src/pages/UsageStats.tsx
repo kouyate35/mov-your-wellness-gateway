@@ -194,8 +194,11 @@ const UsageStats = () => {
 
           <div className="mt-3 pt-3 border-t border-white/[0.05] flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center">
-                <Star className="w-3.5 h-3.5 text-foreground/80" strokeWidth={1.8} />
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "#F5C84B1A", border: "1px solid #F5C84B33" }}
+              >
+                <Star className="w-3.5 h-3.5" strokeWidth={1.8} style={{ color: "#F5C84B" }} />
               </div>
               <div className="leading-tight">
                 <p className="text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/65">Meilleur jour</p>
@@ -203,8 +206,11 @@ const UsageStats = () => {
               </div>
             </div>
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center">
-                <Flame className="w-3.5 h-3.5 text-foreground/80" strokeWidth={1.8} />
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "#FF7A451A", border: "1px solid #FF7A4533" }}
+              >
+                <Flame className="w-3.5 h-3.5" strokeWidth={1.8} style={{ color: "#FF7A45" }} />
               </div>
               <div className="leading-tight">
                 <p className="text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/65">Série</p>
@@ -212,6 +218,7 @@ const UsageStats = () => {
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
