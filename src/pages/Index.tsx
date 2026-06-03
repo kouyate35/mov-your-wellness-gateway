@@ -17,6 +17,10 @@ import { toast } from "sonner";
 import BottomNavBar from "@/components/BottomNavBar";
 import ProfileButton from "@/components/ProfileButton";
 import TodayProgress from "@/components/TodayProgress";
+import OnboardingGuide from "@/components/OnboardingGuide";
+
+const ONBOARDING_GUIDE_KEY = "mov-onboarding-guide-seen";
+
 
 const Index = () => {
   const navigate = useNavigate();
