@@ -47,7 +47,7 @@ const UsageStats = () => {
   return (
     <div className="min-h-screen bg-background pb-32">
       {/* Header */}
-      <header className="px-5 pt-[max(env(safe-area-inset-top),16px)] pb-5 flex items-start justify-between gap-4">
+      <header className="px-5 pt-[max(env(safe-area-inset-top),16px)] pb-5 flex items-start gap-3">
         <button
           onClick={() => navigate(-1)}
           className="w-9 h-9 -ml-2 rounded-full flex items-center justify-center active:scale-95 transition-transform"
@@ -60,14 +60,9 @@ const UsageStats = () => {
             <span className="font-light text-foreground/45">Ta</span>{" "}
             <span className="font-bold">progression<span className="text-foreground/70">.</span></span>
           </h1>
-          <p className="mt-2 text-[13px] text-muted-foreground">
-            <span className="text-foreground/85">La régularité</span> construit la liberté.
-          </p>
-        </div>
-        <div className="w-10 h-10 rounded-full bg-muted/40 border border-white/[0.06] overflow-hidden shrink-0 flex items-center justify-center">
-          <span className="text-foreground text-sm font-semibold">A</span>
         </div>
       </header>
+
 
       {/* Tabs */}
       <div className="px-5 mb-6">
@@ -107,13 +102,18 @@ const UsageStats = () => {
             {/* Progress ring */}
             <div className="relative w-[110px] h-[110px] shrink-0">
               <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
+                <defs>
+                  <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#5BA8FF" />
+                    <stop offset="100%" stopColor="#9BE15D" />
+                  </linearGradient>
+                </defs>
                 <circle cx="50" cy="50" r="44" stroke="hsl(var(--foreground))" strokeOpacity="0.08" strokeWidth="6" fill="none" />
                 <circle
                   cx="50"
                   cy="50"
                   r="44"
-                  stroke="hsl(var(--foreground))"
-                  strokeOpacity="0.95"
+                  stroke="url(#ring-grad)"
                   strokeWidth="6"
                   fill="none"
                   strokeLinecap="round"
@@ -133,17 +133,23 @@ const UsageStats = () => {
             {/* Mini stats */}
             <div className="flex-1 grid grid-cols-3 gap-2 min-w-0">
               {[
-                { icon: Clock, value: "2h 14m", label: "Économisé" },
-                { icon: Flame, value: "1240", label: "kcal" },
-                { icon: Lock, value: "18", label: "Apps" },
+                { icon: Clock, value: "2h 14m", label: "Économisé", color: "#9BE15D" },
+                { icon: Flame, value: "1240", label: "kcal", color: "#FF7A45" },
+                { icon: Lock, value: "18", label: "Apps", color: "#5BA8FF" },
               ].map((s) => (
                 <div key={s.label} className="rounded-xl bg-white/[0.03] border border-white/[0.05] p-2.5">
-                  <s.icon className="w-3 h-3 text-muted-foreground/70 mb-1.5" strokeWidth={1.8} />
+                  <div
+                    className="w-5 h-5 rounded-md flex items-center justify-center mb-1.5"
+                    style={{ backgroundColor: `${s.color}1A`, border: `1px solid ${s.color}33` }}
+                  >
+                    <s.icon className="w-2.5 h-2.5" strokeWidth={2} style={{ color: s.color }} />
+                  </div>
                   <p className="text-foreground text-[13px] font-semibold tabular-nums leading-none">{s.value}</p>
                   <p className="text-[9px] text-muted-foreground/65 mt-1.5 leading-none">{s.label}</p>
                 </div>
               ))}
             </div>
+
           </div>
 
           <p className="mt-4 text-[12.5px] text-muted-foreground">
@@ -163,12 +169,17 @@ const UsageStats = () => {
                     <div className="w-full h-full rounded-md border border-dashed border-white/[0.08]" />
                   ) : (
                     <div
-                      className={`w-full rounded-md transition-all duration-500 ${
-                        b.peak ? "bg-foreground" : "bg-white/[0.12]"
-                      }`}
-                      style={{ height: `${b.value * 100}%` }}
+                      className="w-full rounded-md transition-all duration-500"
+                      style={{
+                        height: `${b.value * 100}%`,
+                        background: b.peak
+                          ? "linear-gradient(180deg, #5BA8FF 0%, #9BE15D 100%)"
+                          : "rgba(255,255,255,0.12)",
+                        boxShadow: b.peak ? "0 8px 20px -8px rgba(91,168,255,0.45)" : undefined,
+                      }}
                     />
                   )}
+
                 </div>
                 <span
                   className={`text-[9.5px] tabular-nums ${
@@ -183,8 +194,11 @@ const UsageStats = () => {
 
           <div className="mt-3 pt-3 border-t border-white/[0.05] flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center">
-                <Star className="w-3.5 h-3.5 text-foreground/80" strokeWidth={1.8} />
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "#F5C84B1A", border: "1px solid #F5C84B33" }}
+              >
+                <Star className="w-3.5 h-3.5" strokeWidth={1.8} style={{ color: "#F5C84B" }} />
               </div>
               <div className="leading-tight">
                 <p className="text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/65">Meilleur jour</p>
@@ -192,8 +206,11 @@ const UsageStats = () => {
               </div>
             </div>
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center">
-                <Flame className="w-3.5 h-3.5 text-foreground/80" strokeWidth={1.8} />
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "#FF7A451A", border: "1px solid #FF7A4533" }}
+              >
+                <Flame className="w-3.5 h-3.5" strokeWidth={1.8} style={{ color: "#FF7A45" }} />
               </div>
               <div className="leading-tight">
                 <p className="text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground/65">Série</p>
@@ -201,6 +218,7 @@ const UsageStats = () => {
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -216,25 +234,29 @@ const UsageStats = () => {
 
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { icon: Hourglass, value: "16h 42m", label: "Temps écran économisé", trend: "+28%" },
-            { icon: Flame, value: "8 274", label: "Calories brûlées", trend: "+32%" },
-            { icon: Lock, value: "143", label: "Apps débloquées", trend: "+18%" },
-            { icon: Leaf, value: "21,6 kg", label: "CO₂ évité (approx.)", trend: "+15%" },
+            { icon: Hourglass, value: "16h 42m", label: "Temps écran économisé", trend: "+28%", color: "#9BE15D" },
+            { icon: Flame, value: "8 274", label: "Calories brûlées", trend: "+32%", color: "#FF7A45" },
+            { icon: Lock, value: "143", label: "Apps débloquées", trend: "+18%", color: "#5BA8FF" },
+            { icon: Leaf, value: "21,6 kg", label: "CO₂ évité (approx.)", trend: "+15%", color: "#7FD1B9" },
           ].map((m) => (
             <div key={m.label} className="rounded-2xl bg-white/[0.025] border border-white/[0.05] p-3.5">
-              <div className="w-7 h-7 rounded-full bg-white/[0.04] border border-white/[0.05] flex items-center justify-center mb-3">
-                <m.icon className="w-3.5 h-3.5 text-foreground/80" strokeWidth={1.8} />
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center mb-3"
+                style={{ backgroundColor: `${m.color}1A`, border: `1px solid ${m.color}33` }}
+              >
+                <m.icon className="w-3.5 h-3.5" strokeWidth={1.8} style={{ color: m.color }} />
               </div>
               <p className="text-foreground text-[18px] font-semibold tabular-nums leading-none tracking-tight">
                 {m.value}
               </p>
               <p className="mt-2 text-[10.5px] text-muted-foreground/70 leading-tight">{m.label}</p>
-              <p className="mt-2 text-[10px] text-foreground/70 tabular-nums font-medium">
+              <p className="mt-2 text-[10px] tabular-nums font-medium" style={{ color: m.color }}>
                 {m.trend} <span className="text-muted-foreground/55 font-normal">vs mois dernier</span>
               </p>
             </div>
           ))}
         </div>
+
       </section>
 
       {/* Monthly progress line */}
@@ -296,8 +318,12 @@ const MonthlyLineChart = ({ data }: { data: number[] }) => {
 
         <defs>
           <linearGradient id="line-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity="0" />
+            <stop offset="0%" stopColor="#5BA8FF" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#5BA8FF" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="line-stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#5BA8FF" />
+            <stop offset="100%" stopColor="#9BE15D" />
           </linearGradient>
         </defs>
 
@@ -305,16 +331,16 @@ const MonthlyLineChart = ({ data }: { data: number[] }) => {
         <polyline
           points={polyline}
           fill="none"
-          stroke="hsl(var(--foreground))"
-          strokeOpacity="0.9"
-          strokeWidth="1.5"
+          stroke="url(#line-stroke)"
+          strokeWidth="1.75"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
 
         {/* Highlight dot */}
-        <circle cx={hx} cy={hy} r="4.5" fill="hsl(var(--foreground))" />
-        <circle cx={hx} cy={hy} r="8" fill="hsl(var(--foreground))" fillOpacity="0.15" />
+        <circle cx={hx} cy={hy} r="4.5" fill="#5BA8FF" />
+        <circle cx={hx} cy={hy} r="8" fill="#5BA8FF" fillOpacity="0.2" />
+
 
         {/* X labels */}
         {[1, 7, 14, 21, 28, 31].map((d) => (

@@ -45,45 +45,51 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
         style={{
           transform:
             phase === "enter"
-              ? "scale(0.92)"
+              ? "scale(0.94)"
               : phase === "exit"
-              ? "scale(1.06)"
+              ? "scale(1.04)"
               : "scale(1)",
           opacity: phase === "enter" ? 0 : phase === "exit" ? 0 : 1,
           transition:
             "transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 600ms ease-out",
-          filter: "drop-shadow(0 0 28px rgba(255,255,255,0.08))",
         }}
       >
         {/* Soft pulsing halo */}
         <div
-          className="absolute inset-0 rounded-3xl"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
           style={{
+            width: 260,
+            height: 260,
             background:
-              "radial-gradient(circle at center, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 65%)",
-            transform: "scale(1.8)",
-            animation: phase === "hold" ? "splash-pulse 2.4s ease-in-out infinite" : undefined,
+              "radial-gradient(circle at center, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 65%)",
+            animation: phase === "hold" ? "splash-pulse 2.6s ease-in-out infinite" : undefined,
           }}
         />
 
         <img
           src={workoutLogo}
           alt="Workout"
-          className="relative w-28 h-28 object-contain"
+          className="relative w-36 h-36 object-contain"
+          style={{
+            mixBlendMode: "screen",
+            filter:
+              "drop-shadow(0 0 24px rgba(255,255,255,0.18)) drop-shadow(0 0 60px rgba(255,255,255,0.08))",
+          }}
         />
 
         {/* Animated bottom hairline (loading hint) */}
-        <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 w-[68px] h-px overflow-hidden">
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[72px] h-px overflow-hidden">
           <div
             className="absolute inset-y-0 left-0 w-full"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%)",
               animation: "splash-shimmer 1.6s ease-in-out infinite",
             }}
           />
         </div>
       </div>
+
 
       <style>{`
         @keyframes splash-pulse {
