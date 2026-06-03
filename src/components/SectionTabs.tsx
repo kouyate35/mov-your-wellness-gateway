@@ -14,8 +14,8 @@ const SectionTabs = ({ activeTab, onTabChange, onAddApp }: SectionTabsProps) => 
   return (
     <div className="flex justify-between items-center w-full px-5 pt-2 pb-3">
       <div className="flex items-center gap-2">
-        <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/80">
-          Applis détectées
+        <h2 className="text-[18px] font-bold tracking-tight text-foreground">
+          Tes applis
         </h2>
       </div>
       <button
