@@ -112,11 +112,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
+      {/* Onboarding Guide */}
+      <OnboardingGuide isOpen={showGuide} onComplete={handleGuideComplete} />
+
       {/* Scan Animation */}
       <AppScanAnimation 
         isScanning={showScanAnimation} 
         onComplete={handleScanComplete} 
       />
+
 
       {/* App Access Modal */}
       <AppAccessModal
