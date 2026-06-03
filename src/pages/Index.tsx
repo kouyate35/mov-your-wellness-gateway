@@ -113,21 +113,14 @@ const Index = () => {
 
       {/* Header — editorial */}
       <header className="pt-5 pb-6 px-5">
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="text-[34px] leading-[0.95] tracking-tight font-bold text-foreground">
-            <span className="font-light text-foreground/45">MOVE</span>{" "}
-            <span className="font-bold">before</span>
-            <br />
-            <span className="font-bold">you scroll<span className="text-foreground/70">.</span></span>
-          </h1>
-          <div className="pt-1">
-            <ProfileButton />
-          </div>
-        </div>
-        <p className="mt-3 text-[13.5px] text-muted-foreground/80">
-          <span className="text-foreground/85">Bon retour.</span> Reprends ton rythme.
-        </p>
+        <h1 className="text-[34px] leading-[0.95] tracking-tight font-bold text-foreground">
+          <span className="font-light text-foreground/45">MOVE</span>{" "}
+          <span className="font-bold">before</span>
+          <br />
+          <span className="font-bold">you scroll<span className="text-foreground/70">.</span></span>
+        </h1>
       </header>
+
 
       {/* Category Carousel */}
       <section className="mb-7">
