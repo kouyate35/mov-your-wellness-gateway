@@ -17,9 +17,6 @@ import { toast } from "sonner";
 import BottomNavBar from "@/components/BottomNavBar";
 import ProfileButton from "@/components/ProfileButton";
 import TodayProgress from "@/components/TodayProgress";
-import OnboardingGuide from "@/components/OnboardingGuide";
-
-const ONBOARDING_GUIDE_KEY = "mov-onboarding-guide-seen";
 
 
 const Index = () => {
@@ -29,7 +26,7 @@ const Index = () => {
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [showScanAnimation, setShowScanAnimation] = useState(false);
   const [showAddAppModal, setShowAddAppModal] = useState(false);
-  const [showGuide, setShowGuide] = useState(false);
+  
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
   const { addedIds, addApp, getAddedApps } = useManuallyAddedApps();
   const { 
@@ -43,25 +40,13 @@ const Index = () => {
     openPermissionSettings,
   } = useInstalledApps();
 
-  // First-launch flow: guide → access modal
+  // First-launch flow: access modal
   useEffect(() => {
     if (hasAccessGranted || hasAccessDenied) return;
-    const seenGuide = localStorage.getItem(ONBOARDING_GUIDE_KEY) === "true";
-    const timer = setTimeout(() => {
-      if (seenGuide) {
-        setShowAccessModal(true);
-      } else {
-        setShowGuide(true);
-      }
-    }, 500);
+    const timer = setTimeout(() => setShowAccessModal(true), 500);
     return () => clearTimeout(timer);
   }, [hasAccessGranted, hasAccessDenied]);
 
-  const handleGuideComplete = () => {
-    localStorage.setItem(ONBOARDING_GUIDE_KEY, "true");
-    setShowGuide(false);
-    setTimeout(() => setShowAccessModal(true), 200);
-  };
 
 
   // Utiliser les apps détectées si disponibles, sinon toutes les apps
@@ -112,8 +97,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Onboarding Guide */}
-      <OnboardingGuide isOpen={showGuide} onComplete={handleGuideComplete} />
+
+
 
       {/* Scan Animation */}
       <AppScanAnimation 
@@ -133,13 +118,16 @@ const Index = () => {
       />
 
       {/* Header — editorial */}
-      <header className="pt-5 pb-6 px-5">
+      <header className="pt-5 pb-6 px-5 flex items-start justify-between gap-4">
         <h1 className="text-[34px] leading-[0.95] tracking-tight font-bold text-foreground">
           <span className="font-light text-foreground/45">MOVE</span>{" "}
           <span className="font-bold">before</span>
           <br />
           <span className="font-bold">you scroll<span className="text-foreground/70">.</span></span>
         </h1>
+        <div className="pt-1 shrink-0">
+          <ProfileButton />
+        </div>
       </header>
 
 
