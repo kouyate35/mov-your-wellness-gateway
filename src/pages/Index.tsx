@@ -26,7 +26,7 @@ const Index = () => {
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [showScanAnimation, setShowScanAnimation] = useState(false);
   const [showAddAppModal, setShowAddAppModal] = useState(false);
-  const [showGuide, setShowGuide] = useState(false);
+  
   const { selectedCategory, setSelectedCategory, settings } = useAppSettings();
   const { addedIds, addApp, getAddedApps } = useManuallyAddedApps();
   const { 
