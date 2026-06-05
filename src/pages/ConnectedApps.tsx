@@ -57,9 +57,6 @@ const ConnectedApps = () => {
         <h1 className="text-[22px] font-semibold text-foreground tracking-tight">
           Applications
         </h1>
-        <p className="text-[12.5px] text-muted-foreground mt-1.5 leading-relaxed">
-          {connectedApps.length} {connectedApps.length > 1 ? "apps liées" : "app liée"} à tes micro-défis
-        </p>
       </header>
 
       <div className="px-4 space-y-2">
