@@ -15,8 +15,16 @@ import {
   ChevronRight,
   Calendar,
   Star,
+  Footprints,
+  Zap,
+  Info,
 } from "lucide-react";
 import BottomNavBar from "@/components/BottomNavBar";
+import categoryMoveVideo from "@/assets/category-move-video.mp4";
+import categoryFlexVideo from "@/assets/category-flex-video.mp4";
+import categoryBreathVideo from "@/assets/category-breath-video.mp4";
+import categoryFocusVideo from "@/assets/category-focus-video.mp4";
+
 
 const tabs = [
   { id: "overview", label: "Aperçu", icon: BarChart3 },
