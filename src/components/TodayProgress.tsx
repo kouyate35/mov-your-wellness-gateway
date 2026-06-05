@@ -88,10 +88,10 @@ const TodayProgress = () => {
             style={{ aspectRatio: "1 / 1.05" }}
           >
             <div
-              className="w-7 h-7 rounded-full flex items-center justify-center mb-2"
+              className="w-8 h-8 rounded-full flex items-center justify-center mb-2"
               style={{
-                backgroundColor: `${s.color}1A`,
-                border: `1px solid ${s.color}33`,
+                backgroundColor: "transparent",
+                border: `1.5px solid ${s.color}`,
               }}
             >
               <s.icon className="w-3.5 h-3.5" strokeWidth={2} style={{ color: s.color }} />
