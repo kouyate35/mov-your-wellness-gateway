@@ -104,12 +104,12 @@ const OnboardingStep2 = () => {
               letterSpacing: "-0.01em",
             }}
           >
-            <span className="block text-[28px] text-white/90">Votre bien-être</span>
-            <span className="block text-[34px] mt-1 bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent">
-              physique,
+            <span className="block text-[26px] text-white/60 font-light">Moins de scroll,</span>
+            <span className="block text-[32px] mt-1 bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent">
+              votre bien-être
             </span>
-            <span className="block text-[22px] mt-2 italic font-medium text-white/60">
-              notre sérénité.
+            <span className="block text-[28px] mt-1 text-white/90">
+              physique d'abord.
             </span>
           </h1>
         </div>
