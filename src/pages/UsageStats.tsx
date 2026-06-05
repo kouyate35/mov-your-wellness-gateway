@@ -95,6 +95,15 @@ const UsageStats = () => {
         </div>
       </div>
 
+      {activeTab === "activity" && <ActivityView />}
+
+      {activeTab !== "overview" && activeTab !== "activity" && (
+        <div className="px-5 py-16 text-center text-[12.5px] text-muted-foreground/70">
+          Bientôt disponible.
+        </div>
+      )}
+
+      {activeTab === "overview" && (<>
       {/* This week — hero card */}
       <section className="px-5 mb-6">
         <div className="flex items-baseline justify-between mb-3 px-0.5">
@@ -289,6 +298,8 @@ const UsageStats = () => {
           <MonthlyLineChart data={monthlyData} />
         </div>
       </section>
+      </>)}
+
 
       <BottomNavBar />
     </div>
