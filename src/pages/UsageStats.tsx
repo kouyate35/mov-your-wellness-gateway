@@ -306,7 +306,234 @@ const UsageStats = () => {
   );
 };
 
+const categoryVideos: Record<string, string> = {
+  move: categoryMoveVideo,
+  flex: categoryFlexVideo,
+  breath: categoryBreathVideo,
+  focus: categoryFocusVideo,
+};
+
+const todaySessions = [
+  { id: "move", name: "MOVE", subtitle: "Corps & mobilité", meta: "12 min · 4 défis", kcal: 96 },
+  { id: "flex", name: "FLEX", subtitle: "Souplesse", meta: "8 min · 3 défis", kcal: 54 },
+  { id: "breath", name: "BREATH", subtitle: "Respiration", meta: "6 min · 5 défis", kcal: 22 },
+  { id: "focus", name: "FOCUS", subtitle: "Discipline", meta: "4 min · 2 défis", kcal: 18 },
+];
+
+const hourlyBars = [
+  3, 2, 1, 0, 0, 0, 8, 22, 48, 65, 80, 72, 55, 38, 30, 60, 95, 70, 42, 28, 58, 88, 50, 14,
+];
+
+const weekRings = [
+  { d: "Lun", v: 0.82 },
+  { d: "Mar", v: 0.96, best: true },
+  { d: "Mer", v: 0.61 },
+  { d: "Jeu", v: 1.0 },
+  { d: "Ven", v: 0.78 },
+  { d: "Sam", v: 0.45 },
+  { d: "Dim", v: 0 },
+];
+
+const ActivityView = () => {
+  const maxBar = Math.max(...hourlyBars);
+  return (
+    <div className="px-5 space-y-5">
+      {/* Today header */}
+      <div className="flex items-baseline justify-between px-0.5">
+        <h2 className="text-[15px] font-semibold text-foreground">Aujourd'hui</h2>
+        <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.05] text-[10.5px] text-muted-foreground/85">
+          11 mai 2026
+          <Calendar className="w-3 h-3" strokeWidth={2} />
+        </button>
+      </div>
+
+      {/* Hero ring + mini stats */}
+      <div className="rounded-3xl bg-white/[0.025] border border-white/[0.05] p-5">
+        <div className="flex items-center gap-5">
+          <div className="relative w-[118px] h-[118px] shrink-0">
+            <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
+              <defs>
+                <linearGradient id="act-ring" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#5BA8FF" />
+                  <stop offset="100%" stopColor="#9BE15D" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="44" stroke="hsl(var(--foreground))" strokeOpacity="0.08" strokeWidth="6" fill="none" />
+              <circle cx="50" cy="50" r="44" stroke="url(#act-ring)" strokeWidth="6" fill="none" strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 44 * 0.7} ${2 * Math.PI * 44}`} />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-foreground text-[28px] font-semibold tabular-nums leading-none tracking-tight">642</span>
+              <span className="text-[9.5px] text-muted-foreground/70 mt-1 uppercase tracking-[0.14em]">kcal actives</span>
+            </div>
+          </div>
+
+          <div className="flex-1 grid grid-cols-1 gap-2 min-w-0">
+            {[
+              { icon: Footprints, value: "7 842", label: "Pas" },
+              { icon: Zap, value: "62 min", label: "Mouvement" },
+              { icon: Trophy, value: "5", label: "Sessions" },
+            ].map((s) => (
+              <div key={s.label} className="flex items-center gap-2.5 rounded-xl bg-white/[0.03] border border-white/[0.05] px-2.5 py-2">
+                <div className="w-6 h-6 rounded-md bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
+                  <s.icon className="w-3 h-3 text-foreground/80" strokeWidth={2} />
+                </div>
+                <div className="leading-tight flex-1">
+                  <p className="text-foreground text-[13px] font-semibold tabular-nums">{s.value}</p>
+                  <p className="text-[9.5px] text-muted-foreground/65 mt-0.5">{s.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <div className="flex items-center justify-between mb-1.5">
+            <p className="text-[11px] text-muted-foreground/80">
+              <span className="text-foreground/90 font-medium">70%</span> de ton objectif quotidien
+            </p>
+            <p className="text-[11px] text-foreground/80 font-semibold tabular-nums">70%</p>
+          </div>
+          <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+            <div className="h-full rounded-full" style={{ width: "70%", background: "linear-gradient(90deg, #5BA8FF 0%, #9BE15D 100%)" }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Activity timeline */}
+      <div className="rounded-3xl bg-white/[0.025] border border-white/[0.05] p-5">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-[13px] font-semibold text-foreground">Timeline du jour</h3>
+            <Info className="w-3 h-3 text-muted-foreground/50" />
+          </div>
+          <button className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.05] text-[10.5px] text-muted-foreground/85">
+            Calories
+            <ChevronDown className="w-3 h-3" strokeWidth={2} />
+          </button>
+        </div>
+
+        <div className="flex items-end justify-between gap-[3px] h-[110px]">
+          {hourlyBars.map((v, i) => {
+            const isPeak = v === maxBar;
+            return (
+              <div key={i} className="flex-1 flex items-end h-full">
+                <div
+                  className="w-full rounded-sm transition-all"
+                  style={{
+                    height: `${(v / maxBar) * 100}%`,
+                    background: isPeak
+                      ? "linear-gradient(180deg, #5BA8FF 0%, #9BE15D 100%)"
+                      : "rgba(255,255,255,0.10)",
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex justify-between mt-2 text-[9px] text-muted-foreground/55 tabular-nums">
+          <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span>
+        </div>
+      </div>
+
+      {/* Sessions per category */}
+      <div>
+        <div className="flex items-baseline justify-between mb-3 px-0.5">
+          <h2 className="text-[15px] font-semibold text-foreground">Sessions</h2>
+          <button className="flex items-center gap-1 text-[11px] text-muted-foreground/70">
+            Tout
+            <ChevronRight className="w-3 h-3" strokeWidth={2} />
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          {todaySessions.map((s) => {
+            const video = categoryVideos[s.id];
+            return (
+              <div
+                key={s.id}
+                className="flex items-center gap-3 rounded-2xl bg-white/[0.025] border border-white/[0.05] p-3"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-semibold text-foreground leading-tight">{s.name}</p>
+                  <p className="text-[10.5px] uppercase tracking-[0.12em] text-muted-foreground/70 mt-1 font-medium">
+                    {s.subtitle}
+                  </p>
+                  <p className="text-[10.5px] text-muted-foreground/60 mt-1 tabular-nums">{s.meta}</p>
+                </div>
+
+                {/* Animated category bubble */}
+                <div className="relative flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-2xl bg-white/[0.04] border border-white/[0.06] shrink-0">
+                  <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-black shrink-0">
+                    {video ? (
+                      <video
+                        src={video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/[0.02]" />
+                    )}
+                  </div>
+                  <div className="flex flex-col leading-tight">
+                    <span className="text-[11.5px] font-semibold text-foreground tabular-nums">
+                      {s.kcal} kcal
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/75">Terminé</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Weekly rings */}
+      <div className="rounded-3xl bg-white/[0.025] border border-white/[0.05] p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-[13px] font-semibold text-foreground">Anneaux de la semaine</h3>
+          <span className="text-[10.5px] text-muted-foreground/70">5 – 11 mai</span>
+        </div>
+        <div className="flex items-end justify-between gap-1">
+          {weekRings.map((r) => {
+            const C = 2 * Math.PI * 16;
+            return (
+              <div key={r.d} className="flex flex-col items-center gap-1.5">
+                <div className="relative w-9 h-9">
+                  <svg viewBox="0 0 40 40" className="-rotate-90">
+                    <circle cx="20" cy="20" r="16" stroke="hsl(var(--foreground))" strokeOpacity="0.08" strokeWidth="3.5" fill="none" />
+                    {r.v > 0 && (
+                      <circle
+                        cx="20" cy="20" r="16"
+                        stroke={r.best ? "url(#act-ring)" : "rgba(255,255,255,0.55)"}
+                        strokeWidth="3.5"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeDasharray={`${C * Math.min(r.v, 1)} ${C}`}
+                      />
+                    )}
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-[9px] font-semibold text-foreground/90 tabular-nums">
+                      {r.v > 0 ? `${Math.round(r.v * 100)}` : "–"}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[9.5px] text-muted-foreground/65">{r.d}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MonthlyLineChart = ({ data }: { data: number[] }) => {
+
   const W = 320;
   const H = 130;
   const step = W / (data.length - 1);
