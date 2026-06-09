@@ -65,12 +65,12 @@ const ChallengeComplete = () => {
           </div>
         </div>
 
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-success/18 bg-success/8 px-5 py-2.5 shadow-[inset_0_1px_0_hsl(var(--foreground)/0.06)] backdrop-blur-xl">
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-success/[0.18] bg-success/[0.08] px-5 py-2.5 shadow-[inset_0_1px_0_hsl(var(--foreground)/0.06)] backdrop-blur-xl">
           <span className="h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_14px_hsl(var(--success)/0.8)]" />
           <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-success">Défi réussi</span>
         </div>
 
-        <h1 className="text-[43px] font-semibold leading-[0.98] tracking-normal text-foreground">
+        <h1 className="text-[43px] font-semibold leading-[1.04] tracking-normal text-foreground">
           <span className="block">{appName}</span>
           <span className="block text-success">débloqué</span>
         </h1>
