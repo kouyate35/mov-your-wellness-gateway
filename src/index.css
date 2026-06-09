@@ -51,6 +51,11 @@
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
 
+    /* Success / unlock state */
+    --success: 154 70% 62%;
+    --success-foreground: 220 14% 5%;
+    --success-muted: 154 60% 42%;
+
     /* Sidebar (not used but required) */
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 95%;
