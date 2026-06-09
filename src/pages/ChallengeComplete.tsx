@@ -1,141 +1,114 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Check } from "lucide-react";
+import { apps } from "@/data/apps";
 
 const ChallengeComplete = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const appId = params.get("app") || "instagram";
   const minutes = params.get("minutes") || "15";
-  const appName = appId.charAt(0).toUpperCase() + appId.slice(1);
+  const appName = apps.find((app) => app.id === appId)?.name || appId.charAt(0).toUpperCase() + appId.slice(1);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
 
-  // Confetti-like floating dots (deterministic per render)
   const particles = useMemo(
     () =>
-      Array.from({ length: 18 }).map((_, i) => ({
-        left: Math.random() * 100,
-        delay: Math.random() * 1.2,
-        duration: 2.4 + Math.random() * 1.8,
-        size: 3 + Math.random() * 4,
-        opacity: 0.35 + Math.random() * 0.45,
+      Array.from({ length: 14 }).map((_, i) => ({
+        left: (i * 31 + 12) % 100,
+        top: (i * 47 + 9) % 100,
+        delay: (i % 5) * 0.28,
+        duration: 4.2 + (i % 4) * 0.55,
+        size: 3 + (i % 3) * 1.5,
+        opacity: 0.18 + (i % 4) * 0.08,
       })),
     []
   );
 
   return (
-    <div
-      className="fixed inset-0 flex flex-col items-center justify-between px-6 py-10 overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(130% 80% at 50% 25%, hsl(150, 45%, 14%) 0%, hsl(0, 0%, 6%) 55%, hsl(0, 0%, 3%) 100%)",
-      }}
-    >
-      {/* Floating particles */}
+    <main className="fixed inset-0 isolate flex flex-col items-center justify-between overflow-hidden bg-background px-6 pb-8 pt-10 text-foreground">
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_50%_18%,hsl(var(--success-muted)/0.32)_0%,hsl(var(--background))_46%,hsl(0_0%_2%)_100%)]" />
+      <div className="absolute inset-x-0 top-0 -z-10 h-[54vh] bg-[linear-gradient(180deg,hsl(var(--success)/0.10),transparent_74%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_38%,transparent_0%,transparent_34%,hsl(0_0%_0%/0.38)_74%)]" />
+
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {particles.map((p, i) => (
           <span
             key={i}
-            className="absolute rounded-full bg-emerald-300"
+            className="absolute rounded-full bg-success"
             style={{
               left: `${p.left}%`,
-              bottom: "-10%",
+              top: `${p.top}%`,
               width: p.size,
               height: p.size,
               opacity: p.opacity,
-              animation: `cc-float ${p.duration}s ease-out ${p.delay}s infinite`,
-              filter: "blur(0.3px)",
+              animation: `cc-drift ${p.duration}s ease-in-out ${p.delay}s infinite alternate`,
+              boxShadow: "0 0 20px hsl(var(--success) / 0.5)",
             }}
           />
         ))}
       </div>
 
-      <div />
+      <div className="h-2" />
 
-      {/* Center */}
-      <div className="flex flex-col items-center text-center relative z-10">
-        {/* Success badge */}
-        <div className="relative mb-9">
-          {/* outer expanding ring */}
-          <span
-            className="absolute inset-0 rounded-full border border-emerald-300/40"
-            style={{ animation: "cc-ring 2.6s ease-out infinite" }}
-          />
-          <span
-            className="absolute inset-0 rounded-full border border-emerald-300/30"
-            style={{ animation: "cc-ring 2.6s ease-out 0.9s infinite" }}
-          />
-          {/* glow */}
-          <div
-            className="absolute -inset-6 rounded-full blur-2xl opacity-50"
-            style={{ background: "hsl(150, 60%, 45%)" }}
-          />
-          {/* Badge */}
-          <div
-            className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-[0_20px_60px_-15px_rgba(16,185,129,0.5)]"
-            style={{
-              background:
-                "linear-gradient(135deg, hsl(150, 60%, 65%) 0%, hsl(160, 55%, 45%) 100%)",
-            }}
-          >
-            <Check className="w-11 h-11 text-black" strokeWidth={3} />
+      <section className="relative z-10 flex w-full max-w-[340px] flex-1 flex-col items-center justify-center text-center">
+        <div className="relative mb-7 flex h-44 w-44 items-center justify-center">
+          <span className="absolute h-32 w-32 rounded-full border border-success/10" />
+          <span className="absolute h-44 w-44 rounded-full border border-success/10" style={{ animation: "cc-breathe 3.4s ease-in-out infinite" }} />
+          <span className="absolute h-56 w-56 rounded-full border border-success/5" style={{ animation: "cc-breathe 3.4s ease-in-out 0.7s infinite" }} />
+          <div className="absolute h-32 w-32 rounded-full bg-success/25 blur-3xl" />
+          <div className="relative flex h-[104px] w-[104px] items-center justify-center rounded-full bg-[linear-gradient(145deg,hsl(var(--success)),hsl(164_64%_48%))] shadow-[0_0_70px_hsl(var(--success)/0.34)]">
+            <Check className="h-12 w-12 text-success-foreground" strokeWidth={3.4} />
           </div>
         </div>
 
-        {/* Eyebrow */}
-        <div className="mb-4">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300/80">
-            Défi réussi
-          </span>
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-success/18 bg-success/8 px-5 py-2.5 shadow-[inset_0_1px_0_hsl(var(--foreground)/0.06)] backdrop-blur-xl">
+          <span className="h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_14px_hsl(var(--success)/0.8)]" />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-success">Défi réussi</span>
         </div>
 
-        {/* Title */}
-        <h1 className="text-white text-[34px] font-semibold tracking-tight leading-[1.1]">
-          {appName}
-        </h1>
-        <h1 className="text-[34px] font-semibold tracking-tight leading-[1.1] bg-gradient-to-r from-emerald-300 to-emerald-100 bg-clip-text text-transparent">
-          débloqué
+        <h1 className="text-[43px] font-semibold leading-[0.98] tracking-normal text-foreground">
+          <span className="block">{appName}</span>
+          <span className="block text-success">débloqué</span>
         </h1>
 
-        {/* Reward chip */}
-        <div className="mt-7 flex items-baseline gap-2 px-5 py-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
-          <span className="text-white text-[28px] font-semibold tabular-nums leading-none">
+        <div className="mt-9 flex min-w-[184px] items-center justify-center gap-4 rounded-[1.35rem] border border-foreground/10 bg-foreground/[0.045] px-7 py-4 shadow-[inset_0_1px_0_hsl(var(--foreground)/0.07)] backdrop-blur-2xl">
+          <span className="text-[38px] font-semibold leading-none tabular-nums text-foreground">
             {minutes}
           </span>
-          <span className="text-white/60 text-[12px] font-medium uppercase tracking-[0.16em]">
-            min d'accès
+          <span className="text-left text-[12px] font-semibold uppercase leading-tight tracking-[0.22em] text-muted-foreground">
+            min
+            <br />
+            d'accès
           </span>
         </div>
 
-        <p className="text-white/45 text-[12.5px] mt-5 max-w-[260px] leading-relaxed">
+        <p className="mt-8 max-w-[300px] text-[15px] leading-relaxed text-muted-foreground">
           Profites-en, on se retrouve à la fin du timer.
         </p>
-      </div>
+      </section>
 
-      {/* Bottom button */}
       <button
         onClick={() => navigate("/home")}
-        className="relative z-10 w-full max-w-sm py-4 rounded-full bg-white text-black text-[15px] font-semibold active:scale-[0.98] transition-transform shadow-2xl"
+        className="relative z-10 mb-[max(env(safe-area-inset-bottom),0px)] w-full max-w-[356px] rounded-full bg-primary px-6 py-[18px] text-[16px] font-semibold text-primary-foreground shadow-[0_18px_48px_hsl(0_0%_0%/0.35)] transition-transform active:scale-[0.985]"
       >
         Ouvrir {appName}
       </button>
 
       <style>{`
-        @keyframes cc-ring {
-          0% { transform: scale(1); opacity: 0.7; }
-          100% { transform: scale(1.9); opacity: 0; }
+        @keyframes cc-breathe {
+          0%, 100% { transform: scale(0.92); opacity: 0.32; }
+          50% { transform: scale(1.04); opacity: 0.7; }
         }
-        @keyframes cc-float {
-          0% { transform: translateY(0) translateX(0); opacity: 0; }
-          15% { opacity: 1; }
-          100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
+        @keyframes cc-drift {
+          0% { transform: translate3d(-8px, 10px, 0) scale(0.86); }
+          100% { transform: translate3d(10px, -18px, 0) scale(1.12); }
         }
       `}</style>
-    </div>
+    </main>
   );
 };
 
