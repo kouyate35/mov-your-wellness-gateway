@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Check, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 
 const ChallengeComplete = () => {
   const navigate = useNavigate();
@@ -87,9 +87,8 @@ const ChallengeComplete = () => {
         </div>
 
         {/* Eyebrow */}
-        <div className="flex items-center gap-1.5 mb-4 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20">
-          <Sparkles className="w-3 h-3 text-emerald-300" />
-          <span className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
+        <div className="mb-4">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300/80">
             Défi réussi
           </span>
         </div>

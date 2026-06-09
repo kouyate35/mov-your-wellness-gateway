@@ -172,10 +172,15 @@ const ProgramCarousel = ({ category, selectedProgramId, onSelectProgram }: Progr
     <div className={fullscreenLoader || showCelebration || fullscreenVideo ? "hidden" : "w-full"}>
       {/* Title with Play button */}
       <div className="mb-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/80 px-1">
-            Choisissez votre programme
-          </h3>
+        <div className="flex items-end justify-between mb-3 px-1">
+          <div>
+            <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-1">
+              Étape 2
+            </p>
+            <h3 className="text-[20px] font-semibold text-foreground tracking-tight leading-tight">
+              Choisis ton programme
+            </h3>
+          </div>
 
           {/* Play button - only visible when a program is selected */}
           {selectedProgramId && (

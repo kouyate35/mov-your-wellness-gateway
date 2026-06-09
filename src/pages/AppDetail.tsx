@@ -243,10 +243,15 @@ const AppDetail = () => {
       )}
 
       {/* Category Selection */}
-      <section className="px-4 pt-5">
-        <h2 className="text-[10.5px] font-semibold uppercase tracking-[0.14em] mb-3 text-muted-foreground/80 px-1">
-          Choisissez le plan qui vous convient
-        </h2>
+      <section className="px-4 pt-6">
+        <div className="px-1 mb-3">
+          <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 mb-1">
+            Étape 1
+          </p>
+          <h2 className="text-[20px] font-semibold text-foreground tracking-tight leading-tight">
+            Choisis ton plan
+          </h2>
+        </div>
         
         <CategorySelector
           selectedCategory={selectedCategory}
