@@ -72,76 +72,68 @@ const OnboardingStep2 = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
-      {/* Soft blurred background — barely visible for atmosphere */}
+      {/* Full-screen crossfading video background */}
       <div className="absolute inset-0">
-        <img
-          src={onboardingHero}
-          alt=""
-          aria-hidden="true"
-          className="h-full w-full object-cover blur-2xl scale-110 opacity-25"
+        {CATEGORY_VIDEOS.map((v, i) => (
+          <video
+            key={v.src}
+            src={v.src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+            style={{ opacity: activeVideo === i ? 1 : 0 }}
+            aria-hidden="true"
+          />
+        ))}
+        {/* Glassmorphism overlay — slightly dark + frosted blur, lets animation breathe through */}
+        <div
+          className="absolute inset-0 backdrop-blur-2xl"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.65) 100%)",
+          }}
         />
-        <div className="absolute inset-0 bg-black/75" />
+        {/* Subtle vignette for depth */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(120% 80% at 50% 30%, transparent 0%, rgba(0,0,0,0.35) 100%)",
+          }}
+        />
       </div>
 
-      {/* Content — cloud title + centered breathing bubble */}
-      <div className="absolute inset-0 flex flex-col justify-start items-center px-6 pt-12">
-        {/* Cloud-style title — airy, layered, premium */}
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-center items-center px-6">
+        {/* Cloud-style title */}
         <div
-          className="relative mb-8 w-full max-w-sm text-center animate-fade-in select-none"
+          className="relative w-full max-w-sm text-center animate-fade-in select-none"
           style={{ animationDelay: "0.05s", animationFillMode: "both" }}
         >
-          <p
-            className="text-[11px] uppercase tracking-[0.4em] text-white/40 mb-2"
-          >
+          <p className="text-[11px] uppercase tracking-[0.4em] text-white/50 mb-3">
             Workout
           </p>
           <h1
-            className="font-bold leading-[0.95] text-white"
+            className="font-bold leading-[0.98] text-white"
             style={{
               fontFamily: '"Baloo 2", "Fredoka", system-ui, sans-serif',
               textShadow:
-                "0 2px 0 rgba(255,255,255,0.08), 0 8px 24px rgba(255,255,255,0.12), 0 18px 60px rgba(255,255,255,0.06)",
+                "0 2px 0 rgba(255,255,255,0.08), 0 8px 24px rgba(0,0,0,0.45), 0 18px 60px rgba(0,0,0,0.5)",
               letterSpacing: "-0.01em",
             }}
           >
-            <span className="block text-[26px] text-white/60 font-light">Moins de scroll,</span>
-            <span className="block text-[32px] mt-1 bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent">
+            <span className="block text-[26px] text-white/70 font-light">Moins de scroll,</span>
+            <span className="block text-[34px] mt-1 bg-gradient-to-b from-white to-white/75 bg-clip-text text-transparent">
               votre bien-être
             </span>
-            <span className="block text-[28px] mt-1 text-white/90">
+            <span className="block text-[30px] mt-1 text-white/95">
               physique d'abord.
             </span>
           </h1>
         </div>
 
-        {/* Box Breathing animated bubble — fills the squircle */}
-        <div
-          className="relative w-[78%] max-w-sm aspect-square rounded-[2.5rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10 animate-fade-in"
-          style={{ animationDelay: "0.15s", animationFillMode: "both" }}
-        >
-          <video
-            src={boxBreathingVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-0"
-            aria-hidden="true"
-          />
-          {CATEGORY_VIDEOS.map((v, i) => (
-            <video
-              key={v.src}
-              src={v.src}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-              style={{ opacity: activeVideo === i ? 1 : 0 }}
-            />
-          ))}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 pointer-events-none" />
-        </div>
 
         {/* Slider Container - Bottom (unchanged behavior) */}
         <div className="absolute bottom-8 left-6 right-6 animate-fade-in" style={{ animationDelay: "0.6s", animationFillMode: "both" }}>
