@@ -314,6 +314,28 @@ const AppDetail = () => {
           }
         }}
       />
+
+      <StatDetailModal
+        isOpen={showUnlockedDetail}
+        onClose={() => setShowUnlockedDetail(false)}
+        data={{
+          icon: Lock,
+          color: "#5BA8FF",
+          label: `Temps débloqué — ${app.name}`,
+          value: "12",
+          unit: "min",
+          subtitle: `Sur un objectif quotidien de 30 min pour ${app.name}.`,
+          trend: { delta: "+2 min", direction: "up" },
+          weeklyData: [0.25, 0.4, 0.35, 0.55, 0.5, 0.65, 0.4],
+          breakdown: [
+            { label: "Déblocages aujourd'hui", value: "4" },
+            { label: "Durée moyenne / session", value: "3 min" },
+            { label: "Calories brûlées", value: "124 kcal" },
+            { label: "Temps économisé", value: "2h 14m" },
+          ],
+          insight: "Tu es à 40% de ton objectif. Chaque session te demande un mouvement validé.",
+        }}
+      />
     </div>
   );
 };
