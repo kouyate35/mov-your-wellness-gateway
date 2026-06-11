@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Menu, Settings, Lock, Flame, Clock } from "lucide-react";
+import { ChevronRight, Menu, Settings, Lock, Flame, Clock, Info } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
@@ -9,6 +9,7 @@ import ProgramRequiredModal from "@/components/ProgramRequiredModal";
 import ChallengeModal from "@/components/ChallengeModal";
 import FireEmojiAnimation from "@/components/FireEmojiAnimation";
 import SettingsModal from "@/components/SettingsModal";
+import StatDetailModal from "@/components/StatDetailModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
 import { Category, getCategoryById, categories } from "@/data/categories";
@@ -24,6 +25,7 @@ const AppDetail = () => {
   const [showProgramRequiredModal, setShowProgramRequiredModal] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showUnlockedDetail, setShowUnlockedDetail] = useState(false);
   const [showFireAnimation, setShowFireAnimation] = useState(false);
 
   // Helper to find which category a program belongs to
@@ -149,6 +151,16 @@ const AppDetail = () => {
           
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
           <span className="text-base font-medium text-muted-foreground">{app.name}</span>
+
+          {isConnected && (
+            <button
+              onClick={() => setShowUnlockedDetail(true)}
+              aria-label="Détails du temps débloqué"
+              className="ml-auto w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/[0.07] transition-colors active:scale-[0.96]"
+            >
+              <Info className="w-[18px] h-[18px]" strokeWidth={2} />
+            </button>
+          )}
         </div>
       </header>
 
@@ -300,6 +312,28 @@ const AppDetail = () => {
             toggleApp(appId);
             setShowSettingsModal(false);
           }
+        }}
+      />
+
+      <StatDetailModal
+        isOpen={showUnlockedDetail}
+        onClose={() => setShowUnlockedDetail(false)}
+        data={{
+          icon: Lock,
+          color: "#5BA8FF",
+          label: `Temps débloqué — ${app.name}`,
+          value: "12",
+          unit: "min",
+          subtitle: `Sur un objectif quotidien de 30 min pour ${app.name}.`,
+          trend: { delta: "+2 min", direction: "up" },
+          weeklyData: [0.25, 0.4, 0.35, 0.55, 0.5, 0.65, 0.4],
+          breakdown: [
+            { label: "Déblocages aujourd'hui", value: "4" },
+            { label: "Durée moyenne / session", value: "3 min" },
+            { label: "Calories brûlées", value: "124 kcal" },
+            { label: "Temps économisé", value: "2h 14m" },
+          ],
+          insight: "Tu es à 40% de ton objectif. Chaque session te demande un mouvement validé.",
         }}
       />
     </div>
