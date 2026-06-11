@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Menu, Settings, Lock, Flame, Clock } from "lucide-react";
+import { ChevronRight, Menu, Settings, Lock, Flame, Clock, Info } from "lucide-react";
 import { apps } from "@/data/apps";
 import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
@@ -9,6 +9,7 @@ import ProgramRequiredModal from "@/components/ProgramRequiredModal";
 import ChallengeModal from "@/components/ChallengeModal";
 import FireEmojiAnimation from "@/components/FireEmojiAnimation";
 import SettingsModal from "@/components/SettingsModal";
+import StatDetailModal from "@/components/StatDetailModal";
 import CategorySelector from "@/components/CategorySelector";
 import { getAppIcon } from "@/components/AppIcons";
 import { Category, getCategoryById, categories } from "@/data/categories";
