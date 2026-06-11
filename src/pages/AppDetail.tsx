@@ -151,6 +151,16 @@ const AppDetail = () => {
           
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
           <span className="text-base font-medium text-muted-foreground">{app.name}</span>
+
+          {isConnected && (
+            <button
+              onClick={() => setShowUnlockedDetail(true)}
+              aria-label="Détails du temps débloqué"
+              className="ml-auto w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/[0.07] transition-colors active:scale-[0.96]"
+            >
+              <Info className="w-[18px] h-[18px]" strokeWidth={2} />
+            </button>
+          )}
         </div>
       </header>
 
