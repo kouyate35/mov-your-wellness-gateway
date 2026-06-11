@@ -25,6 +25,7 @@ const AppDetail = () => {
   const [showProgramRequiredModal, setShowProgramRequiredModal] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showUnlockedDetail, setShowUnlockedDetail] = useState(false);
   const [showFireAnimation, setShowFireAnimation] = useState(false);
 
   // Helper to find which category a program belongs to
