@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Menu, Settings, Lock, Flame, Clock, Info } from "lucide-react";
+import { ChevronRight, Menu, Settings, Lock, Flame, Clock } from "lucide-react";
+import moveVideo from "@/assets/category-move-video.mp4";
+
 import { apps } from "@/data/apps";
 import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
@@ -151,18 +153,9 @@ const AppDetail = () => {
           
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
           <span className="text-base font-medium text-muted-foreground">{app.name}</span>
-
-          {isConnected && (
-            <button
-              onClick={() => setShowUnlockedDetail(true)}
-              aria-label="Détails du temps débloqué"
-              className="ml-auto w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/[0.07] transition-colors active:scale-[0.96]"
-            >
-              <Info className="w-[18px] h-[18px]" strokeWidth={2} />
-            </button>
-          )}
         </div>
       </header>
+
 
       {/* App Card */}
       <section className="px-4 pt-2">
@@ -198,61 +191,88 @@ const AppDetail = () => {
         </div>
       </section>
 
-      {/* Today's stats bubble — premium info card */}
+      {/* Today's stats bubble — premium info card with video backdrop */}
       {isConnected && (
         <section className="px-4 pt-5">
-          <div className="rounded-2xl bg-white/[0.025] border border-white/[0.05] p-4">
-            <div className="flex items-stretch gap-4">
-              {/* Left — main metric */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Lock className="w-3 h-3 text-muted-foreground/70" strokeWidth={2} />
-                  <p className="text-[9.5px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70 leading-tight">
-                    Temps débloqué
-                    <br />
-                    aujourd'hui
-                  </p>
-                </div>
-                <div className="flex items-baseline gap-1 leading-none">
-                  <span className="text-foreground text-[36px] font-semibold tabular-nums tracking-tight">
-                    12
-                  </span>
-                  <span className="text-[13px] font-semibold text-muted-foreground/80">min</span>
-                </div>
-                <p className="mt-3 text-[10.5px] text-muted-foreground/70">
-                  Objectif quotidien · 30 min
-                </p>
-                <div className="mt-1.5 h-1 rounded-full overflow-hidden bg-white/[0.05]">
-                  <div className="h-full rounded-full bg-foreground/85" style={{ width: "40%" }} />
-                </div>
-              </div>
+          <button
+            type="button"
+            onClick={() => setShowUnlockedDetail(true)}
+            className="relative w-full text-left rounded-2xl overflow-hidden border border-white/[0.06] active:scale-[0.985] transition-transform"
+          >
+            {/* Video backdrop */}
+            <video
+              src={moveVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover opacity-[0.28]"
+            />
+            {/* Glass / dark overlay for legibility */}
+            <div className="absolute inset-0 backdrop-blur-[10px] bg-[#0E0E10]/72" />
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 100%)",
+              }}
+            />
 
-              {/* Divider */}
-              <div className="w-px bg-white/[0.06]" />
-
-              {/* Right — mini stats */}
-              <div className="flex flex-col justify-between py-0.5 gap-2">
-                {[
-                  { icon: Flame, value: "124", unit: "kcal", label: "Brûlées" },
-                  { icon: Clock, value: "2h 14m", label: "Économisées" },
-                  { icon: Lock, value: "18", label: "Déblocages" },
-                ].map((s) => (
-                  <div key={s.label} className="flex items-center gap-2">
-                    <s.icon className="w-3.5 h-3.5 text-muted-foreground/70 shrink-0" strokeWidth={1.7} />
-                    <div className="leading-tight">
-                      <p className="text-[12.5px] font-semibold text-foreground tabular-nums">
-                        {s.value}
-                        {s.unit && <span className="text-[9.5px] font-medium text-muted-foreground/70 ml-0.5">{s.unit}</span>}
-                      </p>
-                      <p className="text-[9.5px] text-muted-foreground/65 leading-none">{s.label}</p>
-                    </div>
+            <div className="relative p-4">
+              <div className="flex items-stretch gap-4">
+                {/* Left — main metric */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Lock className="w-3 h-3 text-white/70" strokeWidth={2} />
+                    <p className="text-[9.5px] font-semibold uppercase tracking-[0.16em] text-white/70 leading-tight">
+                      Temps débloqué
+                      <br />
+                      aujourd'hui
+                    </p>
                   </div>
-                ))}
+                  <div className="flex items-baseline gap-1 leading-none">
+                    <span className="text-white text-[36px] font-semibold tabular-nums tracking-tight">
+                      12
+                    </span>
+                    <span className="text-[13px] font-semibold text-white/80">min</span>
+                  </div>
+                  <p className="mt-3 text-[10.5px] text-white/70">
+                    Objectif quotidien · 30 min
+                  </p>
+                  <div className="mt-1.5 h-1 rounded-full overflow-hidden bg-white/[0.12]">
+                    <div className="h-full rounded-full bg-white/90" style={{ width: "40%" }} />
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="w-px bg-white/[0.12]" />
+
+                {/* Right — mini stats */}
+                <div className="flex flex-col justify-between py-0.5 gap-2">
+                  {[
+                    { icon: Flame, value: "124", unit: "kcal", label: "Brûlées" },
+                    { icon: Clock, value: "2h 14m", label: "Économisées" },
+                    { icon: Lock, value: "18", label: "Déblocages" },
+                  ].map((s) => (
+                    <div key={s.label} className="flex items-center gap-2">
+                      <s.icon className="w-3.5 h-3.5 text-white/75 shrink-0" strokeWidth={1.7} />
+                      <div className="leading-tight">
+                        <p className="text-[12.5px] font-semibold text-white tabular-nums">
+                          {s.value}
+                          {s.unit && <span className="text-[9.5px] font-medium text-white/70 ml-0.5">{s.unit}</span>}
+                        </p>
+                        <p className="text-[9.5px] text-white/65 leading-none">{s.label}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          </button>
         </section>
       )}
+
 
       {/* Category Selection */}
       <section className="px-4 pt-6">
