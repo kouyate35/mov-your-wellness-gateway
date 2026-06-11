@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ChevronRight, Menu, Settings, Lock, Flame, Clock, Info } from "lucide-react";
+import { ChevronRight, Menu, Settings, Lock, Flame, Clock } from "lucide-react";
+import moveVideo from "@/assets/category-move-video.mp4";
+
 import { apps } from "@/data/apps";
 import { useAppSettings, AppSetting } from "@/hooks/useAppSettings";
 import ConnectAppModal from "@/components/ConnectAppModal";
