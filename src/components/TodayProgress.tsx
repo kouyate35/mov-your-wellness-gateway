@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Clock, Flame, Lock, ChevronRight, type LucideIcon } from "lucide-react";
+import { Clock, Flame, ShieldCheck, ChevronRight, type LucideIcon } from "lucide-react";
 import StatDetailModal, { StatDetailData } from "./StatDetailModal";
 
 type Stat = {
