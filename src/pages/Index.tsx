@@ -15,8 +15,8 @@ import { useInstalledApps } from "@/hooks/useInstalledApps";
 import { useManuallyAddedApps } from "@/hooks/useManuallyAddedApps";
 import { toast } from "sonner";
 import BottomNavBar from "@/components/BottomNavBar";
-import ProfileButton from "@/components/ProfileButton";
 import TodayProgress from "@/components/TodayProgress";
+import TodayHeroCard from "@/components/TodayHeroCard";
 
 
 const Index = () => {
