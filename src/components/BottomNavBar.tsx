@@ -8,10 +8,10 @@ import SettingsModal from "@/components/SettingsModal";
 import HelpModal from "@/components/HelpModal";
 
 const navItems = [
-  { id: "home", label: "Home", icon: Home, path: "/home" },
-  { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" },
-  { id: "community", label: "Communauté", icon: Map, path: "/community" },
-  { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" },
+  { id: "home", label: "Home", icon: Home, path: "/home" as const },
+  { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" as const },
+  { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" as const },
+  { id: "profile", label: "Profil", icon: User, path: "__profile__" as const },
 ];
 
 const BottomNavBar = () => {
