@@ -117,29 +117,28 @@ const Index = () => {
         onOpenSettings={openPermissionSettings}
       />
 
-      {/* Header — editorial */}
-      <header className="pt-5 pb-6 px-5 flex items-start justify-between gap-4">
-        <h1 className="text-[28px] leading-[0.98] tracking-tight font-bold text-foreground">
-          <span className="font-light text-foreground/45">MOVE</span>{" "}
-          <span className="font-bold">before</span>
-          <br />
-          <span className="font-bold">you scroll<span className="text-foreground/70">.</span></span>
-        </h1>
-        <div className="pt-1 shrink-0">
-          <ProfileButton />
-        </div>
-      </header>
-
+      {/* Small top spacer (header removed — MOVE title + profile moved out) */}
+      <div className="h-4" />
 
       {/* Category Carousel */}
-      <section className="mb-7">
+      <section className="mb-6">
         <CategoryCarousel
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
       </section>
 
-      {/* Today's progress — 3 stat bubbles */}
+      {/* Today hero — Aujourd'hui */}
+      <TodayHeroCard
+        hours={2}
+        minutes={14}
+        deltaMinutes={22}
+        goalHours={3}
+        kcal={124}
+        blocked={18}
+      />
+
+      {/* Ton impact aujourd'hui — 3 stat bubbles */}
       <TodayProgress />
 
       {/* Section Tabs */}
