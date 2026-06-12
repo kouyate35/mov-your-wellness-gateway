@@ -72,7 +72,7 @@ const OnboardingStep2 = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
-      {/* Full-screen crossfading video background */}
+      {/* Full-screen crossfading video background — NO blur, fully visible */}
       <div className="absolute inset-0">
         {CATEGORY_VIDEOS.map((v, i) => (
           <video
@@ -87,98 +87,103 @@ const OnboardingStep2 = () => {
             aria-hidden="true"
           />
         ))}
-        {/* Glassmorphism overlay — slightly dark + frosted blur, lets animation breathe through */}
-        <div
-          className="absolute inset-0 backdrop-blur-2xl"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.65) 100%)",
-          }}
-        />
-        {/* Subtle vignette for depth */}
+        {/* Light gradient overlay only — keeps videos crisp, ensures text legibility top + bottom */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(120% 80% at 50% 30%, transparent 0%, rgba(0,0,0,0.35) 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.10) 28%, rgba(0,0,0,0.10) 60%, rgba(0,0,0,0.75) 100%)",
           }}
         />
       </div>
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center px-6">
-        {/* Cloud-style title */}
+      <div className="absolute inset-0 flex flex-col px-6">
+        {/* WORKOUT — top, big outlined display type */}
         <div
-          className="relative w-full max-w-sm text-center animate-fade-in select-none"
+          className="pt-16 text-center select-none animate-fade-in"
           style={{ animationDelay: "0.05s", animationFillMode: "both" }}
         >
-          <p className="text-[11px] uppercase tracking-[0.4em] text-white/50 mb-3">
-            Workout
-          </p>
           <h1
-            className="font-bold leading-[0.98] text-white"
+            className="font-black leading-none tracking-tight"
             style={{
-              fontFamily: '"Baloo 2", "Fredoka", system-ui, sans-serif',
+              fontFamily: '"Archivo Black", "Anton", system-ui, sans-serif',
+              fontSize: "76px",
+              color: "rgba(0,0,0,0.55)",
+              WebkitTextStroke: "2.5px #ffffff",
               textShadow:
-                "0 2px 0 rgba(255,255,255,0.08), 0 8px 24px rgba(0,0,0,0.45), 0 18px 60px rgba(0,0,0,0.5)",
-              letterSpacing: "-0.01em",
+                "0 6px 28px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.05)",
+              letterSpacing: "0.005em",
             }}
           >
-            <span className="block text-[26px] text-white/70 font-light">Moins de scroll,</span>
-            <span className="block text-[34px] mt-1 bg-gradient-to-b from-white to-white/75 bg-clip-text text-transparent">
-              votre bien-être
-            </span>
-            <span className="block text-[30px] mt-1 text-white/95">
-              physique d'abord.
-            </span>
+            WORKOUT
           </h1>
         </div>
 
-
-        {/* Slider Container - Bottom (unchanged behavior) */}
-        <div className="absolute bottom-8 left-6 right-6 animate-fade-in" style={{ animationDelay: "0.6s", animationFillMode: "both" }}>
+        {/* Bottom block: subtitle + slider */}
+        <div className="mt-auto pb-8">
           <div
-            ref={containerRef}
-            className="relative h-14 bg-card/50 backdrop-blur-sm rounded-full border border-border overflow-hidden"
+            className="mb-7 text-center animate-fade-in select-none"
+            style={{ animationDelay: "0.2s", animationFillMode: "both" }}
           >
-            {/* White progressive fill — anchored to handle, grows as user drags */}
-            <div
-              className="absolute inset-y-0 left-0 bg-foreground rounded-full pointer-events-none"
+            <h2
+              className="font-bold text-white leading-[1.08]"
               style={{
-                width: `${dragX + 56}px`,
-                transition: isDragging ? "none" : "width 250ms cubic-bezier(0.22, 1, 0.36, 1)",
+                fontFamily: '"Baloo 2", "Fredoka", system-ui, sans-serif',
+                textShadow: "0 6px 24px rgba(0,0,0,0.65), 0 2px 8px rgba(0,0,0,0.5)",
+                letterSpacing: "-0.005em",
               }}
-            />
-
-            {/* Label — stays readable as white fill grows underneath */}
-            <div
-              className="absolute inset-y-0 left-0 right-0 flex items-center justify-center pointer-events-none"
             >
-              <span
-                className="text-sm ml-12 transition-colors duration-200"
-                style={{ color: progress > 0.15 ? "hsl(var(--background))" : "hsl(var(--muted-foreground))" }}
-              >
-                Créer mon compte <ChevronRight className="inline h-4 w-4" />
+              <span className="block text-[24px] text-white/75 font-medium">
+                Moins de scroll,
               </span>
-            </div>
+              <span className="block text-[30px] mt-0.5">
+                votre bien-être
+              </span>
+              <span className="block text-[26px] mt-0.5 text-white/95">
+                physique d'abord.
+              </span>
+            </h2>
+          </div>
 
-            {/* Draggable Button */}
+          {/* Slider Container */}
+          <div className="animate-fade-in" style={{ animationDelay: "0.45s", animationFillMode: "both" }}>
             <div
-              className="absolute top-1 left-1 bottom-1 touch-none select-none"
-              style={{
-                transform: `translateX(${dragX}px)`,
-                transition: isDragging ? "none" : "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)",
-              }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleEnd}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleEnd}
-              onMouseLeave={() => isDragging && handleEnd()}
+              ref={containerRef}
+              className="relative h-14 bg-black/45 backdrop-blur-sm rounded-full border border-white/15 overflow-hidden"
             >
-              <div className="h-full aspect-square rounded-full bg-background flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing border border-border">
-                <ChevronRight className="h-5 w-5 text-foreground" />
+              <div
+                className="absolute inset-y-0 left-0 bg-foreground rounded-full pointer-events-none"
+                style={{
+                  width: `${dragX + 56}px`,
+                  transition: isDragging ? "none" : "width 250ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              />
+              <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-center pointer-events-none">
+                <span
+                  className="text-sm ml-12 transition-colors duration-200"
+                  style={{ color: progress > 0.15 ? "hsl(var(--background))" : "rgba(255,255,255,0.85)" }}
+                >
+                  Créer mon compte <ChevronRight className="inline h-4 w-4" />
+                </span>
+              </div>
+              <div
+                className="absolute top-1 left-1 bottom-1 touch-none select-none"
+                style={{
+                  transform: `translateX(${dragX}px)`,
+                  transition: isDragging ? "none" : "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleEnd}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleEnd}
+                onMouseLeave={() => isDragging && handleEnd()}
+              >
+                <div className="h-full aspect-square rounded-full bg-background flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing border border-border">
+                  <ChevronRight className="h-5 w-5 text-foreground" />
+                </div>
               </div>
             </div>
           </div>

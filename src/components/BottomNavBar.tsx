@@ -8,10 +8,10 @@ import SettingsModal from "@/components/SettingsModal";
 import HelpModal from "@/components/HelpModal";
 
 const navItems = [
-  { id: "home", label: "Home", icon: Home, path: "/home" },
-  { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" },
-  { id: "community", label: "Communauté", icon: Map, path: "/community" },
-  { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" },
+  { id: "home", label: "Home", icon: Home, path: "/home" as const },
+  { id: "apps", label: "Apps", icon: Smartphone, path: "/connected-apps" as const },
+  { id: "stats", label: "Statistiques", icon: BarChart3, path: "/usage-stats" as const },
+  { id: "profile", label: "Profil", icon: User, path: "__profile__" as const },
 ];
 
 const BottomNavBar = () => {
@@ -116,11 +116,15 @@ const BottomNavBar = () => {
         >
           <div className="flex items-center justify-around px-2 max-w-[420px] mx-auto">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isProfile = item.path === "__profile__";
+              const isActive = !isProfile && location.pathname === item.path;
               return (
                 <button
                   key={item.id}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    if (isProfile) setShowProfilePopup((v) => !v);
+                    else navigate(item.path);
+                  }}
                   className="relative flex flex-col items-center gap-1 px-3 py-1.5"
                 >
                   <item.icon

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Clock, Flame, Lock, ChevronRight, type LucideIcon } from "lucide-react";
+import { Clock, Flame, ShieldCheck, ChevronRight, ArrowUp, type LucideIcon } from "lucide-react";
 import StatDetailModal, { StatDetailData } from "./StatDetailModal";
 
 type Stat = {
@@ -9,7 +9,8 @@ type Stat = {
   unit?: string;
   label: string;
   color: string; // hex
-  spark: number[];
+  pct: number; // 0..1 for gauge
+  delta: string; // e.g. "+22 min"
   detail: StatDetailData;
 };
 
@@ -17,14 +18,15 @@ const stats: Stat[] = [
   {
     id: "saved",
     icon: Clock,
-    value: "2h 14m",
-    label: "Écran économisé",
+    value: "2h 14",
+    label: "Temps récupéré",
     color: "#9BE15D",
-    spark: [0.2, 0.35, 0.3, 0.5, 0.55, 0.7, 0.65, 0.85],
+    pct: 0.73,
+    delta: "+22 min",
     detail: {
       icon: Clock,
       color: "#9BE15D",
-      label: "Écran économisé",
+      label: "Temps récupéré",
       value: "2h 14m",
       subtitle: "Temps que tu n'as pas passé à scroller aujourd'hui.",
       trend: { delta: "+18%", direction: "up" },
@@ -42,9 +44,10 @@ const stats: Stat[] = [
     icon: Flame,
     value: "124",
     unit: "kcal",
-    label: "Calories",
+    label: "Dépensées",
     color: "#FF7A45",
-    spark: [0.15, 0.25, 0.35, 0.3, 0.5, 0.55, 0.65, 0.7],
+    pct: 0.58,
+    delta: "+16 kcal",
     detail: {
       icon: Flame,
       color: "#FF7A45",
@@ -63,16 +66,17 @@ const stats: Stat[] = [
     },
   },
   {
-    id: "unlocks",
-    icon: Lock,
+    id: "blocked",
+    icon: ShieldCheck,
     value: "18",
-    label: "Apps débloquées",
+    label: "Tentatives bloquées",
     color: "#5BA8FF",
-    spark: [0.3, 0.5, 0.4, 0.65, 0.5, 0.75, 0.6, 0.8],
+    pct: 0.65,
+    delta: "+4",
     detail: {
-      icon: Lock,
+      icon: ShieldCheck,
       color: "#5BA8FF",
-      label: "Apps débloquées",
+      label: "Tentatives bloquées",
       value: "18",
       subtitle: "Chaque déverrouillage = un mouvement validé.",
       trend: { delta: "+24%", direction: "up" },
@@ -87,35 +91,43 @@ const stats: Stat[] = [
   },
 ];
 
-const Sparkline = ({ data, color }: { data: number[]; color: string }) => {
-  const w = 100;
-  const h = 30;
-  const step = w / (data.length - 1);
-  const points = data
-    .map((v, i) => `${i * step},${h - v * (h - 2) - 1}`)
-    .join(" ");
-  const area = `0,${h} ${points} ${w},${h}`;
-  const gid = `spark-${color.replace("#", "")}`;
-
+// Half-circle dotted gauge (top-right corner accent — image 6 style)
+const ArcGauge = ({ pct, color }: { pct: number; color: string }) => {
+  const size = 56;
+  const total = 18;
+  const filled = Math.round(pct * total);
+  const cx = size / 2;
+  const cy = size / 2;
+  const inner = size / 2 - 8;
+  const outer = size / 2 - 1;
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-8" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.35" />
-          <stop offset="100%" stopColor={color} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <polygon points={area} fill={`url(#${gid})`} />
-      <polyline
-        points={points}
-        fill="none"
-        stroke={color}
-        strokeOpacity="1"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      />
+    <svg width={size} height={size} className="block" aria-hidden>
+      {Array.from({ length: total }).map((_, i) => {
+        // Arc from 200deg -> 340deg (top-right quadrant feel)
+        const startDeg = -78;
+        const endDeg = 78;
+        const t = i / (total - 1);
+        const deg = startDeg + (endDeg - startDeg) * t;
+        const rad = (deg * Math.PI) / 180;
+        const x1 = cx + Math.cos(rad) * inner;
+        const y1 = cy + Math.sin(rad) * inner;
+        const x2 = cx + Math.cos(rad) * outer;
+        const y2 = cy + Math.sin(rad) * outer;
+        const active = i < filled;
+        return (
+          <line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke={active ? color : "rgba(255,255,255,0.10)"}
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            opacity={active ? 0.95 : 1}
+          />
+        );
+      })}
     </svg>
   );
 };
@@ -127,7 +139,7 @@ const TodayProgress = () => {
     <section className="px-5 mb-6">
       <div className="flex items-baseline justify-between mb-3 px-0.5">
         <h2 className="text-[18px] font-bold tracking-tight text-foreground">
-          Ta progression
+          Ton impact aujourd'hui
         </h2>
         <button className="text-[12px] text-muted-foreground/80 hover:text-foreground transition-colors flex items-center gap-1">
           Voir tout
@@ -142,26 +154,45 @@ const TodayProgress = () => {
             onClick={() => setOpenStat(s)}
             className="
               group relative text-left overflow-hidden rounded-[22px]
-              bg-white/[0.025] border border-white/[0.05]
-              hover:bg-white/[0.04] hover:border-white/[0.08]
+              bg-white/[0.025] border border-white/[0.06]
+              hover:bg-white/[0.04] hover:border-white/[0.10]
               transition-all duration-200 active:scale-[0.98]
               p-3 flex flex-col
             "
-            style={{ aspectRatio: "1 / 1.18" }}
+            style={{ aspectRatio: "1 / 1.32" }}
           >
-            {/* Pill badge — matches AppList language */}
-            <span
-              className="inline-flex items-center gap-1 self-start px-2 py-[5px] rounded-full mb-2.5"
+            {/* Soft color glow from corresponding accent */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.16]"
               style={{
-                backgroundColor: `${s.color}14`,
-                border: `1px solid ${s.color}33`,
+                background: `radial-gradient(120% 90% at 50% 100%, ${s.color}, transparent 70%)`,
               }}
-            >
-              <s.icon className="w-3 h-3" strokeWidth={2.2} style={{ color: s.color }} />
-            </span>
+            />
 
-            <div className="flex items-baseline gap-1 leading-none">
-              <span className="text-foreground text-[17px] font-bold tabular-nums tracking-tight">
+            {/* Top row: icon + arc gauge */}
+            <div className="relative flex items-start justify-between">
+              <span
+                className="w-8 h-8 rounded-full flex items-center justify-center"
+                style={{
+                  backgroundColor: `${s.color}1F`,
+                  border: `1px solid ${s.color}40`,
+                }}
+              >
+                <s.icon
+                  className="w-[15px] h-[15px]"
+                  strokeWidth={2.4}
+                  style={{ color: s.color }}
+                />
+              </span>
+              <div className="-mr-1 -mt-1">
+                <ArcGauge pct={s.pct} color={s.color} />
+              </div>
+            </div>
+
+            {/* Value */}
+            <div className="relative mt-1.5 flex items-baseline gap-1 leading-none">
+              <span className="text-foreground text-[19px] font-bold tabular-nums tracking-tight">
                 {s.value}
               </span>
               {s.unit && (
@@ -171,12 +202,26 @@ const TodayProgress = () => {
               )}
             </div>
 
-            <p className="mt-1.5 text-[10.5px] text-muted-foreground/75 leading-tight">
+            {/* Label */}
+            <p className="relative mt-1 text-[10.5px] text-muted-foreground/80 leading-tight">
               {s.label}
             </p>
 
-            <div className="mt-auto -mx-1">
-              <Sparkline data={s.spark} color={s.color} />
+            {/* Delta pill */}
+            <div
+              className="relative mt-auto inline-flex items-center gap-1 self-start px-2 py-[4px] rounded-full"
+              style={{
+                backgroundColor: `${s.color}14`,
+                border: `1px solid ${s.color}2A`,
+              }}
+            >
+              <ArrowUp className="w-2.5 h-2.5" strokeWidth={2.8} style={{ color: s.color }} />
+              <span className="text-[9.5px] font-semibold" style={{ color: s.color }}>
+                {s.delta}
+              </span>
+              <span className="text-[9.5px] text-muted-foreground/70 font-medium">
+                vs hier
+              </span>
             </div>
           </button>
         ))}
