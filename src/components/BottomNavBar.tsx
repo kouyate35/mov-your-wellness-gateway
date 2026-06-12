@@ -116,11 +116,15 @@ const BottomNavBar = () => {
         >
           <div className="flex items-center justify-around px-2 max-w-[420px] mx-auto">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isProfile = item.path === "__profile__";
+              const isActive = !isProfile && location.pathname === item.path;
               return (
                 <button
                   key={item.id}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    if (isProfile) setShowProfilePopup((v) => !v);
+                    else navigate(item.path);
+                  }}
                   className="relative flex flex-col items-center gap-1 px-3 py-1.5"
                 >
                   <item.icon
