@@ -190,7 +190,6 @@ const OnboardingStep2 = () => {
         </div>
       </div>
     </div>
-    </div>
   );
 };
 
