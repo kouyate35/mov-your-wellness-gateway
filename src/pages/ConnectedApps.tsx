@@ -69,8 +69,9 @@ const ConnectedApps = () => {
             return (
               <div
                 key={app.id}
-                className="w-full bg-white/[0.025] hover:bg-white/[0.04] transition-colors rounded-2xl border border-white/[0.06] overflow-hidden"
+                className="w-full bg-white/[0.04] hover:bg-white/[0.06] transition-colors rounded-2xl border border-white/[0.08] backdrop-blur-xl overflow-hidden shadow-[0_8px_28px_-16px_rgba(0,0,0,0.6)]"
               >
+
                 <div className="flex items-center gap-3 p-3">
                   {/* App icon */}
                   <div className="shrink-0">{getAppIcon(app.id, "md", true)}</div>

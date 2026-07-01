@@ -99,26 +99,7 @@ const OnboardingStep2 = () => {
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col px-6">
-        {/* WORKOUT — top, big outlined display type */}
-        <div
-          className="pt-16 text-center select-none animate-fade-in"
-          style={{ animationDelay: "0.05s", animationFillMode: "both" }}
-        >
-          <h1
-            className="font-black leading-none tracking-tight"
-            style={{
-              fontFamily: '"Archivo Black", "Anton", system-ui, sans-serif',
-              fontSize: "76px",
-              color: "rgba(0,0,0,0.55)",
-              WebkitTextStroke: "2.5px #ffffff",
-              textShadow:
-                "0 6px 28px rgba(0,0,0,0.55), 0 2px 0 rgba(255,255,255,0.05)",
-              letterSpacing: "0.005em",
-            }}
-          >
-            WORKOUT
-          </h1>
-        </div>
+
 
         {/* Bottom block: subtitle + slider */}
         <div className="mt-auto pb-8">

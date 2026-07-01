@@ -1,4 +1,6 @@
 import { Clock, Flame, ShieldCheck, ChevronRight } from "lucide-react";
+import ProfileButton from "@/components/ProfileButton";
+
 
 interface TodayHeroCardProps {
   hours: number;
@@ -49,13 +51,17 @@ const TodayHeroCard = ({
           }}
         />
 
-        {/* Top row: badge */}
-        <div className="relative flex items-center gap-1.5 mb-4">
-          <Clock className="w-3 h-3 text-info" strokeWidth={2.4} />
-          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-info">
-            Aujourd'hui
-          </span>
+        {/* Top row: badge + profile */}
+        <div className="relative flex items-center justify-between mb-4">
+          <div className="flex items-center gap-1.5">
+            <Clock className="w-3 h-3 text-info" strokeWidth={2.4} />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-info">
+              Aujourd'hui
+            </span>
+          </div>
+          <ProfileButton />
         </div>
+
 
         {/* Main row: stats left, gauge right */}
         <div className="relative flex items-start justify-between gap-3">
@@ -169,55 +175,47 @@ const TodayHeroCard = ({
         {/* Divider */}
         <div className="relative my-4 h-px bg-white/[0.05]" />
 
-        {/* Bottom row: kcal + blocked */}
-        <div className="relative grid grid-cols-2 gap-3">
-          <div className="flex items-center gap-2.5">
+        {/* Bottom pill: kcal | blocked (segmented pill style) */}
+        <div className="relative flex items-stretch rounded-full bg-white/[0.03] border border-white/[0.06] px-2 py-2">
+          <div className="flex-1 flex items-center gap-2.5 px-2">
             <span
-              className="w-9 h-9 rounded-full flex items-center justify-center"
+              className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
               style={{
-                backgroundColor: "hsl(18 90% 60% / 0.14)",
-                border: "1px solid hsl(18 90% 60% / 0.28)",
+                backgroundColor: "hsl(18 90% 60% / 0.16)",
               }}
             >
-              <Flame className="w-4 h-4" style={{ color: "hsl(18 90% 62%)" }} strokeWidth={2.2} />
+              <Flame className="w-[17px] h-[17px]" style={{ color: "hsl(18 90% 62%)" }} strokeWidth={2.4} />
             </span>
-            <div className="min-w-0">
-              <div className="flex items-baseline gap-1 leading-none">
-                <span className="text-foreground text-[15px] font-bold tabular-nums">
-                  {kcal}
-                </span>
-                <span className="text-muted-foreground/75 text-[10px] font-medium">
-                  kcal
-                </span>
+            <div className="min-w-0 leading-tight">
+              <p className="text-[11px] text-muted-foreground/80">Brûlées</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-foreground text-[15px] font-bold tabular-nums">{kcal}</span>
+                <span className="text-muted-foreground/70 text-[10px] font-medium">kcal</span>
               </div>
-              <p className="mt-1 text-[10.5px] text-muted-foreground/75 leading-none">
-                brûlées
-              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="w-px bg-white/[0.08] my-1" />
+
+          <div className="flex-1 flex items-center gap-2.5 px-2">
             <span
-              className="w-9 h-9 rounded-full flex items-center justify-center"
+              className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
               style={{
-                backgroundColor: "hsl(210 90% 60% / 0.14)",
-                border: "1px solid hsl(210 90% 60% / 0.28)",
+                backgroundColor: "hsl(210 90% 60% / 0.16)",
               }}
             >
-              <ShieldCheck className="w-4 h-4" style={{ color: "hsl(210 90% 65%)" }} strokeWidth={2.2} />
+              <ShieldCheck className="w-[17px] h-[17px]" style={{ color: "hsl(210 90% 65%)" }} strokeWidth={2.4} />
             </span>
-            <div className="min-w-0">
-              <div className="flex items-baseline gap-1 leading-none">
-                <span className="text-foreground text-[15px] font-bold tabular-nums">
-                  {blocked}
-                </span>
+            <div className="min-w-0 leading-tight">
+              <p className="text-[11px] text-muted-foreground/80">Évitées</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-foreground text-[15px] font-bold tabular-nums">{blocked}</span>
+                <span className="text-muted-foreground/70 text-[10px] font-medium">ouv.</span>
               </div>
-              <p className="mt-1 text-[10.5px] text-muted-foreground/75 leading-none">
-                ouvertures évitées
-              </p>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -117,16 +117,9 @@ const Index = () => {
         onOpenSettings={openPermissionSettings}
       />
 
-      {/* Small top spacer (header removed — MOVE title + profile moved out) */}
+      {/* Small top spacer */}
       <div className="h-4" />
 
-      {/* Category Carousel */}
-      <section className="mb-6">
-        <CategoryCarousel
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
-      </section>
 
       {/* Today hero — Aujourd'hui */}
       <TodayHeroCard
