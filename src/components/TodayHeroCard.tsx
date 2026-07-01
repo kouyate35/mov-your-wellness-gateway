@@ -51,13 +51,17 @@ const TodayHeroCard = ({
           }}
         />
 
-        {/* Top row: badge */}
-        <div className="relative flex items-center gap-1.5 mb-4">
-          <Clock className="w-3 h-3 text-info" strokeWidth={2.4} />
-          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-info">
-            Aujourd'hui
-          </span>
+        {/* Top row: badge + profile */}
+        <div className="relative flex items-center justify-between mb-4">
+          <div className="flex items-center gap-1.5">
+            <Clock className="w-3 h-3 text-info" strokeWidth={2.4} />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-info">
+              Aujourd'hui
+            </span>
+          </div>
+          <ProfileButton />
         </div>
+
 
         {/* Main row: stats left, gauge right */}
         <div className="relative flex items-start justify-between gap-3">
