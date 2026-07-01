@@ -20,6 +20,8 @@ import ConnectedApps from "./pages/ConnectedApps";
 import CompletionPreview from "./pages/CompletionPreview";
 import ChallengeComplete from "./pages/ChallengeComplete";
 import NotFound from "./pages/NotFound";
+import GlobalBackground from "./components/GlobalBackground";
+
 
 const queryClient = new QueryClient();
 
