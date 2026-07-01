@@ -113,8 +113,14 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
+    background-color: transparent;
   }
+
+  html {
+    background-color: hsl(var(--background));
+  }
+
 }
 
 /* Custom scrollbar for dark theme */

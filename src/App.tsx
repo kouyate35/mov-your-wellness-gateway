@@ -20,6 +20,8 @@ import ConnectedApps from "./pages/ConnectedApps";
 import CompletionPreview from "./pages/CompletionPreview";
 import ChallengeComplete from "./pages/ChallengeComplete";
 import NotFound from "./pages/NotFound";
+import GlobalBackground from "./components/GlobalBackground";
+
 
 const queryClient = new QueryClient();
 
@@ -30,7 +32,9 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <GlobalBackground />
           <Routes>
+
             <Route path="/" element={<Splash />} />
             <Route path="/onboarding-2" element={<OnboardingStep2 />} />
             <Route path="/auth" element={<Auth />} />
