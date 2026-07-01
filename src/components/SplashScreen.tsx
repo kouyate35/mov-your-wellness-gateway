@@ -60,7 +60,7 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
             boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
           }}
         >
-          {/* Inner black rounded panel */}
+          {/* Inner black rounded panel with white "W" */}
           <div
             className="flex items-center justify-center bg-black"
             style={{
@@ -69,13 +69,20 @@ const SplashScreen = ({ onComplete }: SplashScreenProps) => {
               borderRadius: "28px",
             }}
           >
-            <img
-              src={workoutLogo}
-              alt="Workout"
-              className="w-20 h-20 object-contain"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <span
+              className="text-white select-none leading-none"
+              style={{
+                fontFamily: '"Archivo Black", "Anton", system-ui, sans-serif',
+                fontSize: "96px",
+                fontWeight: 900,
+                letterSpacing: "-0.04em",
+                transform: "translateY(-2px)",
+              }}
+            >
+              W
+            </span>
           </div>
+
         </div>
       </div>
 
