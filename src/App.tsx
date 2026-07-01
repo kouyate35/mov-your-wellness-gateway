@@ -32,7 +32,9 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <GlobalBackground />
           <Routes>
+
             <Route path="/" element={<Splash />} />
             <Route path="/onboarding-2" element={<OnboardingStep2 />} />
             <Route path="/auth" element={<Auth />} />
