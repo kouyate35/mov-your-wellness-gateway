@@ -1,4 +1,6 @@
 import { Clock, Flame, ShieldCheck, ChevronRight } from "lucide-react";
+import ProfileButton from "@/components/ProfileButton";
+
 
 interface TodayHeroCardProps {
   hours: number;
